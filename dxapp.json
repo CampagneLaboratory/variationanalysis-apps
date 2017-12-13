@@ -4,8 +4,38 @@
   "summary": "A framework to train deep learning SNP and Indel models.",
   "dxapi": "1.0.0",
   "version": "0.0.1",
-  "inputSpec": [],
-  "outputSpec": [],
+  "inputSpec": [
+    {
+      "name": "sorted_bam",
+      "label": "Sorted BAM file(s)",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "predictions",
+      "label": "VCF with predictions",
+      "class": "array:file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "goby_aligment",
+      "label": "Goby alignment",
+      "class": "array:file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    }
+  ],
   "runSpec": {
     "timeoutPolicy": {
       "*": {
