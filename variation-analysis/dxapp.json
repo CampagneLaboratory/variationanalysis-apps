@@ -1,6 +1,6 @@
 {
-  "name": "VariationAnalysis",
-  "title": "VariationAnalysis",
+  "name": "variation-analysis",
+  "title": "Variation Analysis",
   "summary": "A framework to train deep learning SNP and Indel models.",
   "dxapi": "1.0.0",
   "version": "0.0.1",
