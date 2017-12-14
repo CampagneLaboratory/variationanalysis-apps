@@ -22,7 +22,16 @@ main() {
     # The dx command-line tool downloads the input files
     # to the local file system using variable names for the filenames.
 
-    dx download "$sorted_bam" -o sorted_bam
+    dx download "$sorted_bam" -o /data/sorted.bam
+
+    # Make a data directory to mount into the Docker container
+    mkdir -p /data/
+
+
+    dx-docker run -v /data/:/data artifacts/variationanalysis-app:latest /data/sorted.bam
+
+    # Rename the index file to user input
+    mv /data/fastafile.fasta.fai $indexname
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.
