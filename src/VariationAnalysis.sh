@@ -17,6 +17,16 @@
 
 main() {
 
+    echo "Value of sorted_bam: '$sorted_bam'"
+
+    # The dx command-line tool downloads the input files
+    # to the local file system using variable names for the filenames.
+
+    dx download "$sorted_bam" -o sorted_bam
+
+    # To recover the original filenames, you can use the output of
+    # dx describe "$sorted_bam" --name.
+
     # Fill in your application code here.
     #
     # To report any recognized errors in the correct format in
@@ -30,5 +40,16 @@ main() {
     # exit code will prematurely exit the script; if no error was
     # reported in the job_error.json file, then the failure reason
     # will be AppInternalError with a generic error message.
+
+    # The following line(s) use the utility dx-jobutil-add-output to format and
+    # add output variables to your job's output as appropriate for the output
+    # class.
+
+    for i in "${!predictions[@]}"; do
+        dx-jobutil-add-output predictions "${predictions[$i]}" --class=array:file
+    done
+    for i in "${!goby_aligment[@]}"; do
+        dx-jobutil-add-output goby_aligment "${goby_aligment[$i]}" --class=array:file
+    done
 
 }
