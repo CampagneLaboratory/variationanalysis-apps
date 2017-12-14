@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-dx build -f variation-analysis
+dx build --app -f variation-analysis
