@@ -29,7 +29,7 @@
         "*.header",
         "*.tmh",
         "*.perm",
-        ".stats"
+        "*.stats"
       ],
       "help": "A Goby alignment."
     }
