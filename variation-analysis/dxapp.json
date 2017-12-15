@@ -7,24 +7,29 @@
   "inputSpec": [
     {
       "name": "Genome",
-      "label": "Genome",
+      "label": "A Goby indexed Genome",
       "class": "file",
       "optional": false,
       "patterns": [
-        "*.fa.gz",
-        "*.fasta.gz"
+        "*.ignore",
+        "*.names",
+        "*.sizes",
+        "*.bases"
       ],
-      "help": "A file, in gziped FASTA format, with the reference genome that the reads were mapped against."
+      "help": "A Goby indexed genome that the reads were mapped against."
     },
     {
       "name": "goby_aligment",
       "label": "Goby alignment",
       "class": "array:file",
       "optional": false,
-      "patterns": [
+      "patterns": [               
         "*.index",
         "*.entries",
-        "*.header"
+        "*.header",
+        "*.tmh",
+        "*.perm",
+        ".stats"
       ],
       "help": "A Goby alignment."
     }
