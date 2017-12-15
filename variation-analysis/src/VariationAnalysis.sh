@@ -17,21 +17,31 @@
 
 main() {
 
-    echo "Value of sorted_bam: '$sorted_bam'"
+    echo "Value of genome input: '$genome'"
 
+    for i in "${!goby_aligment[@]}"; do
+        echo "Value of goby alignment input: '${goby_aligment[$i]}'"
+    done
     # The dx command-line tool downloads the input files
     # to the local file system using variable names for the filenames.
 
-    dx download "$sorted_bam" -o /data/sorted.bam
-
     # Make a data directory to mount into the Docker container
     mkdir -p /data/
+    mkdir -p /output/
 
+    dx download "$genome" -o /data/"$genome"
 
-    dx-docker run -v /data/:/data artifacts/variationanalysis-app:latest /data/sorted.bam
+    for i in "${!goby_aligment[@]}"; do
+        dx download "${goby_aligment[$i]}" -o /data/${goby_aligment[$i]}
+    done
 
-    # Rename the index file to user input
-    mv /data/fastafile.fasta.fai $indexname
+    dx-docker pull artifacts/variationanalysis-app:latest
+
+    # invoke the parallel-genotypes-sbi script inside the container
+    dx-docker run -v /data/:/data -v /output/:/output artifacts/variationanalysis-app:latest ...
+
+    # invoke the predict-genotypes-many script inside the container
+    dx-docker run -v /data/:/data -v /output/:/output artifacts/variationanalysis-app:latest ...
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.
@@ -55,10 +65,7 @@ main() {
     # class.
 
     for i in "${!predictions[@]}"; do
-        dx-jobutil-add-output predictions "${predictions[$i]}" --class=array:file
-    done
-    for i in "${!goby_aligment[@]}"; do
-        dx-jobutil-add-output goby_aligment "${goby_aligment[$i]}" --class=array:file
+        dx-jobutil-add-output /output/prediction.vcf "${predictions[$i]}" --class=array:file
     done
 
 }
