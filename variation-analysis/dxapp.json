@@ -6,14 +6,27 @@
   "version": "0.0.1",
   "inputSpec": [
     {
-      "name": "sorted_bam",
-      "label": "Sorted BAM file",
+      "name": "Genome",
+      "label": "Genome",
       "class": "file",
       "optional": false,
       "patterns": [
-        "*.bam"
+        "*.fa.gz",
+        "*.fasta.gz"
       ],
-      "help": "A coordinate-sorted BAM file."
+      "help": "A file, in gziped FASTA format, with the reference genome that the reads were mapped against."
+    },
+    {
+      "name": "goby_aligment",
+      "label": "Goby alignment",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.index",
+        "*.entries",
+        "*.header"
+      ],
+      "help": "A Goby alignment."
     }
   ],
   "outputSpec": [
@@ -25,17 +38,6 @@
         "*.vcf"
       ],
       "help": "The genotype predictions created from the trained model."
-    },
-    {
-      "name": "goby_aligment",
-      "label": "Goby alignment",
-      "class": "array:file",
-      "patterns": [
-        "*.index",
-        "*.entries",
-        "*.header"
-      ],
-      "help": "A Goby alignment converted from the input BAM alignment."
     }
   ],
   "runSpec": {
