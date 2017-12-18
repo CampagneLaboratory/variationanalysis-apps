@@ -19,7 +19,7 @@
       "help": "A Goby indexed genome that the reads were mapped against."
     },
     {
-      "name": "goby_aligment",
+      "name": "Goby_Aligment",
       "label": "Goby alignment",
       "class": "array:file",
       "optional": false,
@@ -32,6 +32,25 @@
         "*.stats"
       ],
       "help": "A Goby alignment."
+    },
+    {
+      "name": "Model_archive",
+      "label": "Model archive",
+
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.zip",
+        "*.tar.gz"
+      ],
+      "help": "A zipped archive with the trained model."
+    },
+    {
+      "name": "model_name",
+      "label": "Model Name",
+      "class": "string",
+      "optional": false,
+      "help": "The model (included in the model archive) to use for the prediction."
     }
   ],
   "outputSpec": [
