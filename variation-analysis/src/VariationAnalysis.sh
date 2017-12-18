@@ -26,22 +26,34 @@ main() {
     # to the local file system using variable names for the filenames.
 
     # Make a data directory to mount into the Docker container
-    mkdir -p /data/
+    mkdir -p /input/
     mkdir -p /output/
 
-    dx download "$genome" -o /data/"$genome"
+    dx download "$genome" -o /input/"$genome"
 
     for i in "${!goby_aligment[@]}"; do
-        dx download "${goby_aligment[$i]}" -o /data/${goby_aligment[$i]}
+        dx download "${goby_aligment[$i]}" -o /input/${goby_aligment[$i]}
     done
 
     dx-docker pull artifacts/variationanalysis-app:latest
 
-    # invoke the parallel-genotypes-sbi script inside the container
-    dx-docker run -v /data/:/data -v /output/:/output artifacts/variationanalysis-app:latest ...
+    # invoke the parallel-genotype-sbi script inside the container
+    # sample invocation:
+    echo "export SBI_GENOME=/input/indexed_genome/ucsc_hg19" >> /input/configure.sh
+    echo "export GOBY_ALIGNMENT=/input/alignment/NA12878_S1_gatk_realigned_filtered-chr21" >> /input/configure.sh
+    # export SBI_GENOME=/input/indexed_genome/ucsc_hg19
+    # parallel-genotype-sbi.sh 10g /input/alignment/NA12878_S1_gatk_realigned_filtered-chr21 2>&1 | tee parallel-genotype-sbi.log
+    docker run -it \
+        -v /Users/mas2182/tmp/forDNANexus/alignment/:/input/alignment \
+        -v /Users/mas2182/tmp/forDNANexus/indexed_genome:/input/indexed_genome \
+        -v /output/:/output/ \
+        --entrypoint /bin/bash -c "source /input/configure.sh; cd /output/; parallel-genotype-sbi.sh 10g ${GOBY_ALIGNMENT} 2>&1 | tee parallel-genotype-sbi.log" \
+        artifacts/variationanalysis-app:1.0
+
+    #dx-docker run -v /input/:/input -v /output/:/output artifacts/variationanalysis-app:latest ...
 
     # invoke the predict-genotypes-many script inside the container
-    dx-docker run -v /data/:/data -v /output/:/output artifacts/variationanalysis-app:latest ...
+    dx-docker run -v /input/:/input -v /output/:/output artifacts/variationanalysis-app:latest ...
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.
@@ -60,7 +72,7 @@ main() {
     # reported in the job_error.json file, then the failure reason
     # will be AppInternalError with a generic error message.
 
-    # The following line(s) use the utility dx-jobutil-add-output to format and
+    # The following line(s) use the utility dx-jobutil-add-output to format and                                                                                                          ls -l
     # add output variables to your job's output as appropriate for the output
     # class.
 
