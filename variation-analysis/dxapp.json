@@ -8,7 +8,7 @@
     {
       "name": "Genome",
       "label": "A Goby indexed Genome",
-      "class": "file",
+      "class": "array:file",
       "optional": false,
       "patterns": [
         "*.ignore",
