@@ -79,7 +79,8 @@
     "aws:us-east-1": {
       "systemRequirements": {
         "*": {
-          "instanceType": "mem1_ssd1_x4"
+          //see https://wiki.dnanexus.com/api-specification-v1.0.0/instance-types
+          "instanceType": "mem1_ssd1_x8" // Mem 15GB, Storage 160GB, Cores 8
         }
       }
     }
