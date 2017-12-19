@@ -17,10 +17,10 @@
 
 main() {
 
-    echo "Value of genome input: '$genome'"
+    echo "Value of genome input: '$Genome'"
 
-    for i in "${!goby_aligment[@]}"; do
-        echo "Value of goby alignment input: '${goby_aligment[$i]}'"
+    for i in "${!Goby_Aligment[@]}"; do
+        echo "Value of goby alignment input: '${Goby_Aligment[$i]}'"
     done
     # The dx command-line tool downloads the input files
     # to the local file system using variable names for the filenames.
@@ -30,16 +30,15 @@ main() {
     mkdir -p /input/alignment
     mkdir -p /output/
 
-    dx download "$genome" -o /input/indexed_genome/"$genome"
+    dx download "$Genome" -o /input/indexed_genome/"$Genome"
 
-    for i in "${!goby_aligment[@]}"; do
-        dx download "${goby_aligment[$i]}" -o /input/alignment/${goby_aligment[$i]}
+    for i in "${!Goby_Aligment[@]}"; do
+        dx download "${Goby_Aligment[$i]}" -o /input/alignment/${Goby_Aligment[$i]}
     done
 
     dx-docker pull artifacts/variationanalysis-app:latest
 
-    # invoke the parallel-genotype-sbi script inside the container
-    # sample invocation:
+
     genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
     echo "export SBI_GENOME=/input/indexed_genome/${genome_basename}" >> /input/configure.sh
     alignment_basename=`basename /input/alignment/*.entries | cut -d. -f1`
@@ -50,8 +49,6 @@ main() {
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
-    # export SBI_GENOME=/input/indexed_genome/ucsc_hg19
-    # parallel-genotype-sbi.sh 10g /input/alignment/NA12878_S1_gatk_realigned_filtered-chr21 2>&1 | tee parallel-genotype-sbi.log
     docker run -it \
         -v /input/alignment/:/input/alignment \
         -v /input/indexed_genome:/input/indexed_genome \
