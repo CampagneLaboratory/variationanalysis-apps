@@ -40,10 +40,10 @@ main() {
 
     # invoke the parallel-genotype-sbi script inside the container
     # sample invocation:
-    #TODO: need to get the basename of the genome
-    echo "export SBI_GENOME=/input/indexed_genome/ucsc_hg19" >> /input/configure.sh
-    #TODO: need to get the basename of the files
-    echo "export GOBY_ALIGNMENT=/input/alignment/NA12878_S1_gatk_realigned_filtered-chr21" >> /input/configure.sh
+    genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
+    echo "export SBI_GENOME=/input/indexed_genome/${genome_basename}" >> /input/configure.sh
+    alignment_basename=`basename /input/alignment/*.entries | cut -d. -f1`
+    echo "export GOBY_ALIGNMENT=/input/alignment/${alignment_basename}" >> /input/configure.sh
     echo "export GOBY_NUM_SLICES=50" >> /input/configure.sh
     # adjust num threads to match number of cores -1:
     echo "export SBI_NUM_THREADS=3" >> /input/configure.sh
