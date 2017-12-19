@@ -17,7 +17,9 @@
 
 main() {
 
-    echo "Value of genome input: '$Genome'"
+    for i in "${!Genome[@]}"; do
+        echo "Value of genome input: '${Genome[$i]}'"
+    done
 
     for i in "${!Goby_Aligment[@]}"; do
         echo "Value of goby alignment input: '${Goby_Aligment[$i]}'"
@@ -29,6 +31,11 @@ main() {
     mkdir -p /input/indexed_genome
     mkdir -p /input/alignment
     mkdir -p /output/
+
+    for i in "${!Genome[@]}"; do
+        dx describe "${Genome[$i]}"
+        dx download "${Genome[$i]}" -o /input/indexed_genome/${Goby_Aligment[$i]}
+    done
 
     dx download "$Genome" -o /input/indexed_genome/"$Genome"
 
