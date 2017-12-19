@@ -44,6 +44,13 @@ main() {
     echo "export SBI_GENOME=/input/indexed_genome/ucsc_hg19" >> /input/configure.sh
     #TODO: need to get the basename of the files
     echo "export GOBY_ALIGNMENT=/input/alignment/NA12878_S1_gatk_realigned_filtered-chr21" >> /input/configure.sh
+    echo "export GOBY_NUM_SLICES=50" >> /input/configure.sh
+    # adjust num threads to match number of cores -1:
+    echo "export SBI_NUM_THREADS=3" >> /input/configure.sh
+    echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
+    echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
+    echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
+    # export SBI_GENOME=/input/indexed_genome/ucsc_hg19
     # parallel-genotype-sbi.sh 10g /input/alignment/NA12878_S1_gatk_realigned_filtered-chr21 2>&1 | tee parallel-genotype-sbi.log
     docker run -it \
         -v /input/alignment/:/input/alignment \
