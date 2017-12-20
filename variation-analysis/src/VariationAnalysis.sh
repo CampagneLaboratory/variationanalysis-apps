@@ -28,12 +28,12 @@ main() {
 
     for i in "${!Genome[@]}"; do
         echo "Downloading genome file '${Genome_name[$i]}'"
-        dx download "${Genome[$i]}" -o /input/indexed_genome/${Genome_name[$i]}}
+        dx download "${Genome[$i]}" -o /input/indexed_genome/${Genome_name[$i]}
     done
 
     for i in "${!Goby_Aligment[@]}"; do
         echo "Downloading goby alignment file '${Goby_Aligment_name[$i]}'"
-        dx download "${Goby_Aligment[$i]}" -o /input/alignment/${Goby_Aligment_name[$i]}}
+        dx download "${Goby_Aligment[$i]}" -o /input/alignment/${Goby_Aligment_name[$i]}
     done
 
     dx-docker pull artifacts/variationanalysis-app:latest
@@ -49,20 +49,25 @@ main() {
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
     dx-docker run \
-        -v /input/alignment/:/input/alignment \
-        -v /input/indexed_genome:/input/indexed_genome \
+        -v /input/:/input \
         -v /output/sbi:/output/sbi \
-        --entrypoint /bin/bash -c "source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g ${GOBY_ALIGNMENT} 2>&1 | tee parallel-genotype-sbi.log" \
-        artifacts/variationanalysis-app:latest
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g ${GOBY_ALIGNMENT} 2>&1 | tee parallel-genotype-sbi.log"
 
-    ls -lrt /output/sbi 
+    ls -lrt /output/sbi
+    mkdir -p /input/model/
+
+    echo "Downloading model file '${Model_archive_name}'"
+    dx download "${Model_archive}" -o /input/model/${Model_archive_name}
+    (cd /input/model/; tar -zxvf Model_*.tar.gz; rm Model_*.tar.gz)
+
     # invoke the predict-genotypes-many script inside the container
     dx-docker run \
-        -v /output/sbi:/output/sbi
-        -v /input/indexed_genome:/input/indexed_genome \
-        -v /output/vcf:/output/vcf \
-        --entrypoint /bin/bash -c "cd /output/vcf; predict-genotypes-many.sh 10g ...." \
-        artifacts/variationanalysis-app:latest
+        -v /output/sbi/:/input/sbi
+        -v /input/model/:/input/model \
+        -v /output/vcf/:/output/vcf \
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ ${Model_name} /input/sbi/*.sbi" \
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.

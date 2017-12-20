@@ -44,7 +44,7 @@
       "help": "An archive with the trained model."
     },
     {
-      "name": "model_name",
+      "name": "Model_name",
       "label": "Model Name",
       "class": "string",
       "default": "bestscore",
