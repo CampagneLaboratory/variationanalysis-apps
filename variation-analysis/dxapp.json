@@ -36,14 +36,12 @@
     {
       "name": "Model_archive",
       "label": "Model archive",
-
       "class": "file",
       "optional": true,
       "patterns": [
-        "*.zip",
-        "*.tar.gz"
+        "Model_*.tar.gz"
       ],
-      "help": "A zipped archive with the trained model."
+      "help": "An archive with the trained model."
     },
     {
       "name": "model_name",
