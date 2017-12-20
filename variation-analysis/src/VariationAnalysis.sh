@@ -48,11 +48,14 @@ main() {
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
+    echo "configure.sh" 
+    cat /input/configure.sh
+
     dx-docker run \
         -v /input/:/input \
         -v /output/sbi:/output/sbi \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g ${GOBY_ALIGNMENT} 2>&1 | tee parallel-genotype-sbi.log"
+        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g \"/input/alignment/${alignment_basename}\" 2>&1 | tee parallel-genotype-sbi.log"
 
     ls -lrt /output/sbi
     mkdir -p /input/model/
@@ -67,7 +70,7 @@ main() {
         -v /input/model/:/input/model \
         -v /output/vcf/:/output/vcf \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ ${Model_name} /input/sbi/*.sbi" 
+        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_name}\" /input/sbi/*.sbi"
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.
@@ -90,8 +93,12 @@ main() {
     # add output variables to your job's output as appropriate for the output
     # class.
 
-    for i in "${!predictions[@]}"; do
-        dx-jobutil-add-output /output/prediction.vcf "${predictions[$i]}" --class=array:file
-    done
+    mkdir -p $HOME/out/Predictions
+    mv /output/vcf/* $HOME/out/Predictions/
+     
+    #data objects must be in the closed state before they are exported
+    dx close $HOME/out/Predictions/*
+
+    dx-upload-all-outputs
 
 }

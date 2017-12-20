@@ -54,7 +54,7 @@
   ],
   "outputSpec": [
     {
-      "name": "predictions",
+      "name": "Predictions",
       "label": "VCF with predictions",
       "class": "array:file",
       "patterns": [
