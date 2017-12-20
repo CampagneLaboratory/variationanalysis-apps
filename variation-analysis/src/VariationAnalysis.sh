@@ -67,7 +67,7 @@ main() {
         -v /input/model/:/input/model \
         -v /output/vcf/:/output/vcf \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ ${Model_name} /input/sbi/*.sbi" \
+        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ ${Model_name} /input/sbi/*.sbi" 
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.
