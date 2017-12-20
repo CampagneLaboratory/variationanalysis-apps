@@ -47,6 +47,7 @@
       "name": "model_name",
       "label": "Model Name",
       "class": "string",
+      "default": "bestscore",
       "optional": true,
       "help": "The model (included in the model archive) to use for the prediction."
     }
