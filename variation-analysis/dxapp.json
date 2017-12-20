@@ -38,7 +38,7 @@
       "label": "Model archive",
 
       "class": "file",
-      "optional": false,
+      "optional": true,
       "patterns": [
         "*.zip",
         "*.tar.gz"
@@ -49,7 +49,7 @@
       "name": "model_name",
       "label": "Model Name",
       "class": "string",
-      "optional": false,
+      "optional": true,
       "help": "The model (included in the model archive) to use for the prediction."
     }
   ],
@@ -74,6 +74,11 @@
     "release": "14.04",
     "distribution": "Ubuntu",
     "file": "src/VariationAnalysis.sh"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
   },
   "regionalOptions": {
     "aws:us-east-1": {
