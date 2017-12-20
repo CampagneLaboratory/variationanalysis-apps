@@ -37,7 +37,7 @@
       "name": "Model_archive",
       "label": "Model archive",
       "class": "file",
-      "optional": true,
+      "optional": false,
       "patterns": [
         "Model_*.tar.gz"
       ],
@@ -48,7 +48,7 @@
       "label": "Model Name",
       "class": "string",
       "default": "bestscore",
-      "optional": true,
+      "optional": false,
       "help": "The model (included in the model archive) to use for the prediction."
     }
   ],
