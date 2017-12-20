@@ -36,6 +36,7 @@ main() {
     done
 
     dx-docker pull artifacts/variationanalysis-app:latest
+    docker pull    artifacts/variationanalysis-app
 
 
     genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
@@ -55,10 +56,13 @@ main() {
         --entrypoint /bin/bash -c "source /input/configure.sh; cd /output/; parallel-genotype-sbi.sh 10g ${GOBY_ALIGNMENT} 2>&1 | tee parallel-genotype-sbi.log" \
         artifacts/variationanalysis-app:latest
 
-    #dx-docker run -v /input/:/input -v /output/:/output artifacts/variationanalysis-app:latest ...
-
     # invoke the predict-genotypes-many script inside the container
-    dx-docker run -v /input/:/input -v /output/:/output artifacts/variationanalysis-app:latest ...
+    dx-docker run -it \
+        -v /input/alignment/:/input/alignment \
+        -v /input/indexed_genome:/input/indexed_genome \
+        -v /output/:/output/ \
+        --entrypoint /bin/bash -c "source /input/configure.sh; cd /output/; predict-genotypes-many.sh 10g ...." \
+        artifacts/variationanalysis-app:latest
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.
