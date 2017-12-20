@@ -48,19 +48,20 @@ main() {
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
-    docker run -it \
+    dx-docker run \
         -v /input/alignment/:/input/alignment \
         -v /input/indexed_genome:/input/indexed_genome \
         -v /output/sbi:/output/sbi \
         --entrypoint /bin/bash -c "source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g ${GOBY_ALIGNMENT} 2>&1 | tee parallel-genotype-sbi.log" \
         artifacts/variationanalysis-app:latest
 
+    ls -lrt /output/sbi 
     # invoke the predict-genotypes-many script inside the container
-    dx-docker run -it \
+    dx-docker run \
         -v /output/sbi:/output/sbi
         -v /input/indexed_genome:/input/indexed_genome \
         -v /output/vcf:/output/vcf \
-        --entrypoint /bin/bash -c "cd /output/; predict-genotypes-many.sh 10g ...." \
+        --entrypoint /bin/bash -c "cd /output/vcf; predict-genotypes-many.sh 10g ...." \
         artifacts/variationanalysis-app:latest
 
     # To recover the original filenames, you can use the output of
