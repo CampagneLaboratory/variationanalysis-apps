@@ -17,13 +17,6 @@
 
 main() {
 
-    for i in "${!Genome[@]}"; do
-        echo "Value of genome input: '${Genome_filename[$i]}'"
-    done
-
-    for i in "${!Goby_Aligment[@]}"; do
-        echo "Value of goby alignment input: '${Goby_Aligment_filename[$i]}'"
-    done
     # The dx command-line tool downloads the input files
     # to the local file system using variable names for the filenames.
 
@@ -33,13 +26,13 @@ main() {
     mkdir -p /output/
 
     for i in "${!Genome[@]}"; do
-        echo "Downloading genome file '${Genome_filename[$i]}'"
-        dx download "${Genome[$i]}" -o /input/indexed_genome/${Genome_filename[$i]}}
+        echo "Downloading genome file '${Genome_name[$i]}'"
+        dx download "${Genome[$i]}" -o /input/indexed_genome/${Genome_name[$i]}}
     done
 
     for i in "${!Goby_Aligment[@]}"; do
-        echo "Downloading goby alignment file: '${Goby_Aligment_filename[$i]}'"
-        dx download "${Goby_Aligment[$i]}" -o /input/alignment/${Goby_Aligment_filename[$i]}}
+        echo "Downloading goby alignment file '${Goby_Aligment_name[$i]}'"
+        dx download "${Goby_Aligment[$i]}" -o /input/alignment/${Goby_Aligment_name[$i]}}
     done
 
     dx-docker pull artifacts/variationanalysis-app:latest
