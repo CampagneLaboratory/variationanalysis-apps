@@ -48,6 +48,7 @@ main() {
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
+    echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "configure.sh" 
     cat /input/configure.sh
 
