@@ -61,17 +61,17 @@ main() {
     ls -lrt /output/sbi
     mkdir -p /input/model/
 
-    echo "Downloading model file '${Model_archive_name}'"
-    dx download "${Model_archive}" -o /input/model/${Model_archive_name}
+    echo "Downloading model file '${Model_Archive_name}'"
+    dx download "${Model_Archive}" -o /input/model/${Model_Archive_name}
     (cd /input/model/; tar -zxvf Model_*.tar.gz; rm Model_*.tar.gz)
 
     # invoke the predict-genotypes-many script inside the container
     dx-docker run \
-        -v /output/sbi/:/input/sbi
+        -v /output/sbi/:/input/sbi \
         -v /input/model/:/input/model \
         -v /output/vcf/:/output/vcf \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_name}\" /input/sbi/*.sbi"
+        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi"
 
     # To recover the original filenames, you can use the output of
     # dx describe "$sorted_bam" --name.

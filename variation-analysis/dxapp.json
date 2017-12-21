@@ -7,7 +7,7 @@
   "inputSpec": [
     {
       "name": "Genome",
-      "label": "A Goby indexed Genome",
+      "label": "Goby Indexed Genome",
       "class": "array:file",
       "optional": false,
       "patterns": [
@@ -34,7 +34,7 @@
       "help": "A Goby alignment."
     },
     {
-      "name": "Model_archive",
+      "name": "Model_Archive",
       "label": "Model archive",
       "class": "file",
       "optional": false,
@@ -44,7 +44,7 @@
       "help": "An archive with the trained model."
     },
     {
-      "name": "Model_name",
+      "name": "Model_Name",
       "label": "Model Name",
       "class": "string",
       "default": "bestscore",
