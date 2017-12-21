@@ -1,0 +1,68 @@
+{
+  "name": "bam-to-goby",
+  "title": "BAM to Goby Converter",
+  "summary": "Convert an alignment from BAM to Goby format",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "Realigned_Bam",
+      "class": "array:file",
+      "label": "Realigned BAM",
+      "optional": false,
+      "patterns": [
+        "*.bam",
+        "*.bam.bai"
+      ],
+      "help": "An alignment realigned with GATK."
+    },
+    {
+      "name": "Genome",
+      "class": "file",
+      "label": "Genome",
+      "optional": false,
+      "patterns": [
+        "*.fa.gz",
+        "*.fasta.gz"
+      ],
+      "help": "Reference genome."
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "Goby_Aligment",
+      "label": "Goby Alignment",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.index",
+        "*.entries",
+        "*.header",
+        "*.tmh",
+        "*.perm",
+        "*.stats"
+      ],
+      "help": "An alignment in the Goby format."
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/bam-to-goby.sh"
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem3_ssd1_x4"
+        }
+      }
+    }
+  }
+}
