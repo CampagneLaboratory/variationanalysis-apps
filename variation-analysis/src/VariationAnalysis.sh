@@ -42,7 +42,7 @@ main() {
     echo "export SBI_GENOME=/input/indexed_genome/${genome_basename}" >> /input/configure.sh
     alignment_basename=`basename /input/alignment/*.entries | cut -d. -f1`
     echo "export GOBY_ALIGNMENT=/input/alignment/${alignment_basename}" >> /input/configure.sh
-    echo "export GOBY_NUM_SLICES=50" >> /input/configure.sh
+    echo "export GOBY_NUM_SLICES=1" >> /input/configure.sh
     # adjust num threads to match number of cores -1:
     echo "export SBI_NUM_THREADS=7" >> /input/configure.sh
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
