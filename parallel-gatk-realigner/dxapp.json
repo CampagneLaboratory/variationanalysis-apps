@@ -1,0 +1,52 @@
+{
+  "name": "parallel-gatk-realigner",
+  "title": "Parallel GATK realigner using HaplotypeCaller",
+  "summary": "Parallel GATK realigner using HaplotypeCaller",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "sorted_bam",
+      "label": "A coordinate-sorted BAM alignment",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.bam",
+        "*.bam.bai"
+      ],
+      "help": ""
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "realigned_bam",
+      "label": "Realigned BAM",
+      "class": "array:file",
+      "patterns": [
+        "*.bam",
+        "*.bam.bai"
+      ],
+      "help": ""
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/parallel-gatk-realigner.sh"
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
