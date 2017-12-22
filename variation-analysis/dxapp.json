@@ -19,7 +19,7 @@
       "help": "A Goby indexed genome that the reads were mapped against."
     },
     {
-      "name": "Goby_Aligment",
+      "name": "Goby_Alignment",
       "label": "Goby alignment",
       "class": "array:file",
       "optional": false,
@@ -58,7 +58,8 @@
       "label": "VCF with predictions",
       "class": "array:file",
       "patterns": [
-        "*.vcf"
+        "*.vcf.gz",
+        "*.vcf.gz.tbi"
       ],
       "help": "The genotype predictions created from the trained model."
     }
