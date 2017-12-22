@@ -1,0 +1,54 @@
+{
+  "name": "goby-indexed-genome-builder",
+  "title": "Goby Indexed Genome Builder",
+  "summary": "Build a Goby Indexed Genome from a FASTA reference genome",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "FASTA_Genome",
+      "label": "FASTA Genome",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+      "*.fa.gz",
+      "*.fasta.gz"
+    ],
+      "help": ""
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "Goby_Genome",
+      "label": "Goby Indexed Genome",
+      "class": "array:file",
+      "patterns": [
+        "*.ignore",
+        "*.names",
+        "*.sizes",
+        "*.bases"
+      ],
+      "help": ""
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/goby-indexed-genome-builder.sh"
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
