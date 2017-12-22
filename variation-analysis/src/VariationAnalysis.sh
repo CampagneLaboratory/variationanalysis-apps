@@ -28,9 +28,9 @@ main() {
         dx download "${Genome[$i]}" -o /input/indexed_genome/${Genome_name[$i]}
     done
 
-    for i in "${!Goby_Aligment[@]}"; do
-        echo "Downloading goby alignment file '${Goby_Aligment_name[$i]}'"
-        dx download "${Goby_Aligment[$i]}" -o /input/alignment/${Goby_Aligment_name[$i]}
+    for i in "${!Goby_Alignment[@]}"; do
+        echo "Downloading goby alignment file '${Goby_Alignment_name[$i]}'"
+        dx download "${Goby_Alignment[$i]}" -o /input/alignment/${Goby_Alignment_name[$i]}
     done
 
     dx-docker pull artifacts/variationanalysis-app:latest
