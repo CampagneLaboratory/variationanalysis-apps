@@ -17,10 +17,7 @@
 
 main() {
 
-    # The dx command-line tool downloads the input files
-    # to the local file system using variable names for the filenames.
-
-    # Create the data directories to mount into the Docker container
+    # create the data directories to mount into the Docker container
     mkdir -p /input/indexed_genome
     mkdir -p /input/alignment
     mkdir -p /output/sbi
@@ -38,6 +35,7 @@ main() {
 
     dx-docker pull artifacts/variationanalysis-app:latest
 
+    # configure
     genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
     echo "export SBI_GENOME=/input/indexed_genome/${genome_basename}" >> /input/configure.sh
     alignment_basename=`basename /input/alignment/*.entries | cut -d. -f1`
@@ -49,7 +47,7 @@ main() {
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
-    echo "configure.sh" 
+    echo "configure.sh"
     cat /input/configure.sh
 
     dx-docker run \
@@ -73,32 +71,15 @@ main() {
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi"
 
-    # To recover the original filenames, you can use the output of
-    # dx describe "$sorted_bam" --name.
 
-    # Fill in your application code here.
-    #
-    # To report any recognized errors in the correct format in
-    # $HOME/job_error.json and exit this script, you can use the
-    # dx-jobutil-report-error utility as follows:
-    #
-    #   dx-jobutil-report-error "My error message"
-    #
-    # Note however that this entire bash script is executed with -e
-    # when running in the cloud, so any line which returns a nonzero
-    # exit code will prematurely exit the script; if no error was
-    # reported in the job_error.json file, then the failure reason
-    # will be AppInternalError with a generic error message.
-
-    # The following line(s) use the utility dx-jobutil-add-output to format and                                                                                                          ls -l
-    # add output variables to your job's output as appropriate for the output
-    # class.
+    # publish the output
 
     mkdir -p $HOME/out/Predictions
-    mv /output/vcf/* $HOME/out/Predictions/
-     
-    #data objects must be in the closed state before they are exported
-    dx close $HOME/out/Predictions/*
+    mv /output/vcf/*.vcf.gz.tbi $HOME/out/Predictions/
+    mv /output/vcf/*.vcf.gz $HOME/out/Predictions/
+
+    echo "Content of Predictions:"
+    ls -lrt $HOME/out/Predictions/
 
     dx-upload-all-outputs
 
