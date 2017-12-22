@@ -71,6 +71,10 @@ main() {
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi"
 
+    # merge the bed files
+    cat *-observed-regions.bed | sort -k1,1 -k2,2n | mergeBed > model-bestscore-observed-regions.bed
+    bgzip -f model-bestscore-observed-regions.bed
+    tabix -f model-bestscore-observed-regions.bed.gz
 
     # publish the output
 
