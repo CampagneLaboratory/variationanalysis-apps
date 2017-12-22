@@ -55,11 +55,12 @@
   "outputSpec": [
     {
       "name": "Predictions",
-      "label": "VCF with predictions",
+      "label": "Predictions",
       "class": "array:file",
       "patterns": [
         "*.vcf.gz",
-        "*.vcf.gz.tbi"
+        "*.vcf.gz.tbi",
+        "*.bed.gz"
       ],
       "help": "The genotype predictions created from the trained model."
     }

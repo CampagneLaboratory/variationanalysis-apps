@@ -72,15 +72,20 @@ main() {
         bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi"
 
     # merge the bed files
+    cd /output/vcf/
     cat *-observed-regions.bed | sort -k1,1 -k2,2n | mergeBed > model-bestscore-observed-regions.bed
     bgzip -f model-bestscore-observed-regions.bed
     tabix -f model-bestscore-observed-regions.bed.gz
+    cd $HOME
+
+    echo "Content of output/vcf:"
+    ls -lrt /output/vcf/
 
     # publish the output
-
     mkdir -p $HOME/out/Predictions
     mv /output/vcf/*.vcf.gz.tbi $HOME/out/Predictions/
     mv /output/vcf/*.vcf.gz $HOME/out/Predictions/
+    mv /output/vcf/model-bestscore-observed-regions.bed.gz $HOME/out/Predictions/
 
     echo "Content of Predictions:"
     ls -lrt $HOME/out/Predictions/
