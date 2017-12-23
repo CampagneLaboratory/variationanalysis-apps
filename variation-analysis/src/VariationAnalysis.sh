@@ -63,20 +63,25 @@ main() {
     dx download "${Model_Archive}" -o /input/model/${Model_Archive_name}
     (cd /input/model/; tar -zxvf Model_*.tar.gz; rm Model_*.tar.gz)
 
-    # invoke the predict-genotypes-many script inside the container
-    dx-docker run \
-        -v /output/sbi/:/input/sbi \
-        -v /input/model/:/input/model \
-        -v /output/vcf/:/output/vcf \
-        artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi"
+    mkdir -p /input/scripts
 
-    # merge the bed files
+    cat >/input/scripts/merge.sh <<EOL
+    #!/bin/bash
     cd /output/vcf/
     cat *-observed-regions.bed | sort -k1,1 -k2,2n | mergeBed > model-bestscore-observed-regions.bed
     bgzip -f model-bestscore-observed-regions.bed
     tabix -f model-bestscore-observed-regions.bed.gz
     cd $HOME
+EOL
+    chmod u+x /input/scripts/merge.sh
+    # invoke the predict-genotypes-many script inside the container
+    dx-docker run \
+        -v /output/sbi/:/input/sbi \
+        -v /input/:/input \
+        -v /output/vcf/:/output/vcf \
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi; /input/scripts/merge.sh"
+
 
     echo "Content of output/vcf:"
     ls -lrt /output/vcf/
