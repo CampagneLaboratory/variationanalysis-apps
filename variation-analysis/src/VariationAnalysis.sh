@@ -71,7 +71,6 @@ main() {
     cat *-observed-regions.bed | sort -k1,1 -k2,2n | mergeBed > model-bestscore-observed-regions.bed
     bgzip -f model-bestscore-observed-regions.bed
     tabix -f model-bestscore-observed-regions.bed.gz
-    cd $HOME
 EOL
     chmod u+x /input/scripts/merge.sh
     # invoke the predict-genotypes-many script inside the container
