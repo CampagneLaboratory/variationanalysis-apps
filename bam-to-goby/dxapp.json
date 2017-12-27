@@ -56,6 +56,11 @@
     "distribution": "Ubuntu",
     "file": "src/bam-to-goby.sh"
   },
+  "access": {
+  "network": [
+    "*"
+  ]
+},
   "regionalOptions": {
     "aws:us-east-1": {
       "systemRequirements": {
