@@ -31,7 +31,7 @@ main() {
     for i in ${!Realigned_Bam[@]}
     do
         echo "Downloading BAM file '${Realigned_Bam_name[$i]}'"
-        dx download "${Realigned_Bam[$i]}" -o sorted_bam-$i /input/BAM/${Realigned_Bam_name[$i]}
+        dx download "${Realigned_Bam[$i]}" -o /input/BAM/${Realigned_Bam_name[$i]}
     done
 
     #download the gzipped genome
