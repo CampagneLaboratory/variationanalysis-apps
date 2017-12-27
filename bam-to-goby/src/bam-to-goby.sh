@@ -61,15 +61,6 @@ main() {
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh \"/input/BAM/${alignment_basename}\""
 
-
-    #for i in "${!Goby_Alignment[@]}"; do
-    #    dx-jobutil-add-output Goby_Alignment "${Goby_Alignment[$i]}" --class=array:file
-    #done
-
-
-    #data objects must be in the closed state before they are exported
-    dx close $HOME/out/Goby_Alignment/*
-
     dx-upload-all-outputs
 
 }
