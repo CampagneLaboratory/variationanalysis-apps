@@ -39,8 +39,14 @@ main() {
     dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
     #unzip
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
+
+    dx-docker pull artifacts/variationanalysis-app:latest
+
     #index
-    (cd /input/Goby_Genome; samtools faidx /input/FASTA_Genome/*.fasta)
+    dx-docker run \
+        -v /input/:/input \
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; cd /input/Goby_Genome; samtools faidx /input/FASTA_Genome/*.fasta"
 
     #build goby indexed genome
     goby 6g build-sequence-cache /input/FASTA_Genome/${Genome_name}
