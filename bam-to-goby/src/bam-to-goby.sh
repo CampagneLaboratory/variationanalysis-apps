@@ -48,6 +48,7 @@ main() {
      #build goby indexed genome
     goby 6g build-sequence-cache /input/FASTA_Genome/*.fasta
     ls -lrt  /input/Goby_Genome/
+    ls -lrt  /input/FASTA_Genome/
 
 EOL
     chmod u+x /input/scripts/index.sh
@@ -59,19 +60,19 @@ EOL
         bash -c "source ~/.bashrc; cd /input/Goby_Genome; /input/scripts/index.sh"
 
     alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
-    goby_genome_basename=`basename /input/Goby_Genome/*.bases | cut -d. -f1`
-    genome_basename=`basename /input/indexed_genome/*.fasta | cut -d. -f1`
+    goby_genome_basename=`basename /input/FASTA_Genome/*.bases | cut -d. -f1`
+    genome_basename=`basename /input/FASTA_Genome/*.fasta | cut -d. -f1`
 
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome_basename}" >> /input/configure.sh
-    echo "export SBI_GENOME=/input/Goby_Genome/${goby_genome_basename}" >> /input/configure.sh
+    echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh
     echo "SBI_NUM_THREADS=\"3\"" >> /input/configure.sh
 
     dx-docker run \
         -v /input/:/input \
         -v /out/Goby_Alignment/:/out/Goby_Alignment \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh \"/input/BAM/${alignment_basename}\""
+        bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh /input/BAM/*.bam"
 
     dx-upload-all-outputs
 
