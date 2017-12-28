@@ -72,7 +72,7 @@ EOL
         -v /input/:/input \
         -v /out/Goby_Alignment/:/out/Goby_Alignment \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh /input/BAM/*.bam"
+        bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh 6g /input/BAM/*.bam"
 
     dx-upload-all-outputs
 
