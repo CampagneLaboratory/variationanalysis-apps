@@ -17,13 +17,8 @@
 
 main() {
 
-    echo "Value of sorted_bam: '${Realigned_Bam[@]}'"
-
-    # The following line(s) use the dx command-line tool to download your file
-    # inputs to the local file system using variable names for the filenames. To
-    # recover the original filenames, you can use the output of "dx describe
-    # "$variable" --name".
     mkdir -p /input/BAM
+    mkdir -p /input/scripts
     mkdir -p /input/FASTA_Genome
     mkdir -p /input/Goby_Genome
     mkdir -p /out/Goby_Alignment
@@ -41,15 +36,27 @@ main() {
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
 
     dx-docker pull artifacts/variationanalysis-app:latest
+    ls -lrt
+    cat >/input/scripts/index.sh <<EOL
+    #!/bin/bash
+    set -x
+    ls -lrt  /input/FASTA_Genome/
+    cd /input/FASTA_Genome
+    samtools faidx /input/FASTA_Genome/*.fasta
+    ls -lrt  /input/FASTA_Genome/
+    cd /input/Goby_Genome/
+     #build goby indexed genome
+    goby 6g build-sequence-cache /input/FASTA_Genome/*.fasta
+    ls -lrt  /input/Goby_Genome/
+
+EOL
+    chmod u+x /input/scripts/index.sh
 
     #index
     dx-docker run \
         -v /input/:/input \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /input/Goby_Genome; samtools faidx /input/FASTA_Genome/*.fasta"
-
-    #build goby indexed genome
-    goby 6g build-sequence-cache /input/FASTA_Genome/${Genome_name}
+        bash -c "source ~/.bashrc; cd /input/Goby_Genome; /input/scripts/index.sh"
 
     alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
     goby_genome_basename=`basename /input/Goby_Genome/*.bases | cut -d. -f1`
@@ -60,7 +67,6 @@ main() {
     echo "export SBI_GENOME=/input/Goby_Genome/${goby_genome_basename}" >> /input/configure.sh
     echo "SBI_NUM_THREADS=\"3\"" >> /input/configure.sh
 
-     # invoke the predict-genotypes-many script inside the container
     dx-docker run \
         -v /input/:/input \
         -v /out/Goby_Alignment/:/out/Goby_Alignment \
