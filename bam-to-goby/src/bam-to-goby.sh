@@ -61,10 +61,10 @@ EOL
 
     alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
     goby_genome_basename=`basename /input/FASTA_Genome/*.bases | cut -d. -f1`
-    genome_basename=`basename /input/FASTA_Genome/*.fasta | cut -d. -f1`
+    genome=`basename /input/FASTA_Genome/*.fasta`
 
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
-    echo "export FASTA_GENOME=/input/FASTA_Genome/${genome_basename}" >> /input/configure.sh
+    echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
     echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh
     echo "SBI_NUM_THREADS=\"3\"" >> /input/configure.sh
 
