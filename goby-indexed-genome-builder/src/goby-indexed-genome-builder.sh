@@ -17,35 +17,36 @@
 
 main() {
 
-    echo "Value of Genome: '$Genome'"
+    mkdir -p /input/FASTA_Genome
+    mkdir -p /out/Goby_Genome
 
-    # The following line(s) use the dx command-line tool to download your file
-    # inputs to the local file system using variable names for the filenames. To
-    # recover the original filenames, you can use the output of "dx describe
-    # "$variable" --name".
+    # download the gzipped genome
+    echo "Downloading genome file '${FASTA_Genome_name}'"
+    dx download "${FASTA_Genome}" -o /input/FASTA_Genome/${FASTA_Genome_name}
+    #unzip
+    (cd /input/FASTA_Genome; gunzip ${FASTA_Genome_name})
 
-    dx download "$Genome" -o Genome
+    dx-docker pull artifacts/variationanalysis-app:latest
 
-    # Fill in your application code here.
-    #
-    # To report any recognized errors in the correct format in
-    # $HOME/job_error.json and exit this script, you can use the
-    # dx-jobutil-report-error utility as follows:
-    #
-    #   dx-jobutil-report-error "My error message"
-    #
-    # Note however that this entire bash script is executed with -e
-    # when running in the cloud, so any line which returns a nonzero
-    # exit code will prematurely exit the script; if no error was
-    # reported in the job_error.json file, then the failure reason
-    # will be AppInternalError with a generic error message.
+    ls -lrt
+    cat >/input/scripts/index.sh <<EOL
+    #!/bin/bash
+    set -x
+    cd /input/FASTA_Genome
+    samtools faidx /input/FASTA_Genome/*.fasta
+    cd /out/Goby_Genome/
+    goby 6g build-sequence-cache /input/FASTA_Genome/*.fasta
+    ls -lrt /input/FASTA_Genome/
+    ls -lrt /out/Goby_Genome/
 
-    # The following line(s) use the utility dx-jobutil-add-output to format and
-    # add output variables to your job's output as appropriate for the output
-    # class.  Run "dx-jobutil-add-output -h" for more information on what it
-    # does.
+EOL
+    chmod u+x /input/scripts/index.sh
 
-    for i in "${!Goby_Genome[@]}"; do
-        dx-jobutil-add-output Goby_Genome "${Goby_Genome[$i]}" --class=array:file
-    done
+    #index
+    dx-docker run \
+        -v /input/:/input \
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; cd /out/Goby_Genome; /input/scripts/index.sh"
+
+        dx-upload-all-outputs
 }

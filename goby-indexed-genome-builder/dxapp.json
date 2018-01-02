@@ -14,7 +14,7 @@
       "*.fa.gz",
       "*.fasta.gz"
     ],
-      "help": ""
+      "help": "Genome in the FASTA format."
     }
   ],
   "outputSpec": [
@@ -22,13 +22,14 @@
       "name": "Goby_Genome",
       "label": "Goby Indexed Genome",
       "class": "array:file",
+      "optional": false,
       "patterns": [
         "*.ignore",
         "*.names",
         "*.sizes",
         "*.bases"
       ],
-      "help": ""
+      "help": "Goby indexed genome."
     }
   ],
   "runSpec": {
@@ -41,6 +42,11 @@
     "release": "14.04",
     "distribution": "Ubuntu",
     "file": "src/goby-indexed-genome-builder.sh"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
   },
   "regionalOptions": {
     "aws:us-east-1": {
