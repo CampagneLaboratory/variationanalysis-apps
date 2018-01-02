@@ -30,7 +30,7 @@
   ],
   "outputSpec": [
     {
-      "name": "Goby_Aligment",
+      "name": "Goby_Alignment",
       "label": "Goby Alignment",
       "class": "array:file",
       "optional": false,
