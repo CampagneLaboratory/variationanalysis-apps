@@ -49,12 +49,15 @@ EOL
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd /out/Goby_Genome; /input/scripts/index.sh"
-        
+
+    mkdir -p $HOME/out/Goby_Genome
+    mv /out/Goby_Genome/* $HOME/out/Goby_Genome || true
+
     # the goby genome files are created in the input folder not in the working dir, can we fix this?
-    mv /input/FASTA_Genome/*.sizes /out/Goby_Genome/ || true
-    mv /input/FASTA_Genome/*.bases /out/Goby_Genome/ || true
-    mv /input/FASTA_Genome/*.ignore /out/Goby_Genome/ || true
-    mv /input/FASTA_Genome/*.names /out/Goby_Genome/ || true
+    mv /input/FASTA_Genome/*.sizes $HOME/out/Goby_Genome/ || true
+    mv /input/FASTA_Genome/*.bases $HOME/out/Goby_Genome/ || true
+    mv /input/FASTA_Genome/*.ignore $HOME/out/Goby_Genome/ || true
+    mv /input/FASTA_Genome/*.names $HOME/out/Goby_Genome/ || true
     
     dx-upload-all-outputs
 }
