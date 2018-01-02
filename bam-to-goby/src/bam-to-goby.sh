@@ -77,6 +77,8 @@ EOL
     #upload the output
     ls -lrt /out/Goby_Alignment
     mkdir -p $HOME/out/
-    mv /out/Goby_Alignment $HOME/out/
+    #remove refs.txt and calmd-and-convert-commands.txt
+    rm /out/Goby_Alignment/*.txt
+    mv /out/Goby_Alignment/ $HOME/out/
     dx-upload-all-outputs
 }
