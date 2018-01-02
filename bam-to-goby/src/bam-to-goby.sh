@@ -46,7 +46,7 @@ main() {
     ls -lrt  /input/FASTA_Genome/
     cd /input/Goby_Genome/
      #build goby indexed genome
-    goby 6g build-sequence-cache /input/FASTA_Genome/*.fasta
+    goby 10g build-sequence-cache /input/FASTA_Genome/*.fasta
     ls -lrt  /input/Goby_Genome/
     ls -lrt  /input/FASTA_Genome/
 
@@ -66,7 +66,7 @@ EOL
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
     echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh
-    echo "SBI_NUM_THREADS=\"3\"" >> /input/configure.sh
+    echo "SBI_NUM_THREADS=\"4\"" >> /input/configure.sh
 
     dx-docker run \
         -v /input/:/input \
