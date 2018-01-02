@@ -18,6 +18,7 @@
 main() {
 
     mkdir -p /input/FASTA_Genome
+    mkdir -p /input/scripts
     mkdir -p /out/Goby_Genome
 
     # download the gzipped genome
