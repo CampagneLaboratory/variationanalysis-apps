@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-dx build --app -f variation-analysis
-dx build --app -f bam-to-goby
+./build-app.sh variation-analysis
+./build-app.sh bam-to-goby
+./build-app.sh goby-indexed-genome-builder
