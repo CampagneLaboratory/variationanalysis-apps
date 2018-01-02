@@ -17,41 +17,70 @@
 
 main() {
 
-    echo "Value of sorted_bam: '$sorted_bam'"
+    mkdir -p /input/Sorted_BAM
+    mkdir -p /input/FASTA_Genome
+    mkdir -p /out/Realigned_BAM
 
-    # The following line(s) use the dx command-line tool to download your file
-    # inputs to the local file system using variable names for the filenames. To
-    # recover the original filenames, you can use the output of "dx describe
-    # "$variable" --name".
+    #download the sorted bam
+    for i in ${!Sorted_Bam[@]}
+    do
+        echo "Downloading sorted BAM file '${Sorted_Bam_name[$i]}'"
+        dx download "${Sorted_Bam[$i]}" -o /input/Sorted_BAM/${Sorted_Bam_name[$i]}
+    done
 
-    dx download "$sorted_bam" -o sorted_bam
+    #download the gzipped genome
+    echo "Downloading genome file '${Genome_name}'"
+    dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
+    #unzip
+    (cd /input/FASTA_Genome; gunzip ${Genome_name})
 
-    # Fill in your application code here.
-    #
-    # To report any recognized errors in the correct format in
-    # $HOME/job_error.json and exit this script, you can use the
-    # dx-jobutil-report-error utility as follows:
-    #
-    #   dx-jobutil-report-error "My error message"
-    #
-    # Note however that this entire bash script is executed with -e
-    # when running in the cloud, so any line which returns a nonzero
-    # exit code will prematurely exit the script; if no error was
-    # reported in the job_error.json file, then the failure reason
-    # will be AppInternalError with a generic error message.
+    # get GATK 4 (until it is officially released)
+    wget -O /input/gatk-package-4.beta.1-local.jar https://www.dropbox.com/s/oko590zxebhlqmg/gatk-package-4.beta.1-local.jar
+    dx-docker pull artifacts/variationanalysis-app:latest
 
+    genome_basename=`basename /input/FASTA_Genome/*.fasta`
+    bam_basename=`basename /input/Sorted_BAM/*.bam | cut -d. -f1`
+
+    cat >/input/scripts/realign.sh <<EOL
+    #!/bin/bash
+    cd /out/Realigned_BAM
+    export GATK_LAUNCH=/input/gatk-package-4.beta.1-local.jar
+    export MEMORY_PER_THREAD=6g
+    export NUM_THREADS=4
+    export FASTA_GENOME=/input/FASTA_Genome/${genome_basename}
+    export BAM_INPUT=/input/Sorted_BAM/${bam_basename}.bam
+    export BAM_OUTPUT=/input/Sorted_BAM/${bam_basename}-realigned.bam
+    export GATK_ARGS=
+    parallel-gatk-realign-filtered.sh ${GATK_LAUNCH} ${MEMORY_PER_THREAD} ${NUM_THREADS} ${FASTA_GENOME} ${BAM_INPUT} ${BAM_OUTPUT} "${GATK_ARGS}"
+EOL
+   chmod u+x /input/scripts/realign.sh
+
+    #usage: parallel-gatk-realign-filtered.sh PATH_TO_GATK_LAUNCH 10g NUM_THREADS GENOME_FA BAM_INPUT BAM_OUTPUT [GATK_ARGS]
+    dx-docker run \
+        -v /input/:/input \
+        -v /out/:/out \
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; source /input/scripts/realign.sh"
+        
     # The following line(s) use the dx command-line tool to upload your file
     # outputs after you have created them on the local file system.  It assumes
     # that you have used the output field name for the filename for each output,
     # but you can change that behavior to suit your needs.  Run "dx upload -h"
     # to see more options to set metadata.
 
-    realigned_bam=$(dx upload realigned_bam --brief)
+    #realigned_bam=$(dx upload realigned_bam --brief)
 
     # The following line(s) use the utility dx-jobutil-add-output to format and
     # add output variables to your job's output as appropriate for the output
     # class.  Run "dx-jobutil-add-output -h" for more information on what it
     # does.
 
-    dx-jobutil-add-output realigned_bam "$realigned_bam" --class=file
+    #dx-jobutil-add-output realigned_bam "$realigned_bam" --class=file
+
+    mkdir -p $HOME/out/Realigned_Bam
+    mv /out/*-realigned.bam $HOME/out/Realigned_Bam/
+    mv /out/*-realigned.bam.bai $HOME/out/Realigned_Bam/
+    ls -lrt $HOME/out/Realigned_Bam/
+    dx-upload-all-outputs
+
 }

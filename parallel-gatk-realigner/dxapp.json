@@ -6,9 +6,9 @@
   "version": "0.0.1",
   "inputSpec": [
     {
-      "name": "sorted_bam",
+      "name": "Sorted_Bam",
       "label": "A coordinate-sorted BAM alignment",
-      "class": "file",
+      "class": "array:file",
       "optional": false,
       "patterns": [
         "*.bam",
@@ -19,7 +19,7 @@
   ],
   "outputSpec": [
     {
-      "name": "realigned_bam",
+      "name": "Realigned_Bam",
       "label": "Realigned BAM",
       "class": "array:file",
       "patterns": [
@@ -39,6 +39,11 @@
     "release": "14.04",
     "distribution": "Ubuntu",
     "file": "src/parallel-gatk-realigner.sh"
+  },
+  "access": {
+  "network": [
+    "*"
+  ]
   },
   "regionalOptions": {
     "aws:us-east-1": {
