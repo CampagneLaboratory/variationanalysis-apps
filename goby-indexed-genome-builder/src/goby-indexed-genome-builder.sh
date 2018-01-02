@@ -46,8 +46,15 @@ EOL
     #index
     dx-docker run \
         -v /input/:/input \
+        -v /out/:/out \
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd /out/Goby_Genome; /input/scripts/index.sh"
-
-        dx-upload-all-outputs
+        
+    # the goby genome files are created in the input folder not in the working dir, can we fix this?
+    mv /input/*.sizes /out/Goby_Genome/
+    mv /input/*.bases /out/Goby_Genome/
+    mv /input/*.ignore /out/Goby_Genome/
+    mv /input/*.names /out/Goby_Genome/
+    
+    dx-upload-all-outputs
 }
