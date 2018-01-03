@@ -35,31 +35,37 @@ main() {
     #unzip
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
 
-    genome_basename=`basename /input/FASTA_Genome/*.fasta`
-    bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
+    dx-docker pull artifacts/variationanalysis-app:latest
 
-    cat >/input/scripts/configure.sh <<EOL
+    #index the genome with samtools
+    cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
-    cd /out/Realigned_Bam
-    export GATK_LAUNCH=/input/gatk-package-4.beta.1-local.jar
-    export MEMORY_PER_THREAD=6g
-    export NUM_THREADS=`grep physical  /proc/cpuinfo |grep id|wc -l`
-    export FASTA_GENOME=/input/FASTA_Genome/${genome_basename}
-    export BAM_INPUT=/input/Sorted_Bam/${bam_basename}.bam
-    export BAM_OUTPUT=/out/Realigned_Bam/${bam_basename}-realigned.bam
-    export GATK_ARGS="${GATK_Arguments}"
+    set -x
+    ls -lrt  /input/FASTA_Genome/
+    cd /input/FASTA_Genome
+    samtools faidx /input/FASTA_Genome/*.fa*
+    ls -lrt  /input/FASTA_Genome/
 EOL
-    chmod u+x /input/scripts/configure.sh
+    chmod u+x /input/scripts/index.sh
+
+    #index
+    dx-docker run \
+        -v /input/:/input \
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; cd /input/FASTA_Genome; /input/scripts/index.sh"
+
+    genome_basename=`basename /input/FASTA_Genome/*.fa*`
+    bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
+    cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
     # get GATK 4 from dropbox (until it is officially released)
     wget -O /input/gatk-package-4.beta.1-local.jar https://www.dropbox.com/s/oko590zxebhlqmg/gatk-package-4.beta.1-local.jar
-    dx-docker pull artifacts/variationanalysis-app:latest
 
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/scripts/configure.sh; parallel-gatk-realign-filtered.sh ${GATK_LAUNCH} ${MEMORY_PER_THREAD} ${NUM_THREADS} ${FASTA_GENOME} ${BAM_INPUT} ${BAM_OUTPUT} \"${GATK_ARGS}\""
+        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && parallel-gatk-realign-filtered.sh /input/gatk-package-4.beta.1-local.jar 6g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
 
 
     mkdir -p $HOME/out/Realigned_Bam
