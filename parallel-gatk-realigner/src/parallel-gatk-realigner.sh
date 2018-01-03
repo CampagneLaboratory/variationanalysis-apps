@@ -35,14 +35,10 @@ main() {
     #unzip
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
 
-    # get GATK 4 (until it is officially released)
-    wget -O /input/gatk-package-4.beta.1-local.jar https://www.dropbox.com/s/oko590zxebhlqmg/gatk-package-4.beta.1-local.jar
-    dx-docker pull artifacts/variationanalysis-app:latest
-
     genome_basename=`basename /input/FASTA_Genome/*.fasta`
     bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
 
-    cat >/input/scripts/realign.sh <<EOL
+    cat >/input/scripts/configure.sh <<EOL
     #!/bin/bash
     cd /out/Realigned_Bam
     export GATK_LAUNCH=/input/gatk-package-4.beta.1-local.jar
@@ -52,17 +48,21 @@ main() {
     export BAM_INPUT=/input/Sorted_Bam/${bam_basename}.bam
     export BAM_OUTPUT=/out/Realigned_Bam/${bam_basename}-realigned.bam
     export GATK_ARGS="${GATK_Arguments}"
-    parallel-gatk-realign-filtered.sh ${GATK_LAUNCH} ${MEMORY_PER_THREAD} ${NUM_THREADS} ${FASTA_GENOME} ${BAM_INPUT} ${BAM_OUTPUT} "${GATK_ARGS}"
 EOL
-    chmod u+x /input/scripts/realign.sh
-    cat /input/scripts/realign.sh
+    chmod u+x /input/scripts/configure.sh
+    cat /input/scripts/configure.sh
+
+
+    # get GATK 4 (until it is officially released)
+    wget -O /input/gatk-package-4.beta.1-local.jar https://www.dropbox.com/s/oko590zxebhlqmg/gatk-package-4.beta.1-local.jar
+    dx-docker pull artifacts/variationanalysis-app:latest
 
     #usage: parallel-gatk-realign-filtered.sh PATH_TO_GATK_LAUNCH 10g NUM_THREADS GENOME_FA BAM_INPUT BAM_OUTPUT [GATK_ARGS]
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/scripts/realign.sh"
+        bash -c "source ~/.bashrc; source /input/scripts/configure.sh; parallel-gatk-realign-filtered.sh ${GATK_LAUNCH} ${MEMORY_PER_THREAD} ${NUM_THREADS} ${FASTA_GENOME} ${BAM_INPUT} ${BAM_OUTPUT} \"${GATK_ARGS}\""
         
     # The following line(s) use the dx command-line tool to upload your file
     # outputs after you have created them on the local file system.  It assumes
