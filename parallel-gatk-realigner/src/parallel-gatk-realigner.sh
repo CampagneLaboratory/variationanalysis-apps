@@ -50,7 +50,7 @@ main() {
     export FASTA_GENOME=/input/FASTA_Genome/${genome_basename}
     export BAM_INPUT=/input/Sorted_BAM/${bam_basename}.bam
     export BAM_OUTPUT=/input/Sorted_BAM/${bam_basename}-realigned.bam
-    export GATK_ARGS=
+    export GATK_ARGS="${GATK_Arguments}"
     parallel-gatk-realign-filtered.sh ${GATK_LAUNCH} ${MEMORY_PER_THREAD} ${NUM_THREADS} ${FASTA_GENOME} ${BAM_INPUT} ${BAM_OUTPUT} "${GATK_ARGS}"
 EOL
    chmod u+x /input/scripts/realign.sh

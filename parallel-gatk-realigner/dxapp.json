@@ -15,6 +15,14 @@
         "*.bam.bai"
       ],
       "help": ""
+    },
+    {
+      "name": "GATK_Arguments",
+      "label": "GATK Arguments",
+      "class": "string",
+      "default": "",
+      "optional": true,
+      "help": "Extra arguments for GATK 4."
     }
   ],
   "outputSpec": [
