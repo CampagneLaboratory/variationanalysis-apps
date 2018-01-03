@@ -42,11 +42,11 @@ main() {
     set -x
     ls -lrt  /input/FASTA_Genome/
     cd /input/FASTA_Genome
-    samtools faidx /input/FASTA_Genome/*.fasta
+    samtools faidx /input/FASTA_Genome/*.fa*
     ls -lrt  /input/FASTA_Genome/
     cd /input/Goby_Genome/
      #build goby indexed genome
-    goby 10g build-sequence-cache /input/FASTA_Genome/*.fasta
+    goby 10g build-sequence-cache /input/FASTA_Genome/*.fa*
     ls -lrt  /input/Goby_Genome/
     ls -lrt  /input/FASTA_Genome/
 
@@ -61,7 +61,7 @@ EOL
 
     alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
     goby_genome_basename=`basename /input/FASTA_Genome/*.bases | cut -d. -f1`
-    genome=`basename /input/FASTA_Genome/*.fasta`
+    genome=`basename /input/FASTA_Genome/*.fa*`
 
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
