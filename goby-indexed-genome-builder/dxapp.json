@@ -48,6 +48,14 @@
       "*"
     ]
   },
+  "developers": [
+    "user-fac2003",
+    "user-manuele"
+  ],
+  "authorizedUsers": [
+    "user-fac2003",
+    "user-manuele"
+  ],
   "regionalOptions": {
     "aws:us-east-1": {
       "systemRequirements": {
