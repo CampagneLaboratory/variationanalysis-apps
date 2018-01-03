@@ -1,0 +1,90 @@
+{
+  "name": "prepare-sbi-training-set",
+  "title": "Prepare SBI training set",
+  "summary": "Use parallel genotype calls to generate the SBI training set.",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "Genome",
+      "label": "Goby Indexed Genome",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.ignore",
+        "*.names",
+        "*.sizes",
+        "*.bases"
+      ],
+      "help": "The genome that the reads were mapped against, indexed with Goby."
+    },
+    {
+      "name": "Goby_Alignment",
+      "label": "Goby alignment",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.index",
+        "*.entries",
+        "*.header",
+        "*.tmh",
+        "*.perm",
+        "*.stats"
+      ],
+      "help": "Alignment in Goby format."
+    },
+    {
+      "name": "Model_Archive",
+      "label": "Model archive",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "Model_*.tar.gz"
+      ],
+      "help": "Model as a .tar.gz archive, containing the files inside the model directory."
+    },
+    {
+      "name": "Model_Name",
+      "label": "Model Name",
+      "class": "string",
+      "default": "bestscore",
+      "optional": false,
+      "help": "The name of the model (included in the model archive) to use for genotype calling."
+    }
+  ],
+  "outputSpec": [ {
+    "name": "SBI",
+    "label": "Single Base Information",
+    "class": "array:file",
+    "patterns": [
+      "*.sbi",
+      "*.sbip"
+    ],
+    "help": ""
+  }],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/prepare-sbi-training-set.sh"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
