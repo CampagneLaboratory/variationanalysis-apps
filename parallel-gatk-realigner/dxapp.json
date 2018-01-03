@@ -17,6 +17,17 @@
       "help": ""
     },
     {
+      "name": "Genome",
+      "class": "file",
+      "label": "Genome",
+      "optional": false,
+      "patterns": [
+        "*.fa.gz",
+        "*.fasta.gz"
+      ],
+      "help": "Reference genome."
+    },
+    {
       "name": "GATK_Arguments",
       "label": "GATK Arguments",
       "class": "string",
