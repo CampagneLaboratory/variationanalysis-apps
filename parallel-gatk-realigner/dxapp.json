@@ -1,35 +1,35 @@
 {
   "name": "parallel-gatk-realigner",
-  "title": "Parallel GATK realigner using HaplotypeCaller",
-  "summary": "Parallel GATK realigner using HaplotypeCaller",
+  "title": "Realign BAM alignment with HaplotypeCaller",
+  "summary": "Run GATK 4 HaplotypeCaller to realign an alignment around indels. Uses the --bamout option of HaplotypeCaller.",
   "dxapi": "1.0.0",
   "version": "0.0.1",
   "inputSpec": [
     {
       "name": "Sorted_Bam",
-      "label": "A coordinate-sorted BAM alignment",
+      "label": "Sorted BAM alignment",
       "class": "array:file",
       "optional": false,
       "patterns": [
         "*.bam",
         "*.bam.bai"
       ],
-      "help": ""
+      "help": "A coordinate-sorted BAM alignment."
     },
     {
       "name": "Genome",
       "class": "file",
-      "label": "Genome",
+      "label": "Reference genome.",
       "optional": false,
       "patterns": [
         "*.fa.gz",
         "*.fasta.gz"
       ],
-      "help": "Reference genome."
+      "help": "Genome in FASTA format compressed with bgzip."
     },
     {
       "name": "GATK_Arguments",
-      "label": "GATK Arguments",
+      "label": "GATK Arguments.",
       "class": "string",
       "default": "",
       "optional": true,
@@ -39,13 +39,13 @@
   "outputSpec": [
     {
       "name": "Realigned_Bam",
-      "label": "Realigned BAM",
+      "label": "BAM alignment",
       "class": "array:file",
       "patterns": [
         "*.bam",
         "*.bam.bai"
       ],
-      "help": ""
+      "help": "BAM alignment, realigned with HaplotypeCaller."
     }
   ],
   "runSpec": {
@@ -68,7 +68,7 @@
     "aws:us-east-1": {
       "systemRequirements": {
         "*": {
-          "instanceType": "mem1_ssd1_x4"
+          "instanceType": "mem3_ssd1_x16"
         }
       }
     }

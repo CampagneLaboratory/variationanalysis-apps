@@ -1,7 +1,7 @@
 {
   "name": "variation-analysis",
-  "title": "Variation Analysis",
-  "summary": "A framework to train deep learning SNP and Indel models",
+  "title": "DL Genotype Caller",
+  "summary": "Deep Learning Genotype Caller from the Campagne Lab. See https://github.com/CampagneLaboratory/variationanalysis.",
   "dxapi": "1.0.0",
   "version": "0.0.1",
   "inputSpec": [
@@ -16,7 +16,7 @@
         "*.sizes",
         "*.bases"
       ],
-      "help": "A Goby indexed genome that the reads were mapped against."
+      "help": "The genome that the reads were mapped against, indexed with Goby."
     },
     {
       "name": "Goby_Alignment",
@@ -31,7 +31,7 @@
         "*.perm",
         "*.stats"
       ],
-      "help": "A Goby alignment."
+      "help": "Alignment in Goby format."
     },
     {
       "name": "Model_Archive",
@@ -41,7 +41,7 @@
       "patterns": [
         "Model_*.tar.gz"
       ],
-      "help": "An archive with the trained model."
+      "help": "Model as a .tar.gz archive, containing the files inside the model directory."
     },
     {
       "name": "Model_Name",
@@ -49,7 +49,7 @@
       "class": "string",
       "default": "bestscore",
       "optional": false,
-      "help": "The model (included in the model archive) to use for the prediction."
+      "help": "The name of the model (included in the model archive) to use for genotype calling."
     }
   ],
   "outputSpec": [
@@ -62,7 +62,7 @@
         "*.vcf.gz.tbi",
         "*.bed.gz"
       ],
-      "help": "The genotype predictions created from the trained model."
+      "help": "The genotype calls, in VCF format. The regions where calls are made, in Bed format."
     }
   ],
   "runSpec": {

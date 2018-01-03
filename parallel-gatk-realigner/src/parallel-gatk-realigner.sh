@@ -17,17 +17,18 @@
 
 main() {
 
-    mkdir -p /input/Sorted_BAM
+    mkdir -p /input/scripts/
+    mkdir -p /input/Sorted_Bam
     mkdir -p /input/FASTA_Genome
-    mkdir -p /out/Realigned_BAM
+    mkdir -p /out/Realigned_Bam
 
     #download the sorted bam
     for i in ${!Sorted_Bam[@]}
     do
         echo "Downloading sorted BAM file '${Sorted_Bam_name[$i]}'"
-        dx download "${Sorted_Bam[$i]}" -o /input/Sorted_BAM/${Sorted_Bam_name[$i]}
+        dx download "${Sorted_Bam[$i]}" -o /input/Sorted_Bam/${Sorted_Bam_name[$i]}
     done
-
+    set -x
     #download the gzipped genome
     echo "Downloading genome file '${Genome_name}'"
     dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
@@ -39,21 +40,22 @@ main() {
     dx-docker pull artifacts/variationanalysis-app:latest
 
     genome_basename=`basename /input/FASTA_Genome/*.fasta`
-    bam_basename=`basename /input/Sorted_BAM/*.bam | cut -d. -f1`
+    bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
 
     cat >/input/scripts/realign.sh <<EOL
     #!/bin/bash
-    cd /out/Realigned_BAM
+    cd /out/Realigned_Bam
     export GATK_LAUNCH=/input/gatk-package-4.beta.1-local.jar
     export MEMORY_PER_THREAD=6g
-    export NUM_THREADS=4
+    export NUM_THREADS=`grep physical  /proc/cpuinfo |grep id|wc -l`
     export FASTA_GENOME=/input/FASTA_Genome/${genome_basename}
-    export BAM_INPUT=/input/Sorted_BAM/${bam_basename}.bam
-    export BAM_OUTPUT=/input/Sorted_BAM/${bam_basename}-realigned.bam
+    export BAM_INPUT=/input/Sorted_Bam/${bam_basename}.bam
+    export BAM_OUTPUT=/out/Realigned_Bam/${bam_basename}-realigned.bam
     export GATK_ARGS="${GATK_Arguments}"
     parallel-gatk-realign-filtered.sh ${GATK_LAUNCH} ${MEMORY_PER_THREAD} ${NUM_THREADS} ${FASTA_GENOME} ${BAM_INPUT} ${BAM_OUTPUT} "${GATK_ARGS}"
 EOL
-   chmod u+x /input/scripts/realign.sh
+    chmod u+x /input/scripts/realign.sh
+    cat /input/scripts/realign.sh
 
     #usage: parallel-gatk-realign-filtered.sh PATH_TO_GATK_LAUNCH 10g NUM_THREADS GENOME_FA BAM_INPUT BAM_OUTPUT [GATK_ARGS]
     dx-docker run \
@@ -78,8 +80,8 @@ EOL
     #dx-jobutil-add-output realigned_bam "$realigned_bam" --class=file
 
     mkdir -p $HOME/out/Realigned_Bam
-    mv /out/*-realigned.bam $HOME/out/Realigned_Bam/
-    mv /out/*-realigned.bam.bai $HOME/out/Realigned_Bam/
+    mv /out/Realigned_Bam/*-realigned.bam $HOME/out/Realigned_Bam/
+    mv /out/Realigned_Bam/*-realigned.bam.bai $HOME/out/Realigned_Bam/
     ls -lrt $HOME/out/Realigned_Bam/
     dx-upload-all-outputs
 
