@@ -50,34 +50,17 @@ main() {
     export GATK_ARGS="${GATK_Arguments}"
 EOL
     chmod u+x /input/scripts/configure.sh
-    cat /input/scripts/configure.sh
 
-
-    # get GATK 4 (until it is officially released)
+    # get GATK 4 from dropbox (until it is officially released)
     wget -O /input/gatk-package-4.beta.1-local.jar https://www.dropbox.com/s/oko590zxebhlqmg/gatk-package-4.beta.1-local.jar
     dx-docker pull artifacts/variationanalysis-app:latest
 
-    #usage: parallel-gatk-realign-filtered.sh PATH_TO_GATK_LAUNCH 10g NUM_THREADS GENOME_FA BAM_INPUT BAM_OUTPUT [GATK_ARGS]
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; source /input/scripts/configure.sh; parallel-gatk-realign-filtered.sh ${GATK_LAUNCH} ${MEMORY_PER_THREAD} ${NUM_THREADS} ${FASTA_GENOME} ${BAM_INPUT} ${BAM_OUTPUT} \"${GATK_ARGS}\""
-        
-    # The following line(s) use the dx command-line tool to upload your file
-    # outputs after you have created them on the local file system.  It assumes
-    # that you have used the output field name for the filename for each output,
-    # but you can change that behavior to suit your needs.  Run "dx upload -h"
-    # to see more options to set metadata.
 
-    #realigned_bam=$(dx upload realigned_bam --brief)
-
-    # The following line(s) use the utility dx-jobutil-add-output to format and
-    # add output variables to your job's output as appropriate for the output
-    # class.  Run "dx-jobutil-add-output -h" for more information on what it
-    # does.
-
-    #dx-jobutil-add-output realigned_bam "$realigned_bam" --class=file
 
     mkdir -p $HOME/out/Realigned_Bam
     mv /out/Realigned_Bam/*-realigned.bam $HOME/out/Realigned_Bam/

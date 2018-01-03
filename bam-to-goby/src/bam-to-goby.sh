@@ -66,7 +66,8 @@ EOL
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
     echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh
-    echo "export SBI_NUM_THREADS=4" >> /input/configure.sh
+    cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
+    echo "export SBI_NUM_THREADS=${cpus}" >> /input/configure.sh
 
     dx-docker run \
         -v /input/:/input \
