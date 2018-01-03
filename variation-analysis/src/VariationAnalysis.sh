@@ -48,7 +48,7 @@ main() {
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
-    echo "configure.sh"
+    echo "export DO_CONCAT='false'" >> /input/configure.sh
     cat /input/configure.sh
 
     dx-docker run \
