@@ -37,7 +37,9 @@ main() {
 
     dx-docker pull artifacts/variationanalysis-app:latest
 
-    #index the genome with samtools
+    #index the genome with samtools and create the dictionary
+    genome_name=`basename /input/FASTA_Genome/*.fa* | cut -d. -f1`
+
     cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
     set -x
@@ -45,6 +47,7 @@ main() {
     cd /input/FASTA_Genome
     samtools faidx /input/FASTA_Genome/*.fa*
     ls -lrt  /input/FASTA_Genome/
+    java -jar /root/picard/picard.jar CreateSequenceDictionary R= /input/FASTA_Genome/*.fa* O= ${genome_name}.dict
 EOL
     chmod u+x /input/scripts/index.sh
 
