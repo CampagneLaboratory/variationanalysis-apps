@@ -39,6 +39,7 @@ main() {
 
     #index the genome with samtools and create the dictionary
     genome_name=`basename /input/FASTA_Genome/*.fa* | cut -d. -f1`
+    genome_basename=`basename /input/FASTA_Genome/*.fa*`
 
     cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
@@ -47,7 +48,7 @@ main() {
     cd /input/FASTA_Genome
     samtools faidx /input/FASTA_Genome/*.fa*
     ls -lrt  /input/FASTA_Genome/
-    java -jar /root/picard/picard.jar CreateSequenceDictionary R= /input/FASTA_Genome/*.fa* O= ${genome_name}.dict
+    java -jar /root/picard/picard.jar CreateSequenceDictionary R= /input/FASTA_Genome/${genome_basename} O= /input/FASTA_Genome/${genome_name}.dict
 EOL
     chmod u+x /input/scripts/index.sh
 
@@ -57,7 +58,6 @@ EOL
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd /input/FASTA_Genome; /input/scripts/index.sh"
 
-    genome_basename=`basename /input/FASTA_Genome/*.fa*`
     bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
