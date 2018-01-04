@@ -59,13 +59,15 @@ EOL
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
     # get GATK 4 from dropbox (until it is officially released)
-    wget -O /input/gatk-package-4.beta.1-local.jar https://www.dropbox.com/s/oko590zxebhlqmg/gatk-package-4.beta.1-local.jar
-
+    wget -O /input/gatk-4.beta.5.zip https://www.dropbox.com/s/e7vruiwqd9k52md/gatk-4.beta.5.zip
+    cd /input
+    unzip gatk-4.beta.5.zip
+    cd
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && parallel-gatk-realign-filtered.sh /input/gatk-package-4.beta.1-local.jar 6g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
+        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && parallel-gatk-realign-filtered.sh /input/gatk-4.beta.5/gatk-launch 6g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
 
 
     mkdir -p $HOME/out/Realigned_Bam
