@@ -57,11 +57,23 @@ main() {
         bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g \"/input/alignment/${alignment_basename}\" 2>&1 | tee parallel-genotype-sbi.log"
 
     ls -lrt /output/sbi
+    mkdir -p /output/randomized-sbi
 
-    #TODO: randomize ${OUTPUT_BASENAME}-pre-train as ${OUTPUT_BASENAME}-train
-    #TODO: randomize ${OUTPUT_BASENAME}-pre-validation ${OUTPUT_BASENAME}-validation
+    cat >/input/scripts/randomize.sh <<EOL
+     #!/bin/bash
+     randomize.sh 10g -i /output/sbi/${alignment_basename}-pre-train.sbi -o /output/randomized-sbi/${alignment_basename}-train
+     randomize.sh 10g -i /output/sbi/${alignment_basename}-pre-validation.sbi -o /output/randomized-sbi/${alignment_basename}-validation
+     cp ${alignment_basename}-test.sbi* /output/randomized-sbi/
+EOL
+    dx-docker run \
+        -v /input/:/input \
+        -v /output/:/output \
+        artifacts/variationanalysis-app:latest \
+        bash -c "source ~/.bashrc; cd /output/randomized-sbi; /input/scripts/randomize.sh "
 
-    #publish ${OUTPUT_BASENAME}-train, ${OUTPUT_BASENAME}-validation, ${OUTPUT_BASENAME}-test SBI/SBIp
+    mkdir -p $HOME/out/SBI
+    mv /output/randomized-sbi/*.sbi* $HOME/out/SBI/
+    ls -lrt $HOME/out/SBI/
 
-
+    dx-upload-all-outputs
 }
