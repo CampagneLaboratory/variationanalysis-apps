@@ -70,7 +70,7 @@ EOL
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && parallel-gatk-realign-filtered.sh /input/gatk-4.beta.5/gatk-launch 6g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
+        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && parallel-gatk-realign-filtered.sh /input/gatk-4.beta.5/gatk-launch 12g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
 
 
     mkdir -p $HOME/out/Realigned_Bam
