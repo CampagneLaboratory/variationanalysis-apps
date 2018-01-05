@@ -23,11 +23,11 @@ main() {
     mkdir -p /input/Goby_Genome
     mkdir -p /out/Goby_Alignment
 
-    for i in ${!Realigned_Bam[@]}
-    do
-        echo "Downloading BAM file '${Realigned_Bam_name[$i]}'"
-        dx download "${Realigned_Bam[$i]}" -o /input/BAM/${Realigned_Bam_name[$i]}
-    done
+    echo "Downloading BAM file '${Realigned_Bam_name}'"
+    dx download "${Realigned_Bam}" -o /input/BAM/${Realigned_Bam_name}
+
+    echo "Downloading BAM file '${Realigned_Bam_Index_name}'"
+    dx download "${Realigned_Bam_Index}" -o /input/BAM/${Realigned_Bam_Index_name}
 
     #download the gzipped genome
     echo "Downloading genome file '${Genome_name}'"

@@ -7,14 +7,23 @@
   "inputSpec": [
     {
       "name": "Realigned_Bam",
-      "class": "array:file",
+      "class": "file",
       "label": "BAM alignment",
       "optional": false,
       "patterns": [
-        "*.bam",
-        "*.bam.bai"
+        "*.bam"
       ],
       "help": "An alignment in BAM format."
+    },
+    {
+      "name": "Realigned_Bam_Index",
+      "class": "file",
+      "label": "BAM alignment index",
+      "optional": false,
+      "patterns": [
+        "*.bam.bai"
+      ],
+      "help": "An index of the BAM alignment."
     },
     {
       "name": "Genome",

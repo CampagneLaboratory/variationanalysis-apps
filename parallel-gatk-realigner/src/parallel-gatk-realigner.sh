@@ -23,11 +23,12 @@ main() {
     mkdir -p /out/Realigned_Bam
 
     #download the sorted bam
-    for i in ${!Sorted_Bam[@]}
-    do
-        echo "Downloading sorted BAM file '${Sorted_Bam_name[$i]}'"
-        dx download "${Sorted_Bam[$i]}" -o /input/Sorted_Bam/${Sorted_Bam_name[$i]}
-    done
+    echo "Downloading sorted BAM file '${Sorted_Bam_name}'"
+    dx download "${Sorted_Bam}" -o /input/Sorted_Bam/${Sorted_Bam_name}
+
+    echo "Downloading sorted BAM file '${Sorted_Bam_Index_name}'"
+    dx download "${Sorted_Bam_Index}" -o /input/Sorted_Bam/${Sorted_Bam_Index_name}
+
     set -x
     #download the gzipped genome
     echo "Downloading genome file '${Genome_name}'"

@@ -8,13 +8,22 @@
     {
       "name": "Sorted_Bam",
       "label": "Sorted BAM alignment",
-      "class": "array:file",
+      "class": "file",
       "optional": false,
       "patterns": [
-        "*.bam",
-        "*.bam.bai"
+        "*.bam"
       ],
       "help": "A coordinate-sorted BAM alignment."
+    },
+    {
+      "name": "Sorted_Bam_Index",
+      "class": "file",
+      "label": "Sorted BAM alignment index",
+      "optional": false,
+      "patterns": [
+        "*.bam.bai"
+      ],
+      "help": "An index of the sorted BAM alignment."
     },
     {
       "name": "Genome",
