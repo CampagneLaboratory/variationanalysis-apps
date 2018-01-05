@@ -32,24 +32,6 @@
         "*.stats"
       ],
       "help": "Alignment in Goby format."
-    },
-    {
-      "name": "Model_Archive",
-      "label": "Model archive",
-      "class": "file",
-      "optional": false,
-      "patterns": [
-        "Model_*.tar.gz"
-      ],
-      "help": "Model as a .tar.gz archive, containing the files inside the model directory."
-    },
-    {
-      "name": "Model_Name",
-      "label": "Model Name",
-      "class": "string",
-      "default": "bestscore",
-      "optional": false,
-      "help": "The name of the model (included in the model archive) to use for genotype calling."
     }
   ],
   "outputSpec": [ {
@@ -78,11 +60,19 @@
       "*"
     ]
   },
+  "developers": [
+    "user-fac2003",
+    "user-manuele"
+  ],
+  "authorizedUsers": [
+    "user-fac2003",                                              
+    "user-manuele"
+  ],
   "regionalOptions": {
     "aws:us-east-1": {
       "systemRequirements": {
         "*": {
-          "instanceType": "mem1_ssd1_x4"
+          "instanceType": "mem3_ssd1_x32"
         }
       }
     }
