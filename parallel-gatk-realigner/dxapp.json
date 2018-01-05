@@ -49,12 +49,20 @@
     {
       "name": "Realigned_Bam",
       "label": "BAM alignment",
-      "class": "array:file",
+      "class": "file",
       "patterns": [
-        "*.bam",
-        "*.bam.bai"
+        "*.bam"
       ],
       "help": "BAM alignment, realigned with HaplotypeCaller."
+    },
+    {
+      "name": "Realigned_Bam_Index",
+      "label": "BAM alignment index",
+      "class": "file",
+      "patterns": [
+        "*.bam.bai"
+      ],
+      "help": "BAM alignment index, realigned with HaplotypeCaller."
     }
   ],
   "runSpec": {
