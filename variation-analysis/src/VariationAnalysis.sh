@@ -80,12 +80,11 @@ EOL
         -v /input/:/input \
         -v /output/vcf/:/output/vcf \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi; /input/scripts/merge.sh"
+        bash -c "source ~/.bashrc; source /input/configure.sh;  cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi; /input/scripts/merge.sh"
 
 
     echo "Content of output/vcf:"
     ls -lrt /output/vcf/
-
     # publish the output
     mkdir -p $HOME/out/Predictions
     mv /output/vcf/*.vcf.gz.tbi $HOME/out/Predictions/
