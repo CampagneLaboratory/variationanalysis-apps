@@ -34,6 +34,7 @@ main() {
     dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
     #unzip
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
+    genome=`basename /input/FASTA_Genome/*.fa*`
 
     dx-docker pull artifacts/variationanalysis-app:latest
     ls -lrt
@@ -46,7 +47,7 @@ main() {
     ls -lrt  /input/FASTA_Genome/
     cd /input/Goby_Genome/
      #build goby indexed genome
-    goby 10g build-sequence-cache /input/FASTA_Genome/*.fa*
+    goby 10g build-sequence-cache /input/FASTA_Genome/${genome}
     ls -lrt  /input/Goby_Genome/
     ls -lrt  /input/FASTA_Genome/
 
@@ -61,8 +62,6 @@ EOL
 
     alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
     goby_genome_basename=`basename /input/FASTA_Genome/*.bases | cut -d. -f1`
-    genome=`basename /input/FASTA_Genome/*.fa*`
-
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
     echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh

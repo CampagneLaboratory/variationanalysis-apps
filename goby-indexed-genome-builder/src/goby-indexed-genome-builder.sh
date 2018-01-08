@@ -29,6 +29,8 @@ main() {
 
     dx-docker pull artifacts/variationanalysis-app:latest
 
+    genome=`basename /input/FASTA_Genome/*.fa*`
+
     ls -lrt
     cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
@@ -36,7 +38,7 @@ main() {
     cd /input/FASTA_Genome
     samtools faidx /input/FASTA_Genome/*.fasta
     cd /out/Goby_Genome/
-    goby 6g build-sequence-cache /input/FASTA_Genome/*.fasta
+    goby 6g build-sequence-cache /input/FASTA_Genome/${genome}
     ls -lrt /input/FASTA_Genome/
     ls -lrt /out/Goby_Genome/
 
