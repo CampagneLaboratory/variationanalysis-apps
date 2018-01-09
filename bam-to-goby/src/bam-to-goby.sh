@@ -75,14 +75,19 @@ EOL
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh 6g /input/BAM/*.bam"
 
-    #upload the output
-    ls -lrt /out/Goby_Alignment
-    mkdir -p $HOME/out/
 
-    mv /out/Goby_Alignment/*.entries $HOME/out/
-    mv /out/Goby_Alignment/*.stats $HOME/out/
-    mv /out/Goby_Alignment/*.tmh $HOME/out/
-    mv /out/Goby_Alignment/*.index $HOME/out/
-    mv /out/Goby_Alignment/*.header $HOME/out/
+    echo "Content of /out/Goby_Alignment/"
+    ls -lrt /out/Goby_Alignment
+    
+    #upload the output
+    mkdir -p $HOME/out/
+    mv /out/Goby_Alignment/*.entries $HOME/out/Goby_Alignment/
+    mv /out/Goby_Alignment/*.stats $HOME/out/Goby_Alignment/
+    mv /out/Goby_Alignment/*.tmh $HOME/out/Goby_Alignment/
+    mv /out/Goby_Alignment/*.index $HOME/out/Goby_Alignment/
+    mv /out/Goby_Alignment/*.header $HOME/out/Goby_Alignment/
+    echo "Content of ${HOME}/out/Goby_Alignment/"
+    ls -lrt $HOME/out/Goby_Alignment/
+
     dx-upload-all-outputs
 }
