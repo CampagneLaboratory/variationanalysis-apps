@@ -33,8 +33,8 @@ main() {
         dx download "${Goby_Alignment[$i]}" -o /input/alignment/${Goby_Alignment_name[$i]}
     done
 
-    echo "Downloading true labels VCF file '${True_Genotypes}'"
-    dx download "${True_Genotypes}" -o /input/vcf/${True_Genotypes}
+    echo "Downloading true labels VCF file '${True_Genotypes_name}'"
+    dx download "${True_Genotypes}" -o /input/vcf/${True_Genotypes_name}
 
     dx-docker pull artifacts/variationanalysis-app:latest
 
@@ -61,7 +61,7 @@ main() {
         -v /input/:/input \
         -v /output/sbi:/output/sbi \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; generate-genotype-sets-0.02.sh 20g \"/input/alignment/${alignment_basename}\" \"/input/vcf/${True_Genotypes}\" \"/input/indexed_genome/${genome_basename}\"  2>&1 | tee parallel-genotype-sbi.log"
+        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; generate-genotype-sets-0.02.sh 20g \"/input/alignment/${alignment_basename}\" \"/input/vcf/${True_Genotypes_name}\" \"/input/indexed_genome/${genome_basename}\"  2>&1 | tee parallel-genotype-sbi.log"
 
     ls -lrt /output/sbi
 
