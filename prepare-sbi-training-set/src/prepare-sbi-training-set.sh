@@ -19,6 +19,7 @@ main() {
      # create the data directories to mount into the Docker container
     mkdir -p /input/indexed_genome
     mkdir -p /input/alignment
+    mkdir -p /input/vcf
     mkdir -p /output/sbi
     mkdir -p /output/vcf
 
@@ -32,6 +33,9 @@ main() {
         dx download "${Goby_Alignment[$i]}" -o /input/alignment/${Goby_Alignment_name[$i]}
     done
 
+    echo "Downloading true labels VCF file '${True_Genotypes}'"
+    dx download "${True_Genotypes}" -o /input/vcf/${True_Genotypes}
+
     dx-docker pull artifacts/variationanalysis-app:latest
 
     # configure
@@ -41,38 +45,31 @@ main() {
     echo "export GOBY_ALIGNMENT=/input/alignment/${alignment_basename}" >> /input/configure.sh
     echo "export GOBY_NUM_SLICES=1" >> /input/configure.sh
     # adjust num threads to match number of cores -1:
+    DATE=`date +%Y-%m-%d`
+    basename="${alignment_basename}-${DATE}"
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
     echo "export SBI_NUM_THREADS=${cpus}" >> /input/configure.sh
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
-    echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
-    echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
+    echo "export REF_SAMPLING_RATE='0.01'" >> /input/configure.sh
+    echo "export OUTPUT_BASENAME=${basename}" >> /input/configure.sh
     echo "export DO_CONCAT='true'" >> /input/configure.sh
     cat /input/configure.sh
-    #   echo "Argument missing. expected arguments memory_size goby_alignment vcf goby_genome"  
+
+    # Run generate-genotype-sets-0.02.sh
     dx-docker run \
         -v /input/:/input \
         -v /output/sbi:/output/sbi \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; generate-genotype-sets-0.02.sh 10g \"/input/alignment/${alignment_basename}\" 2>&1 | tee parallel-genotype-sbi.log"
+        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; generate-genotype-sets-0.02.sh 20g \"/input/alignment/${alignment_basename}\" \"/input/vcf/${True_Genotypes}\" \"/input/indexed_genome/${genome_basename}\"  2>&1 | tee parallel-genotype-sbi.log"
 
     ls -lrt /output/sbi
-    mkdir -p /output/randomized-sbi
 
-    cat >/input/scripts/randomize.sh <<EOL
-     #!/bin/bash
-     randomize.sh 10g -i /output/sbi/${alignment_basename}-pre-train.sbi -o /output/randomized-sbi/${alignment_basename}-train
-     randomize.sh 10g -i /output/sbi/${alignment_basename}-pre-validation.sbi -o /output/randomized-sbi/${alignment_basename}-validation
-     cp ${alignment_basename}-test.sbi* /output/randomized-sbi/
-EOL
-    dx-docker run \
-        -v /input/:/input \
-        -v /output/:/output \
-        artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /output/randomized-sbi; /input/scripts/randomize.sh "
-
+    # Arrange dataset in output directory and upload:
     mkdir -p $HOME/out/SBI
-    mv /output/randomized-sbi/*.sbi* $HOME/out/SBI/
+    mv /output/sbi/${basename}-train.sbi* $HOME/out/SBI/
+    mv /output/sbi/${basename}-validation.sbi* $HOME/out/SBI/
+    mv /output/sbi/${basename}-test.sbi* $HOME/out/SBI/
     ls -lrt $HOME/out/SBI/
 
     dx-upload-all-outputs
