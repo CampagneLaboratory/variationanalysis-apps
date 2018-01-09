@@ -80,7 +80,7 @@ EOL
     ls -lrt /out/Goby_Alignment
     
     #upload the output
-    mkdir -p $HOME/out/
+    mkdir -p $HOME/out/Goby_Alignment/
     mv /out/Goby_Alignment/*.entries $HOME/out/Goby_Alignment/
     mv /out/Goby_Alignment/*.stats $HOME/out/Goby_Alignment/
     mv /out/Goby_Alignment/*.tmh $HOME/out/Goby_Alignment/
