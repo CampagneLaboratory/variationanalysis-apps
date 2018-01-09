@@ -32,6 +32,16 @@
         "*.stats"
       ],
       "help": "Alignment in Goby format."
+    },
+    {
+      "name": "True_Genotypes",
+      "label": "True Genotypes",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.vcf.gz"
+      ],
+      "help": "True Genotypes in VCF format."
     }
   ],
   "outputSpec": [ {

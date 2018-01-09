@@ -49,12 +49,12 @@ main() {
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export DO_CONCAT='true'" >> /input/configure.sh
     cat /input/configure.sh
-
+    #   echo "Argument missing. expected arguments memory_size goby_alignment vcf goby_genome"  
     dx-docker run \
         -v /input/:/input \
         -v /output/sbi:/output/sbi \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g \"/input/alignment/${alignment_basename}\" 2>&1 | tee parallel-genotype-sbi.log"
+        bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; generate-genotype-sets-0.02.sh 10g \"/input/alignment/${alignment_basename}\" 2>&1 | tee parallel-genotype-sbi.log"
 
     ls -lrt /output/sbi
     mkdir -p /output/randomized-sbi
