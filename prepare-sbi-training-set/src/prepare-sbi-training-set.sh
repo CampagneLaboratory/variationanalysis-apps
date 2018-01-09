@@ -53,6 +53,7 @@ main() {
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='0.01'" >> /input/configure.sh
     echo "export OUTPUT_BASENAME=${basename}" >> /input/configure.sh
+    echo "export GOBY_NUM_SLICES='50'" >> /input/configure.sh
     echo "export DO_CONCAT='true'" >> /input/configure.sh
     cat /input/configure.sh
 
