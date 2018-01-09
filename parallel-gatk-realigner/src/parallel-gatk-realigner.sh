@@ -36,7 +36,8 @@ main() {
     #unzip
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
 
-    dx-docker pull artifacts/variationanalysis-app:latest
+    echo "Downloading the docker image..."
+    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
 
     #index the genome with samtools and create the dictionary
     genome_name=`basename /input/FASTA_Genome/*.fa* | cut -d. -f1`

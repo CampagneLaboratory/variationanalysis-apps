@@ -33,7 +33,8 @@ main() {
         dx download "${Goby_Alignment[$i]}" -o /input/alignment/${Goby_Alignment_name[$i]}
     done
 
-    dx-docker pull artifacts/variationanalysis-app:latest
+    echo "Downloading the docker image..."
+    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
 
     # configure
     genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`

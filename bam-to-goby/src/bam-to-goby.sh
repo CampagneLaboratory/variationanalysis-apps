@@ -36,8 +36,9 @@ main() {
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
     genome=`basename /input/FASTA_Genome/*.fa*`
 
-    dx-docker pull artifacts/variationanalysis-app:latest
-    ls -lrt
+    echo "Downloading the docker image..."
+    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    
     cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
     set -x
