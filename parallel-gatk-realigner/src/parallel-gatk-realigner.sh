@@ -22,6 +22,20 @@ main() {
     mkdir -p /input/FASTA_Genome
     mkdir -p /out/Realigned_Bam
 
+    echo "Downloading GATK distribution '${GATK_distribution_name}'"
+    dx download "${GATK_distribution}" -o /input/GATK/${GATK_distribution_name}
+    if [ -s /input/GATK/gatk-4*.zip ]; then
+        unzip /input/GATK/gatk-4*.zip
+        GATK_DISTRIBUTION=/input/GATK/gatk-4*
+        GATK_4=TRUE
+    fi
+    if [ -s /input/GATK/GenomeAnalysis*.tar.bz2 ]; then
+        bunzip2 /input/GATK/GenomeAnalysis*.tar.bz2
+        tar -xvf /input/GATK/GenomeAnalysis*.tar
+        GATK_DISTRIBUTION=/input/GATK/GenomeAnalysis*
+        GATK_3=TRUE
+    fi
+
     #download the sorted bam
     echo "Downloading sorted BAM file '${Sorted_Bam_name}'"
     dx download "${Sorted_Bam}" -o /input/Sorted_Bam/${Sorted_Bam_name}
@@ -29,7 +43,6 @@ main() {
     echo "Downloading sorted BAM file '${Sorted_Bam_Index_name}'"
     dx download "${Sorted_Bam_Index}" -o /input/Sorted_Bam/${Sorted_Bam_Index_name}
 
-    set -x
     #download the gzipped genome
     echo "Downloading genome file '${Genome_name}'"
     dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
@@ -63,16 +76,11 @@ EOL
     bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
-    # get GATK 4 from dropbox (until it is officially released)
-    wget -O /input/gatk-4.beta.5.zip https://www.dropbox.com/s/e7vruiwqd9k52md/gatk-4.beta.5.zip &>/dev/null
-    cd /input
-    unzip gatk-4.beta.5.zip
-    cd
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && sleep 5 && parallel-gatk4-realign-filtered.sh /input/gatk-4.beta.5/gatk-launch 12g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
+        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && sleep 5 && parallel-gatk-realign.sh ${GATK_DISTRIBUTION} 12g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
 
 
     mkdir -p $HOME/out/Realigned_Bam

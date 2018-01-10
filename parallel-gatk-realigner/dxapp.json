@@ -6,6 +6,16 @@
   "version": "0.0.1",
   "inputSpec": [
     {
+      "name": "GATK_distribution",
+      "label": "GATK distribution",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "gatk-4*.zip", "GenomeAnalysis*.tar.bz2"
+      ],
+      "help": "The distribution of the GATK software used to run HaplotypeCaller."
+    },
+    {
       "name": "Sorted_Bam",
       "label": "Sorted BAM alignment",
       "class": "file",

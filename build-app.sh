@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-dx build --app -f $1
+dx build --app -f $@
