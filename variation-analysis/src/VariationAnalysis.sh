@@ -30,7 +30,7 @@ main() {
 
     for i in "${!Goby_Alignment[@]}"; do
         echo "Downloading goby alignment file '${Goby_Alignment_name[$i]}'"
-        dx download "${Goby_Alignment[$i]}" -o -f /input/alignment/${Goby_Alignment_name[$i]}
+        dx download "${Goby_Alignment[$i]}" -o /input/alignment/${Goby_Alignment_name[$i]}
     done
 
     echo "Downloading the docker image..."
