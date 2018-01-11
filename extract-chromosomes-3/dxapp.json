@@ -1,0 +1,81 @@
+{
+  "name": "extract-chromosomes-3",
+  "title": "Extract chromosome",
+  "summary": "Extract Chromosomes from BAM alignments",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "Sorted_Bam",
+      "label": "Alignment in the BAM format",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.bam"
+      ],
+      "help": ""
+    },
+    {
+      "name": "Sorted_Bam_Index",
+      "label": "Index for BAM alignment",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.bam.bai"
+      ],
+      "help": ""
+    },
+    {
+      "name": "Chromosome_List",
+      "label": "List of Chromosomes",
+      "class": "string",
+      "optional": false,
+      "help": "Space-separated list of chromosomes to extract. E.g. chr8 chr19 chr21."
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "Filtered_BAM",
+      "label": "Filtered BAM alignment",
+      "class": "file",
+      "patterns": [
+        "*-subset.bam"
+      ],
+      "help": "Filtered BAM alignment."
+    },
+    {
+      "name": "Filtered_BAM_Index",
+      "label": "Filtered BAM Index",
+      "class": "file",
+      "patterns": [
+        "*-subset.bam.bai"
+      ],
+      "help": "Index for the filtered BAM alignment."
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/extract-chromosomes-3.sh"
+  },
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
