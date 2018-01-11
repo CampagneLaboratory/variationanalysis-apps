@@ -105,6 +105,6 @@ EOL
     mv /out/Realigned_Bam/*-realigned.bam $HOME/out/Realigned_Bam/
     mv /out/Realigned_Bam/*-realigned.bam.bai $HOME/out/Realigned_Bam_Index/
     ls -lrt $HOME/out/Realigned_Bam/
-    dx-upload-all-outputs
+    dx-upload-all-outputs --parallel
 
 }

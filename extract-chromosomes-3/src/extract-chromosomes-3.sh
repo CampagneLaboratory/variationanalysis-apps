@@ -49,6 +49,6 @@ main() {
 
     echo "Files to publish"
     ls -lrt $HOME/out
-    dx-upload-all-outputs
+    dx-upload-all-outputs --parallel
 
 }

@@ -74,5 +74,5 @@ main() {
     mv /output/sbi/${basename}-test.sbi* $HOME/out/SBI/
     ls -lrt $HOME/out/SBI/
 
-    dx-upload-all-outputs
+    dx-upload-all-outputs --parallel
 }

@@ -95,6 +95,6 @@ EOL
     echo "Content of Predictions:"
     ls -lrt $HOME/out/Predictions/
 
-    dx-upload-all-outputs
+    dx-upload-all-outputs --parallel
 
 }

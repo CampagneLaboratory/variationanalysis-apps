@@ -61,5 +61,5 @@ EOL
     mv /input/FASTA_Genome/*.ignore $HOME/out/Goby_Genome/ || true
     mv /input/FASTA_Genome/*.names $HOME/out/Goby_Genome/ || true
     
-    dx-upload-all-outputs
+    dx-upload-all-outputs --parallel
 }

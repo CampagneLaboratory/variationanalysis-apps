@@ -89,5 +89,5 @@ EOL
     echo "Content of ${HOME}/out/Goby_Alignment/"
     ls -lrt $HOME/out/Goby_Alignment/
 
-    dx-upload-all-outputs
+    dx-upload-all-outputs --parallel
 }
