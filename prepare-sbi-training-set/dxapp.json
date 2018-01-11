@@ -31,7 +31,7 @@
         "*.perm",
         "*.stats"
       ],
-      "help": "Alignment in Goby format."
+      "help": "One or several alignments in the Goby format."
     },
     {
       "name": "True_Genotypes",
@@ -46,13 +46,13 @@
   ],
   "outputSpec": [ {
     "name": "SBI",
-    "label": "Single Base Information",
+    "label": "Sequence Base Information",
     "class": "array:file",
     "patterns": [
       "*.sbi",
       "*.sbip"
     ],
-    "help": ""
+    "help": "Training, validation and test set in .sbi format. Used to train DL callers."
   }],
   "runSpec": {
     "timeoutPolicy": {
