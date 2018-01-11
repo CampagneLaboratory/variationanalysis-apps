@@ -1,5 +1,5 @@
 {
-  "name": "extract-chromosomes-3",
+  "name": "extract-chromosomes-4",
   "title": "Extract chromosome",
   "summary": "Extract Chromosomes from BAM alignments",
   "dxapi": "1.0.0",
@@ -63,7 +63,7 @@
     "interpreter": "bash",
     "release": "14.04",
     "distribution": "Ubuntu",
-    "file": "src/extract-chromosomes-3.sh"
+    "file": "src/extract-chromosomes.sh"
   },
   "access": {
     "network": [

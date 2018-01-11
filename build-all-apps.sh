@@ -4,4 +4,4 @@
 ./build-app.sh goby-indexed-genome-builder-3
 ./build-app.sh parallel-gatk-realigner-3
 ./build-app.sh prepare-sbi-training-set-3
-./build-app.sh extract-chromosomes-3
+./build-app.sh extract-chromosomes-4
