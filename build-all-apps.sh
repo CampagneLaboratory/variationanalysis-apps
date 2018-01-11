@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-./build-app.sh variation-analysis
-./build-app.sh bam-to-goby
-./build-app.sh goby-indexed-genome-builder
-./build-app.sh parallel-gatk-realigner
-./build-app.sh prepare-sbi-training-set
+./build-app.sh variation-analysis-3
+./build-app.sh bam-to-goby-3
+./build-app.sh goby-indexed-genome-builder-3
+./build-app.sh parallel-gatk-realigner-3
+./build-app.sh prepare-sbi-training-set-3
