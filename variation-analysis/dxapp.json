@@ -82,12 +82,10 @@
     ]
   },
   "developers": [
-    "user-fac2003",
-    "user-manuele"
+    "org-campagnelab"
   ],
   "authorizedUsers": [
-    "user-fac2003",
-    "user-manuele"
+    "org-campagnelab"
   ],
   "regionalOptions": {
     "aws:us-east-1": {
