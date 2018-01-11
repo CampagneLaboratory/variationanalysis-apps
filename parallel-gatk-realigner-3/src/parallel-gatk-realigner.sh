@@ -33,9 +33,11 @@ main() {
     if [ -s /input/GATK/GenomeAnalysis*.tar.bz2 ]; then
         bunzip2 /input/GATK/GenomeAnalysis*.tar.bz2
         tar -xvf /input/GATK/GenomeAnalysis*.tar
-        GATK_DISTRIBUTION=/input/GATK/GenomeAnalysis*
+        rm /input/GATK/GenomeAnalysis*.tar
+        GATK_DISTRIBUTION=/input/GATK/GenomeAnalysis*/
         GATK_3=TRUE
     fi
+    echo "GATK_DISTRIBUTION=${GATK_DISTRIBUTION}"
 
     #download the sorted bam
     echo "Downloading sorted BAM file '${Sorted_Bam_name}'"
