@@ -20,6 +20,7 @@ main() {
     mkdir -p /input/scripts/
     mkdir -p /input/Sorted_Bam
     mkdir -p /input/FASTA_Genome
+    mkdir -p /input/GATK
     mkdir -p /out/Realigned_Bam
 
     echo "Downloading GATK distribution '${GATK_distribution_name}'"
