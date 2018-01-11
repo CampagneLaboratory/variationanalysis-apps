@@ -22,7 +22,7 @@ main() {
     mkdir -p /input/Sorted_Bam
     mkdir -p /out/Filtered_Bam
 
-    echo "Value of Chromosome_List: '$Chromosome_List'"
+    echo "Value of Chromosome_List: '${Chromosome_List}'"
 
     #download the sorted bam
     echo "Downloading sorted BAM file '${Sorted_Bam_name}'"
@@ -41,7 +41,7 @@ main() {
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /out/Filtered_Bam; extract-chromosomes.sh ${cpus} /input/Sorted_Bam/${Sorted_Bam_name} \"$Chromosome_List\""
+        bash -c "source ~/.bashrc; cd /out/Filtered_Bam; extract-chromosomes.sh ${cpus} /input/Sorted_Bam/${Sorted_Bam_name} \"${Chromosome_List}\""
 
     ls -lrt /out/Filtered_Bam
     mkdir -p $HOME/out

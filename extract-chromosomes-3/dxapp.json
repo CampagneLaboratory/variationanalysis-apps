@@ -30,7 +30,8 @@
       "label": "List of Chromosomes",
       "class": "string",
       "optional": false,
-      "help": "Space-separated list of chromosomes to extract. E.g. chr8 chr19 chr21."
+      "default": "chr16 chr19 chr21",
+      "help": "Space-separated list of chromosomes to extract. E.g. chr16 chr19 chr21."
     }
   ],
   "outputSpec": [
@@ -69,6 +70,12 @@
       "*"
     ]
   },
+  "developers": [
+    "org-campagnelab"
+  ],
+  "authorizedUsers": [
+    "org-campagnelab"
+  ],
   "regionalOptions": {
     "aws:us-east-1": {
       "systemRequirements": {
