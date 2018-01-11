@@ -20,7 +20,7 @@ main() {
 
 
     mkdir -p /input/Sorted_Bam
-    mkdir -p /out/Filtered_Bam
+    mkdir -p /out/Filtered_BAM
 
     echo "Value of Chromosome_List: '${Chromosome_List}'"
 
@@ -41,11 +41,14 @@ main() {
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd /out/Filtered_Bam; extract-chromosomes.sh ${cpus} /input/Sorted_Bam/${Sorted_Bam_name} \"${Chromosome_List}\""
+        bash -c "source ~/.bashrc; cd /out/; extract-chromosomes.sh ${cpus} /input/Sorted_Bam/${Sorted_Bam_name} \"${Chromosome_List}\""
 
-    ls -lrt /out/Filtered_BAM
+
     mkdir -p $HOME/out
-    mv /out/Filtered_BAM $HOME/out
+    mkdir -p $HOME/out/Filtered_BAM
+    mkdir -p $HOME/out/Filtered_BAM_Index
+    mv /out/*-subset.bam     $HOME/out/Filtered_BAM
+    mv /out/*-subset.bam.bai $HOME/out/Filtered_BAM_Index
 
     echo "Files to publish"
     ls -lrt $HOME/out
