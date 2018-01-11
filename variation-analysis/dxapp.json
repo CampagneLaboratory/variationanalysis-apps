@@ -1,5 +1,5 @@
 {
-  "name": "variation-analysis",
+  "name": "variation-analysis-3",
   "title": "DL Genotype Caller",
   "summary": "Deep Learning Genotype Caller from the Campagne Lab. See https://github.com/CampagneLaboratory/variationanalysis.",
   "dxapi": "1.0.0",

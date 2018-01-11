@@ -1,5 +1,5 @@
 {
-  "name": "prepare-sbi-training-set",
+  "name": "prepare-sbi-training-set-3",
   "title": "Prepare SBI training set",
   "summary": "Use parallel genotype calls to generate the SBI training set",
   "dxapi": "1.0.0",
