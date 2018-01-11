@@ -27,23 +27,25 @@ main() {
     dx download "${GATK_distribution}" -o /input/GATK/${GATK_distribution_name}
     if [ -s /input/GATK/gatk-4*.zip ]; then
         unzip /input/GATK/gatk-4*.zip
-        GATK_DISTRIBUTION=/input/GATK/gatk-4*
+        export GATK_DISTRIBUTION="/input/GATK/gatk-4*"
         GATK_4=TRUE
     fi
     if [ -s /input/GATK/GenomeAnalysis*.tar.bz2 ]; then
         set -x
+        cd /input/GATK/
+        ls -ltr
         bunzip2 /input/GATK/GenomeAnalysis*.tar.bz2
         tar -xvf /input/GATK/GenomeAnalysis*.tar
-        rm /input/GATK/GenomeAnalysis*.tar
-        rm /input/GATK/GenomeAnalysis*.tar.bz2
-        GATK_DISTRIBUTION=/input/GATK/GenomeAnalysis*
+        rm -f /input/GATK/GenomeAnalysis*.tar
+        GATK_DISTRIBUTION="/input/GATK"
         GATK_3=TRUE
         ls -ltr /input/GATK/
+
     fi
     echo "GATK_DISTRIBUTION=${GATK_DISTRIBUTION}"
-    if [ -f ${GATK_DISTRIBUTION}/gatk ]; then
+    if [ -e "${GATK_DISTRIBUTION}/gatk" ]; then
         echo "Found GATK 4 distribution"
-    elif [ -f ${GATK_DISTRIBUTION}/GenomeAnalysisTK.jar ]; then
+    elif [ -e "${GATK_DISTRIBUTION}/GenomeAnalysisTK.jar" ]; then
         echo "Found GATK 3 distribution"
     else
         echo "Unable to find GATK distribution at ${GATK_DISTRIBUTION}. Aborting execution."
