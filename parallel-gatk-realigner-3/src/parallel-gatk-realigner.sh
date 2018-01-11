@@ -31,13 +31,25 @@ main() {
         GATK_4=TRUE
     fi
     if [ -s /input/GATK/GenomeAnalysis*.tar.bz2 ]; then
+        set -x
         bunzip2 /input/GATK/GenomeAnalysis*.tar.bz2
         tar -xvf /input/GATK/GenomeAnalysis*.tar
         rm /input/GATK/GenomeAnalysis*.tar
-        GATK_DISTRIBUTION=/input/GATK/GenomeAnalysis*/
+        rm /input/GATK/GenomeAnalysis*.tar.bz2
+        GATK_DISTRIBUTION=/input/GATK/GenomeAnalysis*
         GATK_3=TRUE
+        ls -ltr /input/GATK/
     fi
     echo "GATK_DISTRIBUTION=${GATK_DISTRIBUTION}"
+    if [ -f ${GATK_DISTRIBUTION}/gatk ]; then
+        echo "Found GATK 4 distribution"
+    elif [ -f ${GATK_DISTRIBUTION}/GenomeAnalysisTK.jar ]; then
+        echo "Found GATK 3 distribution"
+    else
+        echo "Unable to find GATK distribution at ${GATK_DISTRIBUTION}. Aborting execution."
+        exit 1
+    fi
+
 
     #download the sorted bam
     echo "Downloading sorted BAM file '${Sorted_Bam_name}'"
