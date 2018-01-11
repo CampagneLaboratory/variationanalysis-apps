@@ -43,9 +43,9 @@ main() {
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd /out/Filtered_Bam; extract-chromosomes.sh ${cpus} /input/Sorted_Bam/${Sorted_Bam_name} \"${Chromosome_List}\""
 
-    ls -lrt /out/Filtered_Bam
+    ls -lrt /out/Filtered_BAM
     mkdir -p $HOME/out
-    mv /out/Filtered_Bam $HOME/out
+    mv /out/Filtered_BAM $HOME/out
 
     echo "Files to publish"
     ls -lrt $HOME/out
