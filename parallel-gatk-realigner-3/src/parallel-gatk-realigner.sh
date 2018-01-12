@@ -96,9 +96,9 @@ EOL
 #!/bin/bash
 set -x
 cd /input/Sorted_Bam
-java -Xmx10g -jar /root/picard/picard.jar ReorderSam I=${BAM_INPUT}  O=reordered.bam  R=/input/FASTA_Genome/${genome_name}.dict  CREATE_INDEX=TRUE
-mv reordered.bam ${BAM_INPUT}
-mv reordered.bam.bai ${BAM_INPUT}.bai
+java -Xmx10g -jar /root/picard/picard.jar ReorderSam I=/input/Sorted_Bam/${Sorted_Bam_name}  O=reordered.bam  R=/input/FASTA_Genome/${genome_name}.dict  CREATE_INDEX=TRUE
+mv reordered.bam /input/Sorted_Bam/${Sorted_Bam_name}
+mv reordered.bam.bai /input/Sorted_Bam/${Sorted_Bam_Index_name}
 EOL
         dx-docker run \
             -v /input/:/input \
