@@ -100,6 +100,7 @@ java -Xmx10g -jar /root/picard/picard.jar ReorderSam I=/input/Sorted_Bam/${Sorte
 mv reordered.bam /input/Sorted_Bam/${Sorted_Bam_name}
 mv reordered.bam.bai /input/Sorted_Bam/${Sorted_Bam_Index_name}
 EOL
+        chmod u+x /input/scripts/reorder.sh
         dx-docker run \
             -v /input/:/input \
             artifacts/variationanalysis-app:latest \
