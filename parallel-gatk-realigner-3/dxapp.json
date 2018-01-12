@@ -53,6 +53,13 @@
       "default": "",
       "optional": true,
       "help": "Extra arguments for GATK 4."
+    },
+    {
+      "name": "Reorder_BAM",
+      "label": "Reorder BAM to Reference.",
+      "class": "boolean",
+      "default": true,
+      "help": "Run a step where the BAM is reordered to match the reference."
     }
   ],
   "outputSpec": [

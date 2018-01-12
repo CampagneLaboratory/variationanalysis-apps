@@ -90,6 +90,22 @@ EOL
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd /input/FASTA_Genome; /input/scripts/index.sh"
 
+    if [ ${Reorder_BAM} == "true" ]; then
+        echo "Reordering BAM to the reference"
+        cat >/input/scripts/reorder.sh <<EOL
+#!/bin/bash
+set -x
+cd /input/Sorted_Bam
+java -Xmx10g -jar /root/picard/picard.jar ReorderSam I=${BAM_INPUT}  O=reordered.bam  R=/input/FASTA_Genome/${genome_name}.dict  CREATE_INDEX=TRUE
+mv reordered.bam ${BAM_INPUT}
+mv reordered.bam.bai ${BAM_INPUT}.bai
+EOL
+        dx-docker run \
+            -v /input/:/input \
+            artifacts/variationanalysis-app:latest \
+            bash -c "source ~/.bashrc; cd /input/FASTA_Genome; /input/scripts/reorder.sh"
+    fi
+
     bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
