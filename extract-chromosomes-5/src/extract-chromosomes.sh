@@ -17,7 +17,8 @@
 
 main() {
 
-
+    echo "Start to Download docker image in background..."
+    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null &
 
     mkdir -p /input/Sorted_Bam
     mkdir -p /out/Filtered_BAM
@@ -31,9 +32,8 @@ main() {
     echo "Downloading sorted BAM file '${Sorted_Bam_Index_name}'"
     dx download "${Sorted_Bam_Index}" -o /input/Sorted_Bam/${Sorted_Bam_Index_name}
 
-
-    echo "Downloading the docker image..."
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    echo "Make sure Downloading the docker image has finished..."
+    dx-docker pull artifacts/variationanalysis-app:latest
 
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
