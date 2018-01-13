@@ -98,12 +98,13 @@ set -x
 cd /input/Sorted_Bam
 ls -ltr /input/FASTA_Genome/
 java -jar /root/picard/picard.jar CleanSam  I=/input/Sorted_Bam/${Sorted_Bam_name} O=clean.bam
+samtools index clean.bam
 java -Xmx10g -jar /root/picard/picard.jar ReorderSam I=clean.bam  O=reordered.bam  R=/input/FASTA_Genome/${genome_basename} CREATE_INDEX=TRUE
 ls -ltr
 mv reordered.bam /input/Sorted_Bam/${Sorted_Bam_name}
-mv reordered.bam.bai /input/Sorted_Bam/${Sorted_Bam_Index_name}
+mv reordered.bai /input/Sorted_Bam/${Sorted_Bam_Index_name}
 rm clean.bam
-rm clean.bam.bai
+rm clean*.bai
 ls -ltr
 EOL
         chmod u+x /input/scripts/reorder.sh
