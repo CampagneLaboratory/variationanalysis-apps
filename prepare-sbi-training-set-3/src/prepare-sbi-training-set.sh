@@ -36,7 +36,7 @@ main() {
     echo "Downloading true labels VCF file '${True_Genotypes_name}'"
     dx download "${True_Genotypes}" -o /input/vcf/${True_Genotypes_name}
 
-    dx-docker pull artifacts/variationanalysis-app:latest
+    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
 
     # configure
     genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
