@@ -58,7 +58,7 @@
       "name": "Reorder_BAM",
       "label": "Reorder BAM to Reference.",
       "class": "boolean",
-      "default": true,
+      "default": false,
       "help": "Run a step where the BAM is reordered to match the reference."
     }
   ],
