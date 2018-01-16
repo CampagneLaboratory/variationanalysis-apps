@@ -45,8 +45,6 @@ main() {
     echo "export GOBY_ALIGNMENT=/input/alignment/${alignment_basename}" >> /input/configure.sh
     echo "export GOBY_NUM_SLICES=1" >> /input/configure.sh
     # adjust num threads to match number of cores -1:
-    DATE=`date +%Y-%m-%d`
-    basename="${alignment_basename}-${DATE}"
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
     echo "export SBI_NUM_THREADS=${cpus}" >> /input/configure.sh
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
@@ -69,9 +67,9 @@ main() {
 
     # Arrange dataset in output directory and upload:
     mkdir -p $HOME/out/SBI
-    mv /output/sbi/${basename}-train.sbi* $HOME/out/SBI/
-    mv /output/sbi/${basename}-validation.sbi* $HOME/out/SBI/
-    mv /output/sbi/${basename}-test.sbi* $HOME/out/SBI/
+    mv /output/sbi/${basename}*-train.sbi* $HOME/out/SBI/
+    mv /output/sbi/${basename}*-validation.sbi* $HOME/out/SBI/
+    mv /output/sbi/${basename}*-test.sbi* $HOME/out/SBI/
     ls -lrt $HOME/out/SBI/
 
     dx-upload-all-outputs --parallel
