@@ -74,7 +74,9 @@
     "org-campagnelab"
   ],
   "authorizedUsers": [
-    "org-campagnelab"
+    "org-campagnelab",
+    "user-lmesd",
+    "user-wenming.xiao.dnax"
   ],
   "regionalOptions": {
     "aws:us-east-1": {
