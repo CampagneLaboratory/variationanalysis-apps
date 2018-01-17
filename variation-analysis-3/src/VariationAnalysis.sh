@@ -44,6 +44,7 @@ main() {
     echo "export GOBY_NUM_SLICES=100" >> /input/configure.sh
     # adjust num threads to match number of cores -1:
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
+    cpus=`echo $(( cpus / 2  ))`
     echo "export SBI_NUM_THREADS=${cpus}" >> /input/configure.sh
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
