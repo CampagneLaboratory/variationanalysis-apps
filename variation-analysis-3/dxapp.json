@@ -50,6 +50,14 @@
       "default": "bestscore",
       "optional": false,
       "help": "The name of the model (included in the model archive) to use for genotype calling."
+    } ,
+    {
+      "name": "Num_Slices",
+      "label": "Number of slices",
+      "class": "int",
+      "default": 100,
+      "optional": false,
+      "help": "Number of slices to compute in parallel."
     }
   ],
   "outputSpec": [
