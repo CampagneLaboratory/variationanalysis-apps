@@ -64,6 +64,8 @@ main() {
 
     echo "Downloading model file '${Model_Archive_name}'"
     dx download "${Model_Archive}" -o /input/model/${Model_Archive_name}
+    model_basename=`basename /input/model/${Model_Archive_name} .tar.gz`
+    echo "Model basename: ${model_basename}"
     (cd /input/model/; tar -zxvf Model_*.tar.gz; rm Model_*.tar.gz)
 
     mkdir -p /input/scripts
@@ -89,9 +91,9 @@ EOL
     ls -lrt /output/vcf/
     # publish the output
     mkdir -p $HOME/out/Predictions
-    mv /output/vcf/*.vcf.gz.tbi $HOME/out/Predictions/
-    mv /output/vcf/*.vcf.gz $HOME/out/Predictions/
-    mv /output/vcf/model-bestscore-observed-regions.bed.gz $HOME/out/Predictions/
+    mv /output/vcf/*.vcf.gz $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-genotypes.vcf.gz
+    mv /output/vcf/*.vcf.gz.tbi $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-genotypes.vcf.gz.tbi
+    mv /output/vcf/model-bestscore-observed-regions.bed.gz $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-observed-regions.bed.gz
 
     echo "Content of Predictions:"
     ls -lrt $HOME/out/Predictions/
