@@ -13,7 +13,7 @@
       "patterns": [
         "*"
       ],
-      "help": ""
+      "help": "Somatic .sbi/.sbip files."
     },
     {
       "name": "Annotation",
@@ -22,7 +22,7 @@
       "patterns": [
         "*.tsv"
       ],
-      "help": ""
+      "help": "Annotation in TSV format (chromosome [TAB] position [TAB] toBase [TAB] somaticFrequency)"
     },
     {
       "name": "FeatureMapper",

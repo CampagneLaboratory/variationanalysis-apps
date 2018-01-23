@@ -24,8 +24,8 @@ main() {
     ls -ltrR  ${HOME}/in
     mkdir -p ${HOME}/in/SBI
     mkdir -p ${HOME}/in/TSV
-    find ${HOME}/in/SomaticSBI --name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
-    find ${HOME}/in/Annotation --name \*.tsv |xargs -I {} mv {} ${HOME}/in/TSV
+    find ${HOME}/in/SomaticSBI -name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
+    find ${HOME}/in/Annotation -name \*.tsv   |xargs -I {} mv {} ${HOME}/in/TSV
 
     ls -ltrR  ${HOME}/in
 

@@ -32,13 +32,6 @@
       "help": "Name of the sample to store in the .vecp file."
     },
     {
-      "name": "SamplingRate",
-      "label": "Sampling Rate",
-      "class": "float",
-      "optional": true,
-      "help": "Amount of reference (0-1) matching sites to include in output. 1 Includes all reference  matching sites. 0 includes none."
-    },
-    {
       "name": "Ploidy",
       "label": "Ploidy",
       "class": "int",

@@ -26,9 +26,10 @@ main() {
 
     #download inputs in $HOME/in
     dx-download-all-inputs --parallel
+    set -x
     ls -ltrR  ${HOME}/in
     mkdir -p ${HOME}/in/SBI
-    find ${HOME}/in/GenotypeSBI --name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
+    find ${HOME}/in/GenotypeSBI -name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
     ls -ltrR  ${HOME}/in
 
     SBI_basename=`basename ${HOME}/in/SBI/*.sbi .sbi`
