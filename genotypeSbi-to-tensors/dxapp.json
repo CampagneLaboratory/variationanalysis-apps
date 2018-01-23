@@ -46,6 +46,30 @@
         "*.vcf.gz"
       ],
       "help": ""
+    },
+    {
+      "name": "Ploidy",
+      "label": "Ploidy",
+      "class": "int",
+      "default": 2,
+      "optional": false,
+      "help": "The organism ploidy (2 for humans, more for some plants)."
+    },
+    {
+      "name": "GenomicContextLength",
+      "label": "Genomic Context Length",
+      "class": "int",
+      "default": 29,
+      "optional": false,
+      "help": "ength of genomic context to use around site, in mapped features."
+    },
+    {
+      "name": "LabelSmoothingEpsilon",
+      "label": "Label Smoothing Epsilon",
+      "class": "float",
+      "default": 0,
+      "optional": false,
+      "help": "Value of epsilon for label smoothing. Zero (default) is no smoothing."
     }
   ],
   "outputSpec": [
