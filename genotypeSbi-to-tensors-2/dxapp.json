@@ -14,7 +14,7 @@
         "*.sbi",
         "*.sbip"
       ],
-      "help": ""
+      "help": "Datasets in the .sbi/.sbip format. Several datasets may be provided, which will produce distinct .vec/,vecp files. Note that the .sbi must already be annotated with true genotypes."
     },
     {
       "name": "FeatureMapper",
@@ -22,30 +22,14 @@
       "class": "string",
       "default": "org.campagnelab.dl.genotype.mappers.GenotypeMapperV37",
       "optional": false,
-      "help": ""
-    },
-    {
-      "name": "SamplingRate",
-      "label": "Sampling Rate",
-      "class": "float",
-      "optional": false,
-      "help": ""
+      "help": "Mapper to use to produce the mapped input output tensors."
     },
     {
       "name": "SampleName",
       "label": "Sample Name",
       "class": "string",
       "optional": false,
-      "help": ""
-    },
-    {
-      "name": "Annotation",
-      "label": "File with Annotations",
-      "class": "file",
-      "patterns": [
-        "*.vcf.gz"
-      ],
-      "help": ""
+      "help": "Name of the sample to store in the .vecp file."
     },
     {
       "name": "Ploidy",
@@ -61,7 +45,7 @@
       "class": "int",
       "default": 29,
       "optional": false,
-      "help": "ength of genomic context to use around site, in mapped features."
+      "help": "Length of genomic context to use around site, in mapped features."
     },
     {
       "name": "LabelSmoothingEpsilon",
@@ -81,7 +65,7 @@
         "*.vec",
         "*.vecp"
       ],
-      "help": ""
+      "help": "Mapped input/output tensors in .vec/.vecp format."
     }
   ],
   "developers": [

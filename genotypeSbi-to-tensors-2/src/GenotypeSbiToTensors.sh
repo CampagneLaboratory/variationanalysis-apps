@@ -19,12 +19,10 @@ main() {
 
     echo "Value of SBI: '${GenotypeSBI[@]}'"
     echo "Value of FeatureMapper: '$FeatureMapper'"
-    echo "Value of SamplingRate: '$SamplingRate'"
     echo "Value of SampleName: '$SampleName'"
     echo "Value of LabelSmoothingEpsilon: '$LabelSmoothingEpsilon'"
     echo "Value of Ploidy: '$Ploidy'"
     echo "Value of GenomicContextLength: '$GenomicContextLength'"
-    echo "Value of Annotation: '$Annotation'"
 
     #download inputs in $HOME/in
     dx-download-all-inputs --parallel
