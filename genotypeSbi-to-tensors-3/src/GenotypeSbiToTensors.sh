@@ -35,8 +35,8 @@ main() {
     mkdir -p $HOME/out/VEC
 
     dx-docker run \
-        -v /input/:/input \
-        -v /output/sbi:/output/sbi \
+        -v ${HOME}/in:${HOME}/in \
+        -v ${HOME}/out/:${HOME}/out/ \
         artifacts/variationanalysis-app:latest \
         bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g -feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o ${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-inputs input --export-outputs softmaxGenotype --sample-name [${SampleName}]  --sample-type germline"
 
