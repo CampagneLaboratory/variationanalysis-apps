@@ -70,7 +70,18 @@
       "help": "Value of epsilon for label smoothing. Zero (default) is no smoothing."
     }
   ],
-  "outputSpec": [],
+  "outputSpec": [
+    {
+      "name": "Tensors",
+      "label": "Tensor File",
+      "class": "array:file",
+      "patterns": [
+        "*.vec",
+        "*.vecp"
+      ],
+      "help": "Mapped input/output tensors in .vec/.vecp format."
+    }
+  ],
   "runSpec": {
     "timeoutPolicy": {
       "*": {
