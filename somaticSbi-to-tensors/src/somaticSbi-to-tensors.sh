@@ -23,8 +23,9 @@ main() {
     dx-download-all-inputs --parallel
     ls -ltrR  ${HOME}/in
     mkdir -p ${HOME}/in/SBI
-    find ${HOME}/in/SomaticSBI --name \*.sbi\* |xargs -1 -I {} mv {} ${HOME}/in/SBI/
-    find ${HOME}/in/Annotation --name \*.sbi\* |xargs -1 -I {} mv {} ${HOME}/in/SBI/
+    mkdir -p ${HOME}/in/TSV
+    find ${HOME}/in/SomaticSBI --name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
+    find ${HOME}/in/Annotation --name \*.tsv |xargs -I {} mv {} ${HOME}/in/TSV
 
     ls -ltrR  ${HOME}/in
 
@@ -40,7 +41,7 @@ main() {
         -v ${HOME}/in:${HOME}/in \
         -v ${HOME}/out/:${HOME}/out/ \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; combine-with-gold-standard.sh 2g -a \"/${HOME}/in/Annotation/${ANNOTATION_basename}.tsv -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" --o  \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" --sampling-fraction ${SamplingRate} "
+        bash -c "source ~/.bashrc; combine-with-gold-standard.sh 2g -a \"/${HOME}/in/TSV/${ANNOTATION_basename}.tsv -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" --o  \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" --sampling-fraction ${SamplingRate} "
 
     dx-docker run \
         -v ${HOME}/in:${HOME}/in \
