@@ -1,0 +1,105 @@
+{
+  "name": "somaticSbi-to-tensors",
+  "title": "Convert Somatic .sbi to Tensors",
+  "summary": "SomaticSbiToTensors",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "SomaticSBI",
+      "label": "Somatic Sequence Base Information",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "Annotation",
+      "label": "File with Annotations",
+      "class": "file",
+      "patterns": [
+        "*.tsv"
+      ],
+      "help": ""
+    },
+    {
+      "name": "FeatureMapper",
+      "label": "Feature Mapper",
+      "class": "string",
+      "default": "org.campagnelab.dl.somatic.mappers.FeatureMapperV25",
+      "optional": false,
+      "help": "Mapper to use to produce the mapped input output tensors."
+    },
+    {
+      "name": "GermlineSampleName",
+      "label": "Germline Sample Name",
+      "class": "string",
+      "optional": false,
+      "help": "Name of the sample to store in the .vecp file."
+    },
+    {
+      "name": "TumorSampleName",
+      "label": "Tumor Sample Name",
+      "class": "string",
+      "optional": false,
+      "help": "Name of the sample to store in the .vecp file."
+    },{
+      "name": "Ploidy",
+      "label": "Ploidy",
+      "class": "int",
+      "default": 2,
+      "optional": false,
+      "help": "The organism ploidy (2 for humans, more for some plants)."
+    },
+    {
+      "name": "GenomicContextLength",
+      "label": "Genomic Context Length",
+      "class": "int",
+      "default": 29,
+      "optional": false,
+      "help": "Length of genomic context to use around site, in mapped features."
+    },
+    {
+      "name": "LabelSmoothingEpsilon",
+      "label": "Label Smoothing Epsilon",
+      "class": "float",
+      "default": 0,
+      "optional": false,
+      "help": "Value of epsilon for label smoothing. Zero (default) is no smoothing."
+    }
+  ],
+  "outputSpec": [],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/somaticSbi-to-tensors.sh"
+  },
+  "developers": [
+    "org-campagnelab"
+  ],
+  "authorizedUsers": [
+    "org-campagnelab"
+  ],
+  "access": {
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}

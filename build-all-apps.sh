@@ -6,3 +6,4 @@
 ./build-app.sh prepare-sbi-training-set-3
 ./build-app.sh extract-chromosomes-5
 ./build-app.sh genotypeSbi-to-tensors-3
+./build-app.sh somaticSbi-to-tensors
