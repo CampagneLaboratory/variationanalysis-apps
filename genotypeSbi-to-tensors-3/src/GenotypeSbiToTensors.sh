@@ -26,26 +26,31 @@ main() {
 
     #download inputs in $HOME/in
     dx-download-all-inputs --parallel
-    set -x
-    ls -ltrR  ${HOME}/in
-    mkdir -p ${HOME}/in/SBI
-    find ${HOME}/in/GenotypeSBI -name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
-    ls -ltrR  ${HOME}/in
-
-    SBI_basename=`basename ${HOME}/in/SBI/*.sbi .sbi`
-    echo "SBI basename: '$SBI_basename'"
 
     echo "Downloading the docker image..."
     dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
 
+    set -x
+    ls -ltrR  ${HOME}/in
+    mkdir -p ${HOME}/in/SBI
     mkdir -p $HOME/out/VEC
+    find ${HOME}/in/GenotypeSBI -name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
+    ls -ltrR  ${HOME}/in
+    for file in ${HOME}/in/SBI/*.sbi; do
+        SBI_basename=`basename ${HOME}/in/SBI/$file .sbi`
+        echo "SBI basename: '$SBI_basename'"
+        if [ ! -f ${HOME}/in/SBI/${SBI_basename}.sbip ]; then
+          echo "${SBI_basename}.sbip not found!"
+        fi
 
-    dx-docker run \
-        -v ${HOME}/in:${HOME}/in \
-        -v ${HOME}/out/:${HOME}/out/ \
-        artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --sample-name \"${SampleName}\"  --sample-type germline"
 
+        dx-docker run \
+            -v ${HOME}/in:${HOME}/in \
+            -v ${HOME}/out/:${HOME}/out/ \
+            artifacts/variationanalysis-app:latest \
+            bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --sample-name \"${SampleName}\"  --sample-type germline"
+    done
+    
     mkdir -p ${HOME}/out/Tensors
     mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
     dx-upload-all-outputs --parallel
