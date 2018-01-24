@@ -45,7 +45,16 @@
       "class": "string",
       "optional": false,
       "help": "Name of the sample to store in the .vecp file."
-    },{
+    },
+    {
+      "name": "SamplingRate",
+      "label": "Sampling Rate",
+      "class": "float",
+      "optional": false,
+      "default": 1.0,
+      "help": ""
+    },
+    {
       "name": "Ploidy",
       "label": "Ploidy",
       "class": "int",
