@@ -43,7 +43,7 @@ main() {
         -v ${HOME}/in:${HOME}/in \
         -v ${HOME}/out/:${HOME}/out/ \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --sample-name ${SampleName}  --sample-type germline"
+        bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --sample-name \"${SampleName}\"  --sample-type germline"
 
     mkdir -p ${HOME}/out/Tensors
     mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
