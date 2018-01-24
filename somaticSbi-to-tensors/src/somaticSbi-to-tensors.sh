@@ -34,6 +34,7 @@ main() {
     ANNOTATION_basename=`basename ${HOME}/in/*.tsv .tsv`
     echo "ANNOTATION basename: '$ANNOTATION_basename'"
 
+    echo "Downloading the docker image..."
     dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
 
     mkdir -p $HOME/out/VEC

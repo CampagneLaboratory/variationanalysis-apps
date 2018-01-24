@@ -35,6 +35,7 @@ main() {
     SBI_basename=`basename ${HOME}/in/SBI/*.sbi .sbi`
     echo "SBI basename: '$SBI_basename'"
 
+    echo "Downloading the docker image..."
     dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
 
     mkdir -p $HOME/out/VEC
