@@ -42,7 +42,7 @@ main() {
         -v ${HOME}/in:${HOME}/in \
         -v ${HOME}/out/:${HOME}/out/ \
         artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; combine-with-gold-standard.sh 2g -a \"/${HOME}/in/TSV/${ANNOTATION_basename}.tsv -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o  \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" --sampling-fraction ${SamplingRate} "
+        bash -c "source ~/.bashrc; combine-with-gold-standard.sh 2g -a \"/${HOME}/in/TSV/${ANNOTATION_basename}.tsv\" -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o  \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" --sampling-fraction ${SamplingRate} "
 
     dx-docker run \
         -v ${HOME}/in:${HOME}/in \
