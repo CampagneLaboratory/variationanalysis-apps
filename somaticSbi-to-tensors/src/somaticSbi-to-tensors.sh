@@ -29,8 +29,6 @@ main() {
 
     ls -ltrR  ${HOME}/in
 
-    SBI_basename=`basename ${HOME}/in/SBI/*.sbi .sbi`
-    echo "SBI basename: '$SBI_basename'"
     ANNOTATION_basename=`basename ${HOME}/in/*.tsv .tsv`
     echo "ANNOTATION basename: '$ANNOTATION_basename'"
 
@@ -38,17 +36,25 @@ main() {
     dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
 
     mkdir -p $HOME/out/VEC
-    dx-docker run \
-        -v ${HOME}/in:${HOME}/in \
-        -v ${HOME}/out/:${HOME}/out/ \
-        artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; combine-with-gold-standard.sh 2g -a \"/${HOME}/in/TSV/${ANNOTATION_basename}.tsv\" -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o  \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" --sampling-fraction ${SamplingRate} "
+    for file in ${HOME}/in/SBI/*.sbi; do
+        SBI_basename=`basename ${HOME}/in/SBI/$file .sbi`
+        echo "SBI basename: '$SBI_basename'"
+        if [ ! -f ${HOME}/in/SBI/${SBI_basename}.sbip ]; then
+          echo "${SBI_basename}.sbip not found!"
+        fi
 
-    dx-docker run \
-        -v ${HOME}/in:${HOME}/in \
-        -v ${HOME}/out/:${HOME}/out/ \
-        artifacts/variationanalysis-app:latest \
-        bash -c "source ~/.bashrc; export-somatic-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" -o \"${HOME}/out/${SBI_basename}\" --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output isBaseMutated --export-output somaticFrequency --sample-name \"${GermlineSampleName}\" --sample-name \"${TumorSampleName}\" --sample-type germline --sample-type tumor --sample-index 0 --sample-index 1"
+        dx-docker run \
+            -v ${HOME}/in:${HOME}/in \
+            -v ${HOME}/out/:${HOME}/out/ \
+            artifacts/variationanalysis-app:latest \
+            bash -c "source ~/.bashrc; combine-with-gold-standard.sh 2g -a \"/${HOME}/in/TSV/${ANNOTATION_basename}.tsv\" -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o  \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" --sampling-fraction ${SamplingRate} "
+
+        dx-docker run \
+            -v ${HOME}/in:${HOME}/in \
+            -v ${HOME}/out/:${HOME}/out/ \
+            artifacts/variationanalysis-app:latest \
+            bash -c "source ~/.bashrc; export-somatic-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" -o \"${HOME}/out/${SBI_basename}\" --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output isBaseMutated --export-output somaticFrequency --sample-name \"${GermlineSampleName}\" --sample-name \"${TumorSampleName}\" --sample-type germline --sample-type tumor --sample-index 0 --sample-index 1"
+    done
 
     mkdir -p ${HOME}/out/Tensors
     mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
