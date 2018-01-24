@@ -33,9 +33,11 @@ main() {
     set -x
     ls -ltrR  ${HOME}/in
     mkdir -p ${HOME}/in/SBI
+    mkdir -p ${HOME}/out/Tensors
     mkdir -p $HOME/out/VEC
     find ${HOME}/in/GenotypeSBI -name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
     ls -ltrR  ${HOME}/in
+
     for file in ${HOME}/in/SBI/*.sbi; do
         SBI_basename=`basename ${HOME}/in/SBI/$file .sbi`
         echo "SBI basename: '$SBI_basename'"
@@ -49,10 +51,10 @@ main() {
             -v ${HOME}/out/:${HOME}/out/ \
             artifacts/variationanalysis-app:latest \
             bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --sample-name \"${SampleName}\"  --sample-type germline"
+
+        mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
     done
-    
-    mkdir -p ${HOME}/out/Tensors
-    mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
+
     dx-upload-all-outputs --parallel
 
 }
