@@ -106,7 +106,8 @@
     "org-campagnelab"
   ],
   "authorizedUsers": [
-    "org-campagnelab"
+    "org-campagnelab",
+    "user-wenming.xiao.dnax"
   ],
   "access": {
     "network": [
@@ -117,7 +118,7 @@
     "aws:us-east-1": {
       "systemRequirements": {
         "*": {
-          "instanceType": "mem1_ssd1_x4"
+          "instanceType": "mem1_ssd1_x2"
         }
       }
     }
