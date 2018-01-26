@@ -63,9 +63,10 @@
       "class": "array:file",
       "patterns": [
         "*.vec",
-        "*.vecp"
+        "*.vecp",
+        "domain.descriptor"
       ],
-      "help": "Mapped input/output tensors in .vec/.vecp format."
+      "help": "Mapped input/output tensors in .vec/.vecp format. A single domain.descriptor is exported for all .vec files, describing how the feature/output mapping was done."
     }
   ],
   "developers": [
