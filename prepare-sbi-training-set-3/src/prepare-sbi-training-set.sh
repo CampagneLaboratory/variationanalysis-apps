@@ -32,6 +32,7 @@ main() {
     echo "export GOBY_NUM_SLICES=1" >> /input/configure.sh
     # adjust num threads to match number of cores -1:
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
+    cpus=`echo $(( cpus / 3 * 2  ))`
     basename="${alignment_basename}"
     echo "export SBI_NUM_THREADS=${cpus}" >> /input/configure.sh
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
