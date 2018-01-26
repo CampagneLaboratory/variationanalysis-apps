@@ -86,7 +86,8 @@
       "class": "array:file",
       "patterns": [
         "*.vec",
-        "*.vecp"
+        "*.vecp",
+        "domain.properties"
       ],
       "help": "Mapped input/output tensors in .vec/.vecp format."
     }

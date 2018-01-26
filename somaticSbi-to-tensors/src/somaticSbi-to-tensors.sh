@@ -58,6 +58,10 @@ main() {
             bash -c "source ~/.bashrc; export-somatic-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}-annotated.sbi\" -o \"${HOME}/out/${SBI_basename}\" --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output isBaseMutated --export-output somaticFrequency --sample-name \"${GermlineSampleName}\" --sample-name \"${TumorSampleName}\" --sample-type germline --sample-type tumor --sample-index 0 --sample-index 1"
 
         mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
+        if [ ! -f ${HOME}/out/Tensor/domain.descriptor ]; then
+            # First domain descriptor file generated is copied to output (it should correspond to the training set):
+            mv ${HOME}/out/domain.descriptor  ${HOME}/out/Tensors
+        fi
     done
 
     dx-upload-all-outputs --parallel
