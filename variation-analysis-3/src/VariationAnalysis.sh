@@ -34,7 +34,7 @@ main() {
     done
 
     echo "Downloading the docker image..."
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
     # configure
     genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
@@ -56,7 +56,7 @@ main() {
     dx-docker run \
         -v /input/:/input \
         -v /output/sbi:/output/sbi \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; parallel-genotype-sbi.sh 10g \"/input/alignment/${alignment_basename}\" 2>&1 | tee parallel-genotype-sbi.log"
 
     ls -lrt /output/sbi
@@ -83,7 +83,7 @@ EOL
         -v /output/sbi/:/input/sbi \
         -v /input/:/input \
         -v /output/vcf/:/output/vcf \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; source /input/configure.sh;  cd /output/vcf; predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi; /input/scripts/merge.sh"
 
 
