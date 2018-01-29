@@ -37,7 +37,7 @@ main() {
     genome=`basename /input/FASTA_Genome/*.fa*`
 
     echo "Downloading the docker image..."
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
     
     cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
@@ -58,7 +58,7 @@ EOL
     #index
     dx-docker run \
         -v /input/:/input \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; cd /input/Goby_Genome; /input/scripts/index.sh"
 
     alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
@@ -72,7 +72,7 @@ EOL
     dx-docker run \
         -v /input/:/input \
         -v /out/Goby_Alignment/:/out/Goby_Alignment \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh 6g /input/BAM/*.bam"
 
 

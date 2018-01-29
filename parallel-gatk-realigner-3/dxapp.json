@@ -3,7 +3,7 @@
   "title": "Realign BAM alignment with HaplotypeCaller",
   "summary": "Run GATK 4 HaplotypeCaller to realign an alignment around indels. Uses the --bamout option of HaplotypeCaller.",
   "dxapi": "1.0.0",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "inputSpec": [
     {
       "name": "GATK_distribution",
@@ -80,6 +80,14 @@
         "*.bam.bai"
       ],
       "help": "BAM alignment index, realigned with HaplotypeCaller."
+    } ,
+    {
+      "name": "Image_Version",
+      "label": "Docker Image Version",
+      "class": "string",
+      "default": "1.0",
+      "optional": false,
+      "help": "The version of variationanalysis-app image to use in the execution."
     }
   ],
   "runSpec": {

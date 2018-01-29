@@ -22,7 +22,7 @@ main() {
     echo "Downloading true labels VCF file '${True_Genotypes_name}'"
     dx download "${True_Genotypes}" -o /input/vcf/${True_Genotypes_name}
 
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
     # configure
     genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
@@ -48,7 +48,7 @@ main() {
     dx-docker run \
         -v /input/:/input \
         -v /output/sbi:/output/sbi \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; source /input/configure.sh; cd /output/sbi; generate-genotype-sets-0.02.sh 20g \"/input/alignment/${alignment_basename}\" \"/input/vcf/${True_Genotypes_name}\" \"/input/indexed_genome/${genome_basename}\"  2>&1 | tee parallel-genotype-sbi.log"
 
     ls -lrt /output/sbi

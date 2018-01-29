@@ -28,7 +28,7 @@ main() {
     (cd /input/FASTA_Genome; gunzip ${FASTA_Genome_name})
 
     echo "Downloading the docker image..."
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
     genome=`basename /input/FASTA_Genome/*.fa*`
 
@@ -50,7 +50,7 @@ EOL
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; cd /out/Goby_Genome; /input/scripts/index.sh"
 
     mkdir -p $HOME/out/Goby_Genome

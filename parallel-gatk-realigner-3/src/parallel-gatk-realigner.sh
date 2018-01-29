@@ -67,7 +67,7 @@ main() {
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
 
     echo "Downloading the docker image..."
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
     #index the genome with samtools and create the dictionary
     genome_name=`basename /input/FASTA_Genome/*.fa* | cut -d. -f1`
@@ -87,7 +87,7 @@ EOL
     #index
     dx-docker run \
         -v /input/:/input \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; cd /input/FASTA_Genome; /input/scripts/index.sh"
 
     if [ ${Reorder_BAM} == "true" ]; then
@@ -110,7 +110,7 @@ EOL
         chmod u+x /input/scripts/reorder.sh
         dx-docker run \
             -v /input/:/input \
-            artifacts/variationanalysis-app:latest \
+            artifacts/variationanalysis-app:${Image_Version} \
             bash -c "source ~/.bashrc; cd /input/FASTA_Genome; /input/scripts/reorder.sh"
     fi
 
@@ -120,7 +120,7 @@ EOL
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; cd /out/Realigned_Bam && sleep 5 && parallel-gatk-realign.sh ${GATK_DISTRIBUTION} 12g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
 
 

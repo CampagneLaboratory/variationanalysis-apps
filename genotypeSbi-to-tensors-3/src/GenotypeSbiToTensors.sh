@@ -28,7 +28,7 @@ main() {
     dx-download-all-inputs --parallel
 
     echo "Downloading the docker image..."
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
     set -x
     ls -ltrR  ${HOME}/in
@@ -49,7 +49,7 @@ main() {
         dx-docker run \
             -v ${HOME}/in:${HOME}/in \
             -v ${HOME}/out/:${HOME}/out/ \
-            artifacts/variationanalysis-app:latest \
+            artifacts/variationanalysis-app:${Image_Version} \
             bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --sample-name \"${SampleName}\"  --sample-type germline"
 
         mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors

@@ -18,7 +18,7 @@
 main() {
 
     echo "Start to Download docker image in background..."
-    dx-docker pull artifacts/variationanalysis-app:latest &>/dev/null &
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null &
 
     mkdir -p /input/Sorted_Bam
     mkdir -p /out/Filtered_BAM
@@ -33,14 +33,14 @@ main() {
     dx download "${Sorted_Bam_Index}" -o /input/Sorted_Bam/${Sorted_Bam_Index_name}
 
     echo "Make sure Downloading the docker image has finished..."
-    dx-docker pull artifacts/variationanalysis-app:latest
+    dx-docker pull artifacts/variationanalysis-app:${Image_Version}
 
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
-        artifacts/variationanalysis-app:latest \
+        artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; cd /out/; extract-chromosomes.sh ${cpus} /input/Sorted_Bam/${Sorted_Bam_name} \"${Chromosome_List}\""
 
 
