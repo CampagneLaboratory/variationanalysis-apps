@@ -33,7 +33,7 @@ main() {
     echo "Downloading genome file '${Genome_name}'"
     dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
     #unzip
-    (cd /input/FASTA_Genome; gunzip ${Genome_name})
+    (cd /input/FASTA_Genome; gunzip -q ${Genome_name})
     genome=`basename /input/FASTA_Genome/*.fa*`
 
     echo "Downloading the docker image..."
