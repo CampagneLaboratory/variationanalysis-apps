@@ -63,8 +63,6 @@ main() {
     #download the gzipped genome
     echo "Downloading genome file '${Genome_name}'"
     dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
-    #unzip
-    (cd /input/FASTA_Genome; gunzip ${Genome_name})
 
     echo "Downloading the docker image..."
     dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
@@ -76,6 +74,9 @@ main() {
     cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
     set -x
+    #unzip
+    (cd /input/FASTA_Genome; gunzip ${Genome_name})
+    genome=`basename /input/FASTA_Genome/*.fa* .gz`
     ls -lrt  /input/FASTA_Genome/
     cd /input/FASTA_Genome
     samtools faidx /input/FASTA_Genome/*.fa*
