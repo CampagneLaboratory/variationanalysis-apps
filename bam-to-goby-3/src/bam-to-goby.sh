@@ -32,9 +32,6 @@ main() {
     #download the gzipped genome
     echo "Downloading genome file '${Genome_name}'"
     dx download "${Genome}" -o /input/FASTA_Genome/${Genome_name}
-    #unzip
-    (cd /input/FASTA_Genome; gunzip -q ${Genome_name})
-    genome=`basename /input/FASTA_Genome/*.fa*`
 
     echo "Downloading the docker image..."
     dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
@@ -44,11 +41,14 @@ main() {
     set -x
     ls -lrt  /input/FASTA_Genome/
     cd /input/FASTA_Genome
+    #unzip
+    (cd /input/FASTA_Genome; gunzip ${Genome_name})
+    genome=`basename /input/FASTA_Genome/*.fa* .gz`
     samtools faidx /input/FASTA_Genome/*.fa*
     ls -lrt  /input/FASTA_Genome/
     cd /input/Goby_Genome/
      #build goby indexed genome
-    goby 10g build-sequence-cache /input/FASTA_Genome/${genome}
+    goby 10g build-sequence-cache /input/FASTA_Genome/\${genome}
     ls -lrt  /input/Goby_Genome/
     ls -lrt  /input/FASTA_Genome/
 
@@ -60,7 +60,7 @@ EOL
         -v /input/:/input \
         artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; cd /input/Goby_Genome; /input/scripts/index.sh"
-
+    genome=`basename /input/FASTA_Genome/*.fa*.gz | cut -d. -f1`
     alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
     goby_genome_basename=`basename /input/FASTA_Genome/*.bases | cut -d. -f1`
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
