@@ -56,10 +56,18 @@
       "help": "Value of epsilon for label smoothing. Zero (default) is no smoothing."
     },
     {
+      "name": "IndelSequenceLength",
+      "label": "Indel Sequence Length",
+      "class": "int",
+      "default": 7,
+      "optional": false,
+      "help": "The length of the indel sequence."
+    },
+    {
       "name": "Image_Version",
       "label": "Docker Image Version",
       "class": "string",
-      "default": "1.0",
+      "default": "1.0.1",
       "optional": false,
       "help": "The version of variationanalysis-app image to use in the execution."
     }
