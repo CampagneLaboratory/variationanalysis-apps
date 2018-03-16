@@ -54,9 +54,12 @@ main() {
             bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --indel-sequence-length ${IndelSequenceLength} --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --sample-name \"${SampleName}\"  --sample-type germline"
 
         mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
-        if [ ! -f ${HOME}/out/Tensor/domain.descriptor ]; then
-            # First domain descriptor file generated is copied to output (it should correspond to the training set):
-            mv ${HOME}/out/domain.descriptor  ${HOME}/out/Tensors
+        
+        if [ ! -e ${HOME}/out/domain.properties ]; then
+            mv ${HOME}/out/domain.properties  ${HOME}/out/Tensors
+        fi
+        if [ ! -e ${HOME}/out/config.properties ]; then
+            mv ${HOME}/out/config.properties  ${HOME}/out/Tensors
         fi
     done
 

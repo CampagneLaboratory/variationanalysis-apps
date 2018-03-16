@@ -80,7 +80,7 @@
       "patterns": [
         "*.vec",
         "*.vecp",
-        "domain.descriptor"
+        "*.properties"
       ],
       "help": "Mapped input/output tensors in .vec/.vecp format. A single domain.descriptor is exported for all .vec files, describing how the feature/output mapping was done."
     }
