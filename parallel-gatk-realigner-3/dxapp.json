@@ -60,6 +60,14 @@
       "class": "boolean",
       "default": false,
       "help": "Run a step where the BAM is reordered to match the reference."
+    } ,
+    {
+      "name": "Image_Version",
+      "label": "Docker Image Version",
+      "class": "string",
+      "default": "1.0.1",
+      "optional": false,
+      "help": "The version of variationanalysis-app image to use in the execution."
     }
   ],
   "outputSpec": [
@@ -80,14 +88,6 @@
         "*.bam.bai"
       ],
       "help": "BAM alignment index, realigned with HaplotypeCaller."
-    } ,
-    {
-      "name": "Image_Version",
-      "label": "Docker Image Version",
-      "class": "string",
-      "default": "1.0",
-      "optional": false,
-      "help": "The version of variationanalysis-app image to use in the execution."
     }
   ],
   "runSpec": {
