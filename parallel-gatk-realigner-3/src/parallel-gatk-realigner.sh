@@ -68,8 +68,8 @@ main() {
     dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
     #index the genome with samtools and create the dictionary
-    genome_name=`basename /input/FASTA_Genome/*.fa* | cut -d. -f1`
-    genome_basename=`basename /input/FASTA_Genome/*.fa*`
+    genome_basename=`basename /input/FASTA_Genome/*.fa* | cut -d. -f1`
+    genome_filename=`basename /input/FASTA_Genome/*.fa* .gz`
 
     cat >/input/scripts/index.sh <<EOL
     #!/bin/bash
@@ -81,7 +81,7 @@ main() {
     cd /input/FASTA_Genome
     samtools faidx /input/FASTA_Genome/*.fa*
     ls -lrt  /input/FASTA_Genome/
-    java -jar /root/picard/picard.jar CreateSequenceDictionary R= /input/FASTA_Genome/${genome_basename} O= /input/FASTA_Genome/${genome_name}.dict
+    java -jar /root/picard/picard.jar CreateSequenceDictionary R= /input/FASTA_Genome/\${genome} O= /input/FASTA_Genome/${genome_basename}.dict
 EOL
     chmod u+x /input/scripts/index.sh
 
@@ -100,7 +100,7 @@ cd /input/Sorted_Bam
 ls -ltr /input/FASTA_Genome/
 java -jar /root/picard/picard.jar CleanSam  I=/input/Sorted_Bam/${Sorted_Bam_name} O=clean.bam
 samtools index clean.bam
-java -Xmx10g -jar /root/picard/picard.jar ReorderSam I=clean.bam  O=reordered.bam  R=/input/FASTA_Genome/${genome_basename} CREATE_INDEX=TRUE
+java -Xmx10g -jar /root/picard/picard.jar ReorderSam I=clean.bam  O=reordered.bam  R=/input/FASTA_Genome/${genome_filename} CREATE_INDEX=TRUE
 ls -ltr
 mv reordered.bam /input/Sorted_Bam/${Sorted_Bam_name}
 mv reordered.bai /input/Sorted_Bam/${Sorted_Bam_Index_name}
@@ -122,7 +122,7 @@ EOL
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:${Image_Version} \
-        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && sleep 5 && parallel-gatk-realign.sh ${GATK_DISTRIBUTION} 12g ${cpus} /input/FASTA_Genome/${genome_basename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
+        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && sleep 5 && parallel-gatk-realign.sh ${GATK_DISTRIBUTION} 12g ${cpus} /input/FASTA_Genome/${genome_filename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
 
 
     mkdir -p $HOME/out/Realigned_Bam
