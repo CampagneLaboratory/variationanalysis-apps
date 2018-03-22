@@ -16,7 +16,7 @@
 # to modify this file.
 
 main() {
-
+    set -x
     mkdir -p /input/BAM
     mkdir -p /input/scripts
     mkdir -p /input/FASTA_Genome
@@ -61,8 +61,8 @@ EOL
         artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; cd /input/Goby_Genome; /input/scripts/index.sh"
     genome=`basename /input/FASTA_Genome/*.fa*.gz | cut -d. -f1`
-    alignment_basename=`basename /input/BAM/*.bam | cut -d. -f1`
-    goby_genome_basename=`basename /input/FASTA_Genome/*.bases | cut -d. -f1`
+    alignment_basename=`basename /input/BAM/*.bam .bam`
+    goby_genome_basename=`basename /input/FASTA_Genome/*.bases .bases`
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
     echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh
