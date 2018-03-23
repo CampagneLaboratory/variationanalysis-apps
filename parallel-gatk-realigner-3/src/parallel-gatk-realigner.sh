@@ -117,12 +117,16 @@ EOL
 
     bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
+    cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
+    memory=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
+    # memory is expressed in kb, /1048576 to transform in Mb and assign it to each thread
+    parallel_executions=`echo $(( memory / 1048576 / 6  ))`
 
     dx-docker run \
         -v /input/:/input \
         -v /out/:/out \
         artifacts/variationanalysis-app:${Image_Version} \
-        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && sleep 5 && parallel-gatk-realign.sh ${GATK_DISTRIBUTION} 12g ${cpus} /input/FASTA_Genome/${genome_filename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
+        bash -c "source ~/.bashrc; cd /out/Realigned_Bam && sleep 5 && parallel-gatk-realign.sh ${GATK_DISTRIBUTION} 8g ${parallel_executions} /input/FASTA_Genome/${genome_filename} /input/Sorted_Bam/${bam_basename}.bam /out/Realigned_Bam/${bam_basename}-realigned.bam \"${GATK_Arguments}\""
 
 
     mkdir -p $HOME/out/Realigned_Bam
