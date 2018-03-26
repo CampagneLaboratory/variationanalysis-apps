@@ -67,7 +67,11 @@ EOL
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
     echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
-    echo "export SBI_NUM_THREADS=${cpus}" >> /input/configure.sh
+    memory=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
+    # memory is expressed in kb, /1024 to transform in Mb and assign it to each thread
+    parallel_executions=`echo $(( memory / 1048576 / 6  ))`
+   
+    echo "export SBI_NUM_THREADS=${parallel_executions}" >> /input/configure.sh
 
     dx-docker run \
         -v /input/:/input \
