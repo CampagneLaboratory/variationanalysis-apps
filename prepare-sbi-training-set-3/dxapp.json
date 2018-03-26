@@ -44,6 +44,14 @@
       "help": "True Genotypes in VCF format."
     },
     {
+      "name": "Varmap_Prefix_Adjustment",
+      "label": "Chromosome Prefix Adjustment",
+      "class": "string",
+      "optional": false,
+      "default": "",
+      "help": "An optional chromosome prefix adjustment. Use -chr to remove chr from the start of reference id in the VCF. Use +chr to add chr at the start of reference id in the VCF. Use when the alignment and VCF disagree on the chromsome prefix."
+    },
+    {
       "name": "Image_Version",
       "label": "Docker Image Version",
       "class": "string",
