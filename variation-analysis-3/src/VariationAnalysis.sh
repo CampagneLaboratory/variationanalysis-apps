@@ -37,15 +37,16 @@ main() {
     dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
     # configure
-    genome_basename=`basename /input/indexed_genome/*.bases | cut -d. -f1`
+    genome_basename=`basename /input/indexed_genome/*.bases .bases`
     echo "export SBI_GENOME=/input/indexed_genome/${genome_basename}" >> /input/configure.sh
-    alignment_basename=`basename /input/alignment/*.entries | cut -d. -f1`
+    alignment_basename=`basename /input/alignment/*.entries .entries`
     echo "export GOBY_ALIGNMENT=/input/alignment/${alignment_basename}" >> /input/configure.sh
     echo "export GOBY_NUM_SLICES=${Num_Slices}" >> /input/configure.sh
-    # adjust num threads to match number of cores -1:
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
-    cpus=`echo $(( cpus / 2  ))`
-    echo "export SBI_NUM_THREADS=${cpus}" >> /input/configure.sh
+    memory=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
+    # memory is expressed in kb, /1024 to transform in Mb and assign it to each thread
+    parallel_executions=`echo $(( memory / 1048576 / 10  ))`
+    echo "export SBI_NUM_THREADS=${parallel_executions}" >> /input/configure.sh
     echo "export INCLUDE_INDELS='true'" >> /input/configure.sh
     echo "export REALIGN_AROUND_INDELS='false'" >> /input/configure.sh
     echo "export REF_SAMPLING_RATE='1.0'" >> /input/configure.sh
