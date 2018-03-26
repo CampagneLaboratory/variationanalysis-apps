@@ -34,9 +34,10 @@ main() {
     set -x
     #unzip
     (cd /input/FASTA_Genome; gunzip ${FASTA_Genome_name})
-    genome=`basename /input/FASTA_Genome/*.fa*`
+    sleep 2s
+    genome=`basename /input/FASTA_Genome/*.fa* .gz`
     cd /input/FASTA_Genome
-    samtools faidx /input/FASTA_Genome/*.fasta
+    samtools faidx /input/FASTA_Genome/\${genome}
     cd /out/Goby_Genome/
     goby 6g build-sequence-cache /input/FASTA_Genome/\${genome}
     ls -lrt /input/FASTA_Genome/
