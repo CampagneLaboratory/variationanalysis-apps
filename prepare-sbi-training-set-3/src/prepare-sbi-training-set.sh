@@ -66,9 +66,9 @@ main() {
 
     # Arrange dataset in output directory and upload:
     mkdir -p $HOME/out/SBI
-    mv /output/sbi/${basename}*-train.sbi* $HOME/out/SBI/
-    mv /output/sbi/${basename}*-validation.sbi* $HOME/out/SBI/
-    mv /output/sbi/${basename}*-test.sbi* $HOME/out/SBI/
+    mv /output/sbi/${basename}*-train.sbi* $HOME/out/SBI/ || true
+    mv /output/sbi/${basename}*-validation.sbi* $HOME/out/SBI/ || true
+    mv /output/sbi/${basename}*-test.sbi* $HOME/out/SBI/  || true
     ls -lrt $HOME/out/SBI/
 
     dx-upload-all-outputs --parallel
