@@ -43,7 +43,7 @@ main() {
     cd /input/FASTA_Genome
     #unzip
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
-    genome=`basename /input/FASTA_Genome/*.fa*`
+    genome=`basename /input/FASTA_Genome/*.fa* .gz`
     samtools faidx /input/FASTA_Genome/*.fa*
     ls -lrt  /input/FASTA_Genome/
     cd /input/Goby_Genome/
