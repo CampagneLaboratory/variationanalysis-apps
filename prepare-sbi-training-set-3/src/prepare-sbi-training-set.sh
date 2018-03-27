@@ -43,6 +43,16 @@ main() {
     echo "export GOBY_NUM_SLICES='50'" >> /input/configure.sh
     echo "export DO_CONCAT='true'" >> /input/configure.sh
     echo "export VARMAP_CHR_PREFIX='${Varmap_Prefix_Adjustment}'" >> /input/configure.sh
+
+
+    if [ "${Varmap_Prefix_Adjustment}" == "-chr" ]; then
+        CHR=""
+    else
+        CHR="chr"
+    fi
+    echo $CHR
+    echo "export CHR='${CHR}'" >> /input/configure.sh
+
     cat /input/configure.sh
 
     # Run generate-genotype-sets-0.02.sh
