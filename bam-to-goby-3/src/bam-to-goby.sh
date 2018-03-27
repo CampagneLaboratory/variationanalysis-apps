@@ -43,7 +43,7 @@ main() {
     cd /input/FASTA_Genome
     #unzip
     (cd /input/FASTA_Genome; gunzip ${Genome_name})
-    genome=`basename /input/FASTA_Genome/*.fa* .gz`
+    genome=`basename /input/FASTA_Genome/*.fa*`
     samtools faidx /input/FASTA_Genome/*.fa*
     ls -lrt  /input/FASTA_Genome/
     cd /input/Goby_Genome/
@@ -59,25 +59,33 @@ EOL
     dx-docker run \
         -v /input/:/input \
         artifacts/variationanalysis-app:${Image_Version} \
-        bash -c "source ~/.bashrc; cd /input/Goby_Genome; /input/scripts/index.sh"
-    genome=`basename /input/FASTA_Genome/*.fa*.gz | cut -d. -f1`
-    alignment_basename=`basename /input/BAM/*.bam .bam`
+        bash -c "source ~/.bashrc; cd /input/Goby_Genome; /input/scripts/index.sh"                                                                                                                                          
+    genome=`basename /input/FASTA_Genome/*.fa*`
+    alignment_basename=${Realigned_Bam_prefix}
     goby_genome_basename=`basename /input/FASTA_Genome/*.bases .bases`
     echo "export OUTPUT_BASENAME=${alignment_basename}" >> /input/configure.sh
     echo "export FASTA_GENOME=/input/FASTA_Genome/${genome}" >> /input/configure.sh
     echo "export SBI_GENOME=/input/FASTA_Genome/${goby_genome_basename}" >> /input/configure.sh
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
-    memory=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
+    cat /proc/meminfo
+    memory=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
     # memory is expressed in kb, /1024 to transform in Mb and assign it to each thread
-    parallel_executions=`echo $(( memory / 1048576 / 6  ))`
-   
+    goby_mem=`echo $(( memory /1048576 / 2 ))`
+    if [ "$goby_mem" -lt 6 ]; then
+        goby_mem=6
+    fi
+    #8g is set for each parallel job in parallel-bam-to-goby
+    parallel_executions=`echo $(( memory / 1048576 / 8  ))`
+    if [ "$parallel_executions" -lt 1 ]; then
+        parallel_executions=1
+    fi
     echo "export SBI_NUM_THREADS=${parallel_executions}" >> /input/configure.sh
 
     dx-docker run \
         -v /input/:/input \
         -v /out/Goby_Alignment/:/out/Goby_Alignment \
         artifacts/variationanalysis-app:${Image_Version} \
-        bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh 6g /input/BAM/*.bam"
+            bash -c "source ~/.bashrc; source /input/configure.sh; cd /out/Goby_Alignment; parallel-bam-to-goby.sh ${goby_mem}g /input/BAM/*.bam"
 
 
     echo "Content of /out/Goby_Alignment/"
