@@ -118,7 +118,7 @@ EOL
     bam_basename=`basename /input/Sorted_Bam/*.bam | cut -d. -f1`
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
-    memory=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
+    memory=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
     # memory is expressed in kb, /1048576 to transform in Mb and assign it to each thread
     parallel_executions=`echo $(( memory / 1048576 / 6  ))`
 
