@@ -46,7 +46,7 @@ main() {
 
 
     if [ "${Varmap_Prefix_Adjustment}" == "-chr" ]; then
-        CHR=""
+        CHR=" "
     else
         CHR="chr"
     fi
