@@ -7,3 +7,4 @@
 ./build-app.sh extract-chromosomes-5
 ./build-app.sh genotypeSbi-to-tensors-3
 ./build-app.sh somaticSbi-to-tensors
+./build-app.sh prepare-sbi-unlabeled

@@ -1,0 +1,87 @@
+{
+  "name": "prepare-sbi-unlabeled",
+  "title": "Prepare SBI Unlabeled",
+  "summary": "prepare-sbi-unlabeled",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+      {
+        "name": "Genome",
+        "label": "Goby Indexed Genome",
+        "class": "array:file",
+      "optional": false,
+      "patterns": [
+      "*.ignore",
+      "*.names",
+      "*.sizes",
+      "*.bases"
+      ],
+      "help": "The genome that the reads were mapped against, indexed with Goby."
+      },
+      {
+      "name": "Goby_Alignment",
+      "label": "Goby alignment",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+      "*.index",
+      "*.entries",
+      "*.header",
+      "*.tmh",
+      "*.perm",
+      "*.stats"
+      ],
+      "help": "One or several alignments in the Goby format."
+      },
+      {
+        "name": "Image_Version",
+        "label": "Docker Image Version",
+        "class": "string",
+        "default": "1.0.3",
+        "optional": false,
+        "help": "The version of variationanalysis-app image to use in the execution."
+      }
+  ],
+  "outputSpec": [ {
+    "name": "SBI",
+    "label": "Sequence Base Information",
+    "class": "array:file",
+    "patterns": [
+      "*.sbi",
+      "*.sbip"
+    ],
+    "help": "Training, validation and test set in .sbi format. Used to train DL callers."
+  }],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/prepare-sbi-unlabeled.sh"
+  },
+  "access": {
+    "project": "CONTRIBUTE",
+    "network": [
+      "*"
+    ]
+  },
+  "developers": [
+    "org-campagnelab"
+  ],
+  "authorizedUsers": [
+    "org-campagnelab"
+  ],
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
