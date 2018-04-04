@@ -48,8 +48,12 @@ main() {
     cat >${HOME}/in/run.sh <<EOL
         #!/bin/bash
         source /in/scripts/configure.sh
-        cd /out/SBI
+        mkdir /out/tmp
+        cd /out/tmp
         generate-genotype-unlabeled.sh 20g "/in/Goby_Alignment/${Goby_Alignment_prefix[0]}" "/in/Genome/${Genome_prefix[0]}"
+        mv /out/tmp/${Goby_Alignment_prefix[0]}*.sbi /out/SBI/
+        mv /out/tmp/${Goby_Alignment_prefix[0]}*.sbip /out/SBI/
+        rm -rf /out/tmp
 EOL
     chmod a+x  ${HOME}/in/run.sh
 
