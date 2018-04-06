@@ -3,7 +3,7 @@
   "title": "DL Genotype Caller",
   "summary": "Deep Learning Genotype Caller from the Campagne Lab. See https://github.com/CampagneLaboratory/variationanalysis.",
   "dxapi": "1.0.0",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "inputSpec": [
     {
       "name": "Genome",
@@ -63,7 +63,7 @@
       "name": "Image_Version",
       "label": "Docker Image Version",
       "class": "string",
-      "default": "1.0.2",
+      "default": "1.0.4",
       "optional": false,
       "help": "The version of variationanalysis-app image to use in the execution."
     }

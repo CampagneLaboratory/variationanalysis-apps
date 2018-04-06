@@ -3,7 +3,7 @@
   "title": "Extract chromosome",
   "summary": "Extract Chromosomes from BAM alignments",
   "dxapi": "1.0.0",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "inputSpec": [
     {
       "name": "Sorted_Bam",
@@ -32,6 +32,14 @@
       "optional": false,
       "default": "chr16 chr19 chr21",
       "help": "Space-separated list of chromosomes to extract. E.g. chr16 chr19 chr21."
+    },
+    {
+      "name": "Image_Version",
+      "label": "Docker Image Version",
+      "class": "string",
+      "default": "1.0.4",
+      "optional": false,
+      "help": "The version of variationanalysis-app image to use in the execution."
     }
   ],
   "outputSpec": [
