@@ -1,0 +1,117 @@
+{
+  "name": "genotype-tensors",
+  "title": "Genotype Tensors",
+  "summary": "A tool to load the vectorized genotype information files ",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "Genome",
+      "label": "Goby Indexed Genome",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.ignore",
+        "*.names",
+        "*.sizes",
+        "*.bases"
+      ],
+      "help": "The genome that the reads were mapped against, indexed with Goby."
+    },
+    {
+      "name": "Goby_Alignment",
+      "label": "Goby alignment",
+      "class": "array:file",
+      "optional": false,
+      "patterns": [
+        "*.index",
+        "*.entries",
+        "*.header",
+        "*.tmh",
+        "*.perm",
+        "*.stats"
+      ],
+      "help": "Alignment in Goby format."
+    },
+    {
+      "name": "Model_Archive",
+      "label": "Model archive",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "Model_*.tar.gz"
+      ],
+      "help": "Model as a .tar.gz archive, containing the files inside the model directory."
+    },
+    {
+      "name": "Model_Name",
+      "label": "Model Name",
+      "class": "string",
+      "default": "bestscore",
+      "optional": false,
+      "help": "The name of the model (included in the model archive) to use for genotype calling."
+    } ,
+    {
+      "name": "Num_Slices",
+      "label": "Number of slices",
+      "class": "int",
+      "default": 100,
+      "optional": false,
+      "help": "Number of slices to compute in parallel."
+    },
+    {
+      "name": "Image_Version",
+      "label": "Docker Image Version",
+      "class": "string",
+      "default": "1.0.5",
+      "optional": false,
+      "help": "The version of variationanalysis-app image to use in the execution."
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "Predictions",
+      "label": "Predictions",
+      "class": "array:file",
+      "patterns": [
+        "*.vcf.gz",
+        "*.vcf.gz.tbi",
+        "*.bed.gz"
+      ],
+      "help": "The genotype calls, in VCF format. The regions where calls are made, in Bed format."
+    }
+  ],
+
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/genotype-tensor.sh"
+  },
+  "access": {
+    "project": "CONTRIBUTE",
+    "network": [
+      "*"
+    ]
+  },
+  "developers": [
+    "org-campagnelab"
+  ],
+  "authorizedUsers": [
+    "org-campagnelab"
+  ],
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
