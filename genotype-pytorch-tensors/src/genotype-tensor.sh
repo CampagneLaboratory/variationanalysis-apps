@@ -45,6 +45,9 @@ main() {
     echo "export REALIGN_AROUND_INDELS='false'" >> ${CONFIG_FILE}
     echo "export REF_SAMPLING_RATE='1.0'" >> ${CONFIG_FILE}
     echo "export OUTPUT_BASENAME=${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
+    echo "export SBI_BASENAME=${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
+    echo "export DATASET_BASENAME=${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
+    echo "export DATASET_NAME=unlabeled" >> ${CONFIG_FILE}
     echo "export DO_CONCAT='false'" >> ${CONFIG_FILE}
     cat /input/configure.sh
 
@@ -67,5 +70,19 @@ EOL
         -v ${HOME}/in/:/in/ \
         artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; /in/run.sh"
+
+    echo "Content of out/vcf:"
+    ls -lrt /out/vcf/
+
+    # publish the output
+    mkdir -p $HOME/out/Predictions
+    mv $HOME/out/vcf/*.vcf.gz $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-genotypes.vcf.gz
+    mv $HOME/out/vcf/*.vcf.gz.tbi $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-genotypes.vcf.gz.tbi
+    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-observed-regions.bed.gz
+
+    echo "Content of Predictions:"
+    ls -lrt $HOME/out/Predictions/
+
+    dx-upload-all-outputs --parallel
 
 }

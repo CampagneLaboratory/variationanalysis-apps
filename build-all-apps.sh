@@ -8,3 +8,4 @@
 ./build-app.sh genotypeSbi-to-tensors-3
 ./build-app.sh somaticSbi-to-tensors
 ./build-app.sh prepare-sbi-unlabeled
+./build-app.sh genotype-pytorch-tensors

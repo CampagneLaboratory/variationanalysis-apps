@@ -1,5 +1,5 @@
 {
-  "name": "genotype-tensors",
+  "name": "genotype-pytorch-tensors",
   "title": "Genotype Tensors",
   "summary": "A tool to load the vectorized genotype information files ",
   "dxapi": "1.0.0",
