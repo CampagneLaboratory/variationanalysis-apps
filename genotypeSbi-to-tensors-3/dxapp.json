@@ -56,6 +56,14 @@
       "help": "Value of epsilon for label smoothing. Zero (default) is no smoothing."
     },
     {
+      "name": "ExtraGenotypes",
+      "label": "Extra Genotypes",
+      "class": "int",
+      "default": 2,
+      "optional": false,
+      "help": "Number of additional genotypes to consider in addition to ploidy. Default is 2."
+    },
+    {
       "name": "IndelSequenceLength",
       "label": "Indel Sequence Length",
       "class": "int",
