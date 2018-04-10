@@ -33,9 +33,11 @@ main() {
     echo "export SBI_GENOME=/in/Genome/${Genome_prefix[0]}" >> ${CONFIG_FILE}
     echo "export GOBY_ALIGNMENT=/in/Goby_Alignment/${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
     echo "export GOBY_NUM_SLICES=${Num_Slices}" >> ${CONFIG_FILE}
-    echo "export MODEL_PATH=/in/Model_Archive/" >> ${CONFIG_FILE}
+    echo "export MODEL_ARCHIVE_FILE=${Model_Archive_path}" >> ${CONFIG_FILE}
+    dir=`dirname $MODEL_ARCHIVE_FILE`
+    echo "export MODEL_ARCHIVE_PATH=${dir}" >> ${CONFIG_FILE}
     echo "export MODEL_NAME=${Model_Name}" >> ${CONFIG_FILE}
-
+    echo "export CHECKPOINT_KEY=${Checkpoint_Key}" >> ${CONFIG_FILE}
     cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
     memory=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
     # memory is expressed in kb, /1024 to transform in Mb and assign it to each thread
@@ -48,6 +50,7 @@ main() {
     echo "export SBI_BASENAME=${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
     echo "export DATASET_BASENAME=${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
     echo "export DATASET_NAME=unlabeled" >> ${CONFIG_FILE}
+    echo "export SAMPLE_NAME=${Sample_Name}" >> ${CONFIG_FILE}
     echo "export DO_CONCAT='false'" >> ${CONFIG_FILE}
     cat /input/configure.sh
 

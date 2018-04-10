@@ -44,12 +44,21 @@
       "help": "Model as a .tar.gz archive, containing the files inside the model directory."
     },
     {
-      "name": "Model_Name",
-      "label": "Model Name",
+      "name": "Model_Label",
+      "label": "Model Label",
       "class": "string",
-      "default": "bestscore",
+      "default": "best",
       "optional": false,
       "help": "The name of the model (included in the model archive) to use for genotype calling."
+    },
+    ,
+    {
+      "name": "Checkpoint_Key",
+      "label": "Checkpoint Key",
+      "class": "string",
+      "default": "YNCRX",
+      "optional": false,
+      "help": "The checkpoint key of the model (included in the model archive) to use for genotype calling. E.g. if the model file is pytorch_YNCRX_best.t7, the checkpoint key is YNCRX."
     } ,
     {
       "name": "Num_Slices",
@@ -58,6 +67,13 @@
       "default": 100,
       "optional": false,
       "help": "Number of slices to compute in parallel."
+    },
+    {
+      "name": "Sample_Name",
+      "label": "Sample Name",
+      "class": "string",
+      "optional": false,
+      "help": "Name of the sample to store in the .vecp file."
     },
     {
       "name": "Image_Version",
