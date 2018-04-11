@@ -10,12 +10,14 @@ function clone {
 }
 
 function execute {
+
+    set -x
     mkdir -p /out/sbi
     mkdir -p /out/sbi-vec
     mkdir -p /out/vec-vec
     mkdir -p /out/vec-vcf
 
-    #clone
+    clone
     export PATH="${HOME}/GenotypeTensors/bin:${PATH}"
     #generate SBI
     cd /out/sbi
@@ -86,8 +88,17 @@ function execute {
     #merge the VCFs
     mkdir -p /out/vcf
     cd /out/vec-vcf
-    cat ${MODEL}-${MODEL_NAME}-*.vcf | vcf-sort > /out/vcf/sorted-${MODEL}-${MODEL_LABEL}.vcf
+    cat models-${MODEL_NAME}-${CHECKPOINT_KEY}-*.vcf | vcf-sort > /out/vcf/sorted-${MODEL}-${MODEL_LABEL}.vcf
     cd /out/vcf/
     bgzip -f sorted-${MODEL}-${MODEL_LABEL}.vcf
     tabix -f sorted-${MODEL}-${MODEL_LABEL}.vcf.gz
+
+    #merge the BEDs
+    cd /out/vec-vcf
+
+    cat *-observed-regions.bed | sort -k1,1 -k2,2n | mergeBed > /out/vcf/model-bestscore-observed-regions.bed
+    cd /out/vcf/
+
+    bgzip -f model-bestscore-observed-regions.bed
+    tabix -f model-bestscore-observed-regions.bed.gz
 }

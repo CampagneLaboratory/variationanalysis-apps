@@ -74,9 +74,11 @@ EOL
     ls -lrt $HOME/out/vcf
 
     mkdir -p $HOME/Predictions
-    mv $HOME/out/vcf/*.vcf.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz
-    mv $HOME/out/vcf/*.vcf.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz.tbi
+    mv $HOME/out/vcf/sorted-*.vcf.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz
+    mv $HOME/out/vcf/sorted-*.vcf.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz.tbi
     mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-observed-regions.bed.gz
+    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-observed-regions.bed.gz.tbi
+
 
     #remove all the outputs to publish only the predictions
     rm -rf $HOME/out/*
