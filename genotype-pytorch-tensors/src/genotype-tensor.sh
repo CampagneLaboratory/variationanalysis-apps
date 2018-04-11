@@ -22,7 +22,8 @@ main() {
     CONFIG_FILE="${HOME}/in/scripts/configure.sh"
     mkdir -p ${HOME}/in/scripts/
     mkdir -p $HOME/out/Predictions
-    
+    mv /input/scripts/* ${HOME}/in/scripts/
+
     set -x
     #flatten the inputs in a single folder
     find ${HOME}/in/Genome/ -type f -name "${Genome_prefix[0]}.*" -execdir mv {} .. \;
@@ -30,7 +31,6 @@ main() {
     model_basename=`basename /input/model/${Model_Archive_name} .tar.gz`
 
     # configure
-    #genome_basename=`basename /input/indexed_genome/*.bases .bases`
     echo "export SBI_GENOME=/in/Genome/${Genome_prefix[0]}" >> ${CONFIG_FILE}
     echo "export GOBY_ALIGNMENT=/in/Goby_Alignment/${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
     echo "export GOBY_NUM_SLICES=${Num_Slices}" >> ${CONFIG_FILE}
