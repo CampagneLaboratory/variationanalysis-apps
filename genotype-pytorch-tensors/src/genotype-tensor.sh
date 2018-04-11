@@ -37,7 +37,7 @@ main() {
     echo "export MODEL_ARCHIVE_FILE=${Model_Archive_path}" >> ${CONFIG_FILE}
     dir=`dirname ${Model_Archive_path}`
     echo "export MODEL_ARCHIVE_PATH=${dir}" >> ${CONFIG_FILE}
-    echo "export MODEL_NAME=${Model_Name}" >> ${CONFIG_FILE}
+    echo "export MODEL_NAME=${Model_Label}" >> ${CONFIG_FILE}
     echo "export CHECKPOINT_KEY=${Checkpoint_Key}" >> ${CONFIG_FILE}
     echo "export INCLUDE_INDELS='true'" >> ${CONFIG_FILE}
     echo "export REALIGN_AROUND_INDELS='false'" >> ${CONFIG_FILE}
@@ -73,10 +73,10 @@ EOL
     ls -lrt $HOME/out/vcf
 
     mkdir -p $HOME/Predictions
-    mv $HOME/out/vcf/sorted-*.vcf.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz
-    mv $HOME/out/vcf/sorted-*.vcf.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz.tbi
-    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-observed-regions.bed.gz
-    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-observed-regions.bed.gz.tbi
+    mv $HOME/out/vcf/sorted-*.vcf.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-genotypes.vcf.gz
+    mv $HOME/out/vcf/sorted-*.vcf.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-genotypes.vcf.gz.tbi
+    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-observed-regions.bed.gz
+    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-observed-regions.bed.gz.tbi
 
 
     #remove all the outputs to publish only the predictions
