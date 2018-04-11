@@ -35,7 +35,7 @@ main() {
     echo "export GOBY_ALIGNMENT=/in/Goby_Alignment/${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
     echo "export GOBY_NUM_SLICES=${Num_Slices}" >> ${CONFIG_FILE}
     echo "export MODEL_ARCHIVE_FILE=${Model_Archive_path}" >> ${CONFIG_FILE}
-    dir=`dirname $MODEL_ARCHIVE_FILE`
+    dir=`dirname ${Model_Archive_path}`
     echo "export MODEL_ARCHIVE_PATH=${dir}" >> ${CONFIG_FILE}
     echo "export MODEL_NAME=${Model_Name}" >> ${CONFIG_FILE}
     echo "export CHECKPOINT_KEY=${Checkpoint_Key}" >> ${CONFIG_FILE}
@@ -48,9 +48,8 @@ main() {
     echo "export DATASET_NAME=unlabeled" >> ${CONFIG_FILE}
     echo "export SAMPLE_NAME=${Sample_Name}" >> ${CONFIG_FILE}
     echo "export DO_CONCAT='false'" >> ${CONFIG_FILE}
-    cat /input/configure.sh
 
-
+    cat ${CONFIG_FILE}
 
     cat >${HOME}/in/run.sh <<EOL
         #!/bin/bash
