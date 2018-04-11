@@ -27,6 +27,7 @@ main() {
     #flatten the inputs in a single folder
     find ${HOME}/in/Genome/ -type f -name "${Genome_prefix[0]}.*" -execdir mv {} .. \;
     find ${HOME}/in/Goby_Alignment/ -type f -name "${Goby_Alignment_prefix[0]}.*" -execdir mv {} .. \;
+    model_basename=`basename /input/model/${Model_Archive_name} .tar.gz`
 
     # configure
     #genome_basename=`basename /input/indexed_genome/*.bases .bases`
@@ -38,11 +39,6 @@ main() {
     echo "export MODEL_ARCHIVE_PATH=${dir}" >> ${CONFIG_FILE}
     echo "export MODEL_NAME=${Model_Name}" >> ${CONFIG_FILE}
     echo "export CHECKPOINT_KEY=${Checkpoint_Key}" >> ${CONFIG_FILE}
-    cpus=`grep physical  /proc/cpuinfo |grep id|wc -l`
-    memory=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
-    # memory is expressed in kb, /1024 to transform in Mb and assign it to each thread
-    parallel_executions=`echo $(( memory / 1048576 / 10  ))`
-    echo "export SBI_NUM_THREADS=${parallel_executions}" >> ${CONFIG_FILE}
     echo "export INCLUDE_INDELS='true'" >> ${CONFIG_FILE}
     echo "export REALIGN_AROUND_INDELS='false'" >> ${CONFIG_FILE}
     echo "export REF_SAMPLING_RATE='1.0'" >> ${CONFIG_FILE}
@@ -75,15 +71,18 @@ EOL
         bash -c "source ~/.bashrc; /in/run.sh"
 
     echo "Content of out/vcf:"
-    ls -lrt /out/vcf/
+    ls -lrt $HOME/out/vcf
 
-    # publish the output
-    mkdir -p $HOME/out/Predictions
-    mv $HOME/out/vcf/*.vcf.gz $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-genotypes.vcf.gz
-    mv $HOME/out/vcf/*.vcf.gz.tbi $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-genotypes.vcf.gz.tbi
-    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/out/Predictions/${alignment_basename}-${model_basename}-${Model_Name}-observed-regions.bed.gz
+    mkdir -p $HOME/Predictions
+    mv $HOME/out/vcf/*.vcf.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz
+    mv $HOME/out/vcf/*.vcf.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-genotypes.vcf.gz.tbi
+    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Name}-observed-regions.bed.gz
 
-    echo "Content of Predictions:"
+    #remove all the outputs to publish only the predictions
+    rm -rf $HOME/out/*
+    mv $HOME/Predictions $HOME/out/
+
+    echo "New Content of Predictions:"
     ls -lrt $HOME/out/Predictions/
 
     dx-upload-all-outputs --parallel

@@ -2,7 +2,7 @@
 
 export CORES=`grep physical  /proc/cpuinfo |grep id|wc -l`
 
-export MEMORY_IN_KB=`cat /proc/meminfo | grep MemAvailable | awk '{print $2}'`
+export MEMORY_IN_KB=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
 
 # memory is expressed in kb, /1024 to transform in Mb
 export MEMORY_IN_MB=`echo $(( MEMORY_IN_KB / 1024 ))`

@@ -19,27 +19,43 @@ function execute {
     export PATH="${HOME}/GenotypeTensors/bin:${PATH}"
     #generate SBI
     cd /out/sbi
-    #parallel-genotype-sbi.sh 10g "${GOBY_ALIGNMENT}" 2>&1 | tee parallel-genotype-sbi.log
 
+    # memory is expressed in MB, /1000 to transform in Gb and assign ito goby
+    goby_mem=`echo $(( MEMORY_IN_MB / 1000 ))`
+    if [ "$goby_mem" -lt 6 ]; then
+        goby_mem=10
+    fi
+    
+    #10g are required for each parallel execution inside parallel-genotype-sbi.sh
+    parallel_executions=`echo $(( MEMORY_IN_MB / 1000 / 10 ))`
+    if [ "$parallel_executions" -lt 1 ]; then
+        parallel_executions=1
+    fi
+    export SBI_NUM_THREADS=${parallel_executions}
+
+    parallel-genotype-sbi.sh "${goby_mem}g" "${GOBY_ALIGNMENT}" 2>&1 | tee parallel-genotype-sbi.log
 
     cd ${MODEL_ARCHIVE_PATH}
-    #tar -zxvf ${MODEL_ARCHIVE_FILE}
-    #rm ${MODEL_ARCHIVE_FILE}
+    tar -zxvf ${MODEL_ARCHIVE_FILE}
+    rm ${MODEL_ARCHIVE_FILE}
     export MODEL_PATH=`find ${MODEL_ARCHIVE_PATH}/* -name  Model_* -type d`
     #MODEL_PATH="${MODEL_ARCHIVE_PATH}/${MODEL_DIR}"
     DOMAIN_PROPERTIES="${MODEL_PATH}/models/domain.properties"
     CHECKPOINT_PROPERTIES="${MODEL_PATH}/models/checkpoint.properties"
 
-    #generate VECs (read params form the model/domain.properties
-
+    # read params form the domain.properties
     IndelSequenceLength=`cat ${DOMAIN_PROPERTIES} | grep indelSequenceLength | cut -d= -f2`
     FeatureMapper=`cat ${DOMAIN_PROPERTIES} | grep input.featureMapper= | cut -d= -f2`
     LabelSmoothingEpsilon=`cat ${DOMAIN_PROPERTIES} | grep labelSmoothing.epsilon | cut -d= -f2`
     Ploidy=`cat ${DOMAIN_PROPERTIES} | grep genotypes.ploidy | cut -d= -f2`
     GenomicContextLength=`cat ${DOMAIN_PROPERTIES} | grep stats.genomicContextSize.max | cut -d= -f2`
     ExtraGenotypes=`cat ${DOMAIN_PROPERTIES} | grep extraGenotypes | cut -d= -f2`
-    CHECKPOINT_KEY=`cat ${CHECKPOINT_PROPERTIES} | grep default.checkpoint | cut -d= -f2`
-    rm -f /out/sbi-vec/commands.txt
+
+    # set the default checkpoint if the user didn't set it in the interface
+    if [[ -z "$CHECKPOINT_KEY" ]]; then
+        CHECKPOINT_KEY=`cat ${CHECKPOINT_PROPERTIES} | grep default.checkpoint | cut -d= -f2`
+    fi
+
     cd /out/sbi-vec
     for file in /out/sbi/out-part*.sbi; do
         SBI_basename=`basename /out/sbi/$file .sbi`
@@ -63,16 +79,15 @@ function execute {
         --vec-path \"/out/vec-vec/${OUTPUT_VEC}.vec\" -f --format VCF --checkpoint-key ${CHECKPOINT_KEY} \
         -i \"/out/sbi/${SBI_basename}.sbi\" " >> /out/sbi-vec/commands.txt
 
-     done
+    done
     cat /out/sbi-vec/commands.txt
     parallel --bar --eta -j${SBI_NUM_THREADS} --plus  --progress :::: /out/sbi-vec/commands.txt
+
+    #merge the VCFs
+    mkdir -p /out/vcf
     cd /out/vec-vcf
-    cat ${MODEL}-${MODEL_NAME}-*.vcf | vcf-sort >sorted-${MODEL}-${MODEL_LABEL}.vcf
+    cat ${MODEL}-${MODEL_NAME}-*.vcf | vcf-sort > /out/vcf/sorted-${MODEL}-${MODEL_LABEL}.vcf
+    cd /out/vcf/
     bgzip -f sorted-${MODEL}-${MODEL_LABEL}.vcf
     tabix -f sorted-${MODEL}-${MODEL_LABEL}.vcf.gz
-
-
-    #cd /output/vcf
-    #predict-genotypes-many.sh 10g /input/model/ \"${Model_Name}\" /input/sbi/*.sbi
-    #/in/scripts/merge.sh
 }

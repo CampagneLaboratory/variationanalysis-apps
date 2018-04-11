@@ -56,8 +56,8 @@
       "name": "Checkpoint_Key",
       "label": "Checkpoint Key",
       "class": "string",
-      "default": "YNCRX",
-      "optional": false,
+      "default": "",
+      "optional": true,
       "help": "The checkpoint key of the model (included in the model archive) to use for genotype calling. E.g. if the model file is pytorch_YNCRX_best.t7, the checkpoint key is YNCRX."
     } ,
     {
