@@ -36,6 +36,7 @@ function execute {
     export SBI_NUM_THREADS=${parallel_executions}
 
     parallel-genotype-sbi.sh "${goby_mem}g" "${GOBY_ALIGNMENT}" 2>&1 | tee parallel-genotype-sbi.log
+    ls -lrt /out/sbi/
 
     cd ${MODEL_ARCHIVE_PATH}
     tar -zxvf ${MODEL_ARCHIVE_FILE}

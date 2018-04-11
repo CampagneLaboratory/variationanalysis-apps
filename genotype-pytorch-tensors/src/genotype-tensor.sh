@@ -34,9 +34,9 @@ main() {
     echo "export SBI_GENOME=/in/Genome/${Genome_prefix[0]}" >> ${CONFIG_FILE}
     echo "export GOBY_ALIGNMENT=/in/Goby_Alignment/${Goby_Alignment_prefix[0]}" >> ${CONFIG_FILE}
     echo "export GOBY_NUM_SLICES=${Num_Slices}" >> ${CONFIG_FILE}
-    echo "export MODEL_ARCHIVE_FILE=${Model_Archive_path}" >> ${CONFIG_FILE}
+    echo "export MODEL_ARCHIVE_FILE=${Model_Archive_name}" >> ${CONFIG_FILE}
     dir=`dirname ${Model_Archive_path}`
-    echo "export MODEL_ARCHIVE_PATH=${dir}" >> ${CONFIG_FILE}
+    echo "export MODEL_ARCHIVE_PATH=/in/Model_Archive" >> ${CONFIG_FILE}
     echo "export MODEL_NAME=${Model_Label}" >> ${CONFIG_FILE}
     echo "export CHECKPOINT_KEY=${Checkpoint_Key}" >> ${CONFIG_FILE}
     echo "export INCLUDE_INDELS='true'" >> ${CONFIG_FILE}
