@@ -1,6 +1,6 @@
 {
   "name": "genotype-pytorch-tensors",
-  "title": "Genotype Tensors",
+  "title": "Genotype Tensors with Pytorch",
   "summary": "A tool to load the vectorized genotype information files ",
   "dxapi": "1.0.0",
   "version": "0.0.1",
@@ -51,7 +51,6 @@
       "optional": false,
       "help": "The name of the model (included in the model archive) to use for genotype calling."
     },
-    ,
     {
       "name": "Checkpoint_Key",
       "label": "Checkpoint Key",
