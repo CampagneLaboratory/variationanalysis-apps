@@ -29,7 +29,7 @@ function execute {
     fi
     
     #10g are required for each parallel execution inside parallel-genotype-sbi.sh
-    parallel_executions=`echo $(( MEMORY_IN_MB / 1000 / 10 ))`
+    parallel_executions=`echo $(( MEMORY_IN_MB / 1000 / 10 - 2 ))`
     if [ "$parallel_executions" -lt 1 ]; then
         parallel_executions=1
     fi
