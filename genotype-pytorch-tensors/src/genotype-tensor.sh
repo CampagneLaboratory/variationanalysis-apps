@@ -48,7 +48,7 @@ main() {
     echo "export DATASET_NAME=unlabeled" >> ${CONFIG_FILE}
     echo "export SAMPLE_NAME=${Sample_Name}" >> ${CONFIG_FILE}
     echo "export DO_CONCAT='false'" >> ${CONFIG_FILE}
-
+    echo "export DSV_OPTIONS=\"${DSV_options}\" >> ${CONFIG_FILE}
     cat ${CONFIG_FILE}
 
     cat >${HOME}/in/run.sh <<EOL
