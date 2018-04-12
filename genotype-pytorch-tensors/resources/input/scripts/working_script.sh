@@ -80,7 +80,7 @@ function execute {
         && cd /out/vec-vec && predict-genotypes-pytorch.sh 10g \"${MODEL_PATH}\" \"${MODEL_NAME}\" ${OUTPUT_VEC} /out/sbi-vec/${SBI_basename} \
         && cd /out/vec-vcf && predict-genotypes.sh 4g -m ${MODEL_PATH}/models -l ${MODEL_NAME}  --no-cache --mini-batch-size ${MINI_BATCH_SIZE} \
         --vec-path \"/out/vec-vec/${OUTPUT_VEC}.vec\" -f --format VCF --checkpoint-key ${CHECKPOINT_KEY} \
-        -i \"/out/sbi/${SBI_basename}.sbi\" " >> /out/sbi-vec/commands.txt
+        -i \"/out/sbi/${SBI_basename}.sbi\" && rm -f \"/out/sbi/${SBI_basename}.sbi\" && rm -f \"/out/vec-vec/${OUTPUT_VEC}*.*\" && rm -f \"/out/sbi-vec/${SBI_basename}*\" " >> /out/sbi-vec/commands.txt
 
     done
     cat /out/sbi-vec/commands.txt
@@ -93,11 +93,12 @@ function execute {
     cd /out/vcf/
     bgzip -f sorted-${MODEL}-${MODEL_LABEL}.vcf
     tabix -f sorted-${MODEL}-${MODEL_LABEL}.vcf.gz
+    rm -f /out/vec-vcf/models-${MODEL_NAME}-${CHECKPOINT_KEY}-*.vcf
 
     #merge the BEDs
     cd /out/vec-vcf
-
     cat *-observed-regions.bed | sort -k1,1 -k2,2n | mergeBed > /out/vcf/model-bestscore-observed-regions.bed
+    rm -f /out/vec-vcf/*
     cd /out/vcf/
 
     bgzip -f model-bestscore-observed-regions.bed
