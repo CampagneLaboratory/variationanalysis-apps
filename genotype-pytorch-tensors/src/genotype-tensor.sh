@@ -73,10 +73,10 @@ EOL
     ls -lrt $HOME/out/vcf
 
     mkdir -p $HOME/Predictions
-    mv $HOME/out/vcf/sorted-*.vcf.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-genotypes.vcf.gz
-    mv $HOME/out/vcf/sorted-*.vcf.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-genotypes.vcf.gz.tbi
-    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-observed-regions.bed.gz
-    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-observed-regions.bed.gz.tbi
+    mv $HOME/out/vcf/sorted-*.vcf.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-genotypes.vcf.gz || true
+    mv $HOME/out/vcf/sorted-*.vcf.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-genotypes.vcf.gz.tbi || true
+    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-observed-regions.bed.gz || true
+    mv $HOME/out/vcf/model-bestscore-observed-regions.bed.gz.tbi $HOME/Predictions/${Goby_Alignment_prefix[0]}-${model_basename}-${Model_Label}-observed-regions.bed.gz.tbi || true
 
 
     #remove all the outputs to publish only the predictions
