@@ -1,0 +1,136 @@
+{
+  "name": "rtg-eval-vcf",
+  "title": "Eval predictions with RTG",
+  "summary": "rtg-eval-vcf",
+  "dxapi": "1.0.0",
+  "version": "0.0.1",
+  "inputSpec": [
+    {
+      "name": "Predictions",
+      "label": "Predictions",
+      "class": "array:file",
+      "patterns": [
+        "*.vcf.gz",
+        "*.vcf.gz.tbi"
+      ],
+      "help": "The genotype calls, in VCF format."
+    },
+    {
+      "name": "Regions",
+      "label": "Regions",
+      "class": "file",
+      "patterns": [
+        "*.bed.gz"
+      ],
+      "help": "The regions where calls are made, in Bed format."
+    },
+    {
+      "name": "RTG_Template",
+      "label": "The RTG template",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.sdf"
+      ],
+      "help": "SDF of the reference genome the variants are called against"
+    },
+    {
+      "name": "Baseline_VCF",
+      "label": "The baseline variants, in VCF format",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.vcf.gz"
+      ],
+      "help": ""
+    },
+    {
+      "name": "Baseline_Regions",
+      "label": "The baseline regions, in Bed format",
+      "class": "file",
+      "optional": false,
+      "patterns": [
+        "*.bed.gz"
+      ],
+      "help": ""
+    },
+    {
+      "name": "RTG_Vcfeval_Options",
+      "label": "RTG vcfeval options",
+      "class": "string",
+      "optional": false,
+      "default": "--vcf-score-field=P  --sort-order=descending",
+      "help": "Additional options for RTG vcfeval."
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "Eval_SNPs",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "Eval_Indels",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "SNP_Recall_Plot",
+      "label": "SNP Precision Recall plot",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    },
+    {
+      "name": "Indel_Recall_Plot",
+      "label": "Indel Precision Recall plot",
+      "class": "file",
+      "patterns": [
+        "*"
+      ],
+      "help": ""
+    } ,
+    {
+      "name": "Image_Version",
+      "label": "Docker Image Version",
+      "class": "string",
+      "default": "1.0.6",
+      "optional": false,
+      "help": "The version of variationanalysis-app image to use in the execution."
+    }
+  ],
+  "runSpec": {
+    "timeoutPolicy": {
+      "*": {
+        "hours": 48
+      }
+    },
+    "interpreter": "bash",
+    "release": "14.04",
+    "distribution": "Ubuntu",
+    "file": "src/rtg-eval-vcf.sh"
+  },
+  "access": {
+    "project": "CONTRIBUTE",
+    "network": [
+      "*"
+    ]
+  },
+  "regionalOptions": {
+    "aws:us-east-1": {
+      "systemRequirements": {
+        "*": {
+          "instanceType": "mem1_ssd1_x4"
+        }
+      }
+    }
+  }
+}
