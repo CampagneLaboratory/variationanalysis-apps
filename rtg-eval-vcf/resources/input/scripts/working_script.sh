@@ -27,9 +27,7 @@ function buildBaselineConfidents {
     tabix -f baseline-confident-chr-indels.vcf.gz
     export BASELINE_STANDARD_VCF_INDEL_GZ="${OUTPUT_DIR}/baseline-confident-chr-indels.vcf.gz"
 
- 
-    if [ -z "${BASELINE_REGIONS+set}" ]; then
-
+    if [ ! -z "${BASELINE_REGIONS}" ]; then
         gzip -c -d  ${BASELINE_REGIONS} |awk '{print "chr"$1"\t"$2"\t"$3}' >${OUTPUT_DIR}/baseline-confident-regions-chr.bed
         cd ${OUTPUT_DIR}/
         bgzip -f baseline-confident-regions-chr.bed
@@ -49,7 +47,7 @@ function execute {
     mkdir -p $BASELINE_STANDARD_DIR
     buildBaselineConfidents $BASELINE_STANDARD_DIR
     EVAL_BED_REGION_OPTION=""
-    if [ -z "${BASELINE_CONFIDENT_REGIONS_BED_GZ+set}" ]; then
+    if [ -e "${BASELINE_CONFIDENT_REGIONS_BED_GZ}" ]; then
         EVAL_BED_REGION_OPTION="--evaluation-regions=${BASELINE_CONFIDENT_REGIONS_BED_GZ}"
     fi
 
@@ -63,10 +61,7 @@ function execute {
     
     rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_SNP_GZ}  \
             -c ${VCF_INPUT_BASENAME}-snps.vcf.gz -o ${RTG_SNPS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
-            --bed-regions=${BED_OBSERVED_REGIONS_INPUT} \
-            --vcf-score-field=P  --sort-order=descending
-
-    #TODO --vcf-score-field=P  --sort-order=descending options to expose
+            --bed-regions=${BED_OBSERVED_REGIONS_INPUT} ${RTG_OPTIONS}
 
 
     dieUponError "Failed to run rtg vcfeval for SNPs."
@@ -81,9 +76,8 @@ function execute {
 
     rtg vcfeval --baseline=${GOLD_STANDARD_VCF_INDEL_GZ}  \
             -c ${VCF_INPUT_BASENAME}-indels.vcf.gz -o ${RTG_INDELS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE} ${EVAL_BED_REGION_OPTION} \
-                --bed-regions=${BED_OBSERVED_REGIONS_OUTPUT} \
-                ${RTG_OPTIONS}
-    dieUponError "Failed to run rtg vcfeval."
+                --bed-regions=${BED_OBSERVED_REGIONS_OUTPUT} ${RTG_OPTIONS}
+    dieUponError "Failed to run rtg vcfeval for Indels."
 
     cp ${VCF_INPUT_BASENAME}-indels.vcf.gz  ${RTG_INDELS_OUTPUT_FOLDER}/
 
