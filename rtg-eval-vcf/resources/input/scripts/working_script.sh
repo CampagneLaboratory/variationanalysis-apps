@@ -3,7 +3,6 @@
 . /in/scripts/common.sh
 
 function buildBaselineConfidents {
-
     OUTPUT_DIR=$1
     rm -rf $OUTPUT_DIR || true
     mkdir -p $OUTPUT_DIR
@@ -22,7 +21,7 @@ function buildBaselineConfidents {
     fi
 }
 
-function splitInputVCF {
+function splitCalls {
     OUTPUT_DIR=${HOME}/output-vcf-tmp/
     rm -rf ${OUTPUT_DIR} || true
     mkdir -p ${OUTPUT_DIR}
@@ -44,12 +43,12 @@ function splitVCF {
     tabix -f ${OUTPUT_BASENAME}.vcf.gz
 
     # remove non-SNPs:
-    gzip -c -d  ${BASELINE_STANDARD_VCF_GZ} |awk '{if($0 !~ /^#/) { if (length($4)==1 && length($5)==1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-snps.vcf
+    gzip -c -d  ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf.gz |awk '{if($0 !~ /^#/) { if (length($4)==1 && length($5)==1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-snps.vcf
     bgzip -f ${OUTPUT_BASENAME}-snps.vcf
     tabix -f ${OUTPUT_BASENAME}-snps.vcf.gz
 
     # keep only indels:
-    gzip -c -d  ${BASELINE_STANDARD_VCF_GZ} |awk '{if($0 !~ /^#/) { if (length($4)!=1 || length($5)!=1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-indels.vcf
+    gzip -c -d  ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf.gz |awk '{if($0 !~ /^#/) { if (length($4)!=1 || length($5)!=1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-indels.vcf
     bgzip -f ${OUTPUT_BASENAME}-indels.vcf
     tabix -f ${OUTPUT_BASENAME}-indels.vcf.gz
 }
@@ -64,7 +63,7 @@ function execute {
     tar -zxvf ${RTG_TEMPLATE_ARCHIVE}
     rm ${RTG_TEMPLATE_ARCHIVE}
     export RTG_TEMPLATE_DIR=`find ${RTG_TEMPLATE_PATH}/* -type d`
-    export BASELINE_STANDARD_DIR=${HOME}/${VCF_INPUT_BASENAME}/
+    export BASELINE_STANDARD_DIR=${HOME}/${BASELINE_VCF_BASENAME}/
     buildBaselineConfidents $BASELINE_STANDARD_DIR
 
     EVAL_BED_REGION_OPTION=""
@@ -72,7 +71,7 @@ function execute {
         EVAL_BED_REGION_OPTION="--evaluation-regions=${BASELINE_CONFIDENT_REGIONS_BED_GZ}"
     fi
 
-    splitInputVCF
+    splitCalls
 
     RTG_SNPS_OUTPUT_FOLDER=${HOME}/${VCF_INPUT_BASENAME}/snps
     rm -rf ${RTG_SNPS_OUTPUT_FOLDER} || true
