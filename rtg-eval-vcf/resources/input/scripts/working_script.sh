@@ -7,7 +7,7 @@ function buildBaselineConfidents {
     OUTPUT_DIR=$1
 
     # add "chr prefix:"
-    gzip -c -d ${BASELINE_VCF} |awk '{if($0 !~ /^#/) print "chr"$0; else print $0}' > ${OUTPUT_DIR}/baseline-confident-chr.vcf
+    gzip -c -d ${BASELINE_VCF} |awk '{if($0 !~ /^#/) print $0; else print $0}' > ${OUTPUT_DIR}/baseline-confident-chr.vcf
     cd ${OUTPUT_DIR}
     bgzip -f baseline-confident-chr.vcf
     tabix -f baseline-confident-chr.vcf.gz
@@ -74,9 +74,9 @@ function execute {
     bgzip -f ${VCF_INPUT_BASENAME}-indels.vcf
     tabix -f ${VCF_INPUT_BASENAME}-indels.vcf.gz
 
-    rtg vcfeval --baseline=${GOLD_STANDARD_VCF_INDEL_GZ}  \
-            -c ${VCF_INPUT_BASENAME}-indels.vcf.gz -o ${RTG_INDELS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE} ${EVAL_BED_REGION_OPTION} \
-                --bed-regions=${BED_OBSERVED_REGIONS_OUTPUT} ${RTG_OPTIONS}
+    rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_INDEL_GZ}  \
+            -c ${VCF_INPUT_BASENAME}-indels.vcf.gz -o ${RTG_INDELS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
+                --bed-regions=${BED_OBSERVED_REGIONS_INPUT} ${RTG_OPTIONS}
     dieUponError "Failed to run rtg vcfeval for Indels."
 
     cp ${VCF_INPUT_BASENAME}-indels.vcf.gz  ${RTG_INDELS_OUTPUT_FOLDER}/
