@@ -5,36 +5,50 @@
 function buildBaselineConfidents {
 
     OUTPUT_DIR=$1
-
-    # add "chr prefix:"
-    gzip -c -d ${BASELINE_VCF} |awk '{if($0 !~ /^#/) print $0; else print $0}' > ${OUTPUT_DIR}/baseline-confident-chr.vcf
-    cd ${OUTPUT_DIR}
-    bgzip -f baseline-confident-chr.vcf
-    tabix -f baseline-confident-chr.vcf.gz
-    export BASELINE_STANDARD_VCF_GZ="${OUTPUT_DIR}/baseline-confident-chr.vcf.gz"
-      
-    echo "Formatting baseline VCF for SNPs and indels"
-
-    # remove non-SNPs:
-    gzip -c -d  ${BASELINE_STANDARD_VCF_GZ} |awk '{if($0 !~ /^#/) { if (length($4)==1 && length($5)==1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/baseline-confident-chr-snps.vcf
-    bgzip -f baseline-confident-chr-snps.vcf
-    tabix -f baseline-confident-chr-snps.vcf.gz
-    export BASELINE_STANDARD_VCF_SNP_GZ="${OUTPUT_DIR}/baseline-confident-chr-snps.vcf.gz"
-
-    # keep only indels:
-    gzip -c -d  ${BASELINE_STANDARD_VCF_GZ} |awk '{if($0 !~ /^#/) { if (length($4)!=1 || length($5)!=1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/baseline-confident-chr-indels.vcf
-    bgzip -f baseline-confident-chr-indels.vcf
-    tabix -f baseline-confident-chr-indels.vcf.gz
-    export BASELINE_STANDARD_VCF_INDEL_GZ="${OUTPUT_DIR}/baseline-confident-chr-indels.vcf.gz"
+    splitVCF ${OUTPUT_DIR} ${BASELINE_VCF_BASENAME} ${BASELINE_VCF}
+    export BASELINE_STANDARD_VCF_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}.vcf.gz"
+    export BASELINE_STANDARD_VCF_SNP_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-snps.vcf.gz"
+    export BASELINE_STANDARD_VCF_INDEL_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-indels.vcf.gz"
 
     if [ ! -z "${BASELINE_REGIONS}" ]; then
-        gzip -c -d  ${BASELINE_REGIONS} |awk '{print "chr"$1"\t"$2"\t"$3}' >${OUTPUT_DIR}/baseline-confident-regions-chr.bed
+        gzip -c -d  ${BASELINE_REGIONS} |awk '{print $1"\t"$2"\t"$3}' >${OUTPUT_DIR}/baseline-confident-regions-chr.bed
         cd ${OUTPUT_DIR}/
         bgzip -f baseline-confident-regions-chr.bed
         tabix -f baseline-confident-regions-chr.bed.gz
-
         export BASELINE_CONFIDENT_REGIONS_BED_GZ="${OUTPUT_DIR}/baseline-confident-regions-chr.bed.gz"
     fi
+}
+
+function splitInputVCF {
+    OUTPUT_DIR=/out/output-vcf-tmp/
+    rm -rf ${OUTPUT_DIR} || true
+    mkdir -p ${OUTPUT_DIR}
+    splitVCF ${OUTPUT_DIR} ${VCF_INPUT_BASENAME} ${VCF_INPUT}
+    export VCF_INPUT_SNPS=${OUTPUT_DIR}/${OUTPUT_BASENAME}-snps.vcf.gz
+    export VCF_INPUT_INDELS=${OUTPUT_DIR}/${OUTPUT_BASENAME}-indels.vcf.gz
+    export VCF_INPUT_GZ=${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf.gz
+}
+
+function splitVCF {
+
+    OUTPUT_DIR=$1
+    OUTPUT_BASENAME=$2
+    VCF_TO_SPLIT=$3
+
+    gzip -c -d ${VCF_TO_SPLIT} |awk '{if($0 !~ /^#/) print $0; else print $0}' > ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf
+    cd ${OUTPUT_DIR}
+    bgzip -f ${OUTPUT_BASENAME}.vcf
+    tabix -f ${OUTPUT_BASENAME}.vcf.gz
+
+    # remove non-SNPs:
+    gzip -c -d  ${BASELINE_STANDARD_VCF_GZ} |awk '{if($0 !~ /^#/) { if (length($4)==1 && length($5)==1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-snps.vcf
+    bgzip -f ${OUTPUT_BASENAME}-snps.vcf
+    tabix -f ${OUTPUT_BASENAME}-snps.vcf.gz
+
+    # keep only indels:
+    gzip -c -d  ${BASELINE_STANDARD_VCF_GZ} |awk '{if($0 !~ /^#/) { if (length($4)!=1 || length($5)!=1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-indels.vcf
+    bgzip -f ${OUTPUT_BASENAME}-indels.vcf
+    tabix -f ${OUTPUT_BASENAME}-indels.vcf.gz
 }
 
 function execute {
@@ -44,42 +58,32 @@ function execute {
     rm ${RTG_TEMPLATE_ARCHIVE}
     export RTG_TEMPLATE_DIR=`find ${RTG_TEMPLATE_PATH}/* -type d`
     export BASELINE_STANDARD_DIR=/out/output-tmp
+    rm -rf $BASELINE_STANDARD_DIR || true
     mkdir -p $BASELINE_STANDARD_DIR
     buildBaselineConfidents $BASELINE_STANDARD_DIR
+
     EVAL_BED_REGION_OPTION=""
     if [ -e "${BASELINE_CONFIDENT_REGIONS_BED_GZ}" ]; then
         EVAL_BED_REGION_OPTION="--evaluation-regions=${BASELINE_CONFIDENT_REGIONS_BED_GZ}"
     fi
 
+    splitInputVCF
 
     RTG_SNPS_OUTPUT_FOLDER=/out/output-snps
-    #mkdir -p /out/output-snps
     rm -rf ${RTG_SNPS_OUTPUT_FOLDER} || true
-    gzip -c -d ${VCF_INPUT} |awk '{if($0 !~ /^#/) { if (length($4)==1 && length($5)==1) print $0;}  else {print $0}}'  >${VCF_INPUT_BASENAME}-snps.vcf
-    bgzip -f ${VCF_INPUT_BASENAME}-snps.vcf
-    tabix -f ${VCF_INPUT_BASENAME}-snps.vcf.gz
-    
     rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_SNP_GZ}  \
-            -c ${VCF_INPUT_BASENAME}-snps.vcf.gz -o ${RTG_SNPS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
+            -c ${VCF_INPUT_SNPS} -o ${RTG_SNPS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
             --bed-regions=${BED_OBSERVED_REGIONS_INPUT} ${RTG_OPTIONS}
 
-
-    dieUponError "Failed to run rtg vcfeval for SNPs."
-
-    cp ${VCF_INPUT_BASENAME}-snps.vcf.gz  ${RTG_SNPS_OUTPUT_FOLDER}/
+    cp ${VCF_INPUT_SNPS}  ${RTG_SNPS_OUTPUT_FOLDER}/
 
     RTG_INDELS_OUTPUT_FOLDER=/out/output-indels
     rm -rf ${RTG_INDELS_OUTPUT_FOLDER} || true
-    gzip -c -d ${VCF_INPUT} |awk '{if($0 !~ /^#/) { if (length($4)!=1 || length($5)!=1) print $0;}  else {print $0}}'  >${VCF_INPUT_BASENAME}-indels.vcf
-    bgzip -f ${VCF_INPUT_BASENAME}-indels.vcf
-    tabix -f ${VCF_INPUT_BASENAME}-indels.vcf.gz
-
     rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_INDEL_GZ}  \
-            -c ${VCF_INPUT_BASENAME}-indels.vcf.gz -o ${RTG_INDELS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
+            -c ${VCF_INPUT_INDELS} -o ${RTG_INDELS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
                 --bed-regions=${BED_OBSERVED_REGIONS_INPUT} ${RTG_OPTIONS}
-    dieUponError "Failed to run rtg vcfeval for Indels."
 
-    cp ${VCF_INPUT_BASENAME}-indels.vcf.gz  ${RTG_INDELS_OUTPUT_FOLDER}/
+    cp ${VCF_INPUT_INDELS}  ${RTG_INDELS_OUTPUT_FOLDER}/
 
     MODEL_STAMP="${VCF_INPUT_BASENAME}:${BASELINE_VCF_BASENAME}"
     #grep ${MODEL_TIME} model-conditions.txt >${RTG_OUTPUT_FOLDER}/model-conditions.txt
@@ -87,8 +91,7 @@ function execute {
 
     RTG_ROCPLOT_OPTIONS="--scores"
     rtg rocplot ${RTG_SNPS_OUTPUT_FOLDER}/snp_roc.tsv.gz -P --svg ${RTG_SNPS_OUTPUT_FOLDER}/SNP-PrecisionRecall.svg ${RTG_ROCPLOT_OPTIONS} --title="SNPs, model ${MODEL_STAMP}"
-    dieUponError "Unable to generate SNP Precision Recall plot."
 
     rtg rocplot ${RTG_INDELS_OUTPUT_FOLDER}/non_snp_roc.tsv.gz -P --svg ${RTG_INDELS_OUTPUT_FOLDER}/INDEL-PrecisionRecall.svg ${RTG_ROCPLOT_OPTIONS} --title="INDELs, model ${MODEL_STAMP}"
-    dieUponError "Unable to generate indel Precision Recall plot."
+
 }
