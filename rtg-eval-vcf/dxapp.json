@@ -61,43 +61,7 @@
       "optional": false,
       "default": "--vcf-score-field=P  --sort-order=descending",
       "help": "Additional options for RTG vcfeval."
-    }
-  ],
-  "outputSpec": [
-    {
-      "name": "Eval_SNPs",
-      "class": "file",
-      "patterns": [
-        "*"
-      ],
-      "help": ""
     },
-    {
-      "name": "Eval_Indels",
-      "class": "file",
-      "patterns": [
-        "*"
-      ],
-      "help": ""
-    },
-    {
-      "name": "SNP_Recall_Plot",
-      "label": "SNP Precision Recall plot",
-      "class": "file",
-      "patterns": [
-        "*"
-      ],
-      "help": ""
-    },
-    {
-      "name": "Indel_Recall_Plot",
-      "label": "Indel Precision Recall plot",
-      "class": "file",
-      "patterns": [
-        "*"
-      ],
-      "help": ""
-    } ,
     {
       "name": "Image_Version",
       "label": "Docker Image Version",
@@ -105,6 +69,33 @@
       "default": "1.0.6",
       "optional": false,
       "help": "The version of variationanalysis-app image to use in the execution."
+    }
+  ],
+  "outputSpec": [
+    {
+      "name": "Evaluation_Archive",
+      "class": "file",
+      "patterns": [
+        "*.tar.gz"
+      ],
+      "help": "The results of the rtg evalvcf execution"
+    },
+    {
+      "name": "Summaries",
+      "class": "array:file",
+      "patterns": [
+        "*summary.txt"
+      ],
+      "help": ""
+    },
+    {
+      "name": "Recall_Plots",
+      "label": "Indel and SNP Precision Recall plots",
+      "class": "array:file",
+      "patterns": [
+        "*Recall.svg"
+      ],
+      "help": "Plot of ROC curves from vcfeval ROC data files."
     }
   ],
   "runSpec": {

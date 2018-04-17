@@ -47,6 +47,10 @@ EOL
     chmod a+x  ${HOME}/in/run.sh
 
 
+    mkdir -p ${HOME}/out/Summaries
+    mkdir -p ${HOME}/out/Recall_Plots
+    mkdir -p ${HOME}/out/Evaluation_Archive
+
     echo "Downloading the docker image..."
     dx-docker pull artifacts/variationanalysis-app:${Image_Version} &>/dev/null
 
@@ -56,37 +60,6 @@ EOL
         artifacts/variationanalysis-app:${Image_Version} \
         bash -c "source ~/.bashrc; /in/run.sh"
 
+    dx-upload-all-outputs --parallel
 
-
-
-    # Fill in your application code here.
-    #
-    # To report any recognized errors in the correct format in
-    # $HOME/job_error.json and exit this script, you can use the
-    # dx-jobutil-report-error utility as follows:
-    #
-    #   dx-jobutil-report-error "My error message"
-    #
-    # Note however that this entire bash script is executed with -e
-    # when running in the cloud, so any line which returns a nonzero
-    # exit code will prematurely exit the script; if no error was
-    # reported in the job_error.json file, then the failure reason
-    # will be AppInternalError with a generic error message.
-
-    # The following line(s) use the dx command-line tool to upload your file
-    # outputs after you have created them on the local file system.  It assumes
-    # that you have used the output field name for the filename for each output,
-    # but you can change that behavior to suit your needs.  Run "dx upload -h"
-    # to see more options to set metadata.
-
-    Eval_SNPs=$(dx upload Eval_SNPs --brief)
-    Eval_Indels=$(dx upload Eval_Indels --brief)
-    SNP_Recall_Plot=$(dx upload SNP_Recall_Plot --brief)
-    Indel_Recall_Plot=$(dx upload Indel_Recall_Plot --brief)
-
-
-    dx-jobutil-add-output Eval_SNPs "$Eval_SNPs" --class=file
-    dx-jobutil-add-output Eval_Indels "$Eval_Indels" --class=file
-    dx-jobutil-add-output SNP_Recall_Plot "$SNP_Recall_Plot" --class=file
-    dx-jobutil-add-output Indel_Recall_Plot "$Indel_Recall_Plot" --class=file
 }

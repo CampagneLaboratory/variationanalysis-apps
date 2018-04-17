@@ -5,6 +5,9 @@
 function buildBaselineConfidents {
 
     OUTPUT_DIR=$1
+    rm -rf $OUTPUT_DIR || true
+    mkdir -p $OUTPUT_DIR
+
     splitVCF ${OUTPUT_DIR} ${BASELINE_VCF_BASENAME} ${BASELINE_VCF}
     export BASELINE_STANDARD_VCF_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}.vcf.gz"
     export BASELINE_STANDARD_VCF_SNP_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-snps.vcf.gz"
@@ -20,7 +23,7 @@ function buildBaselineConfidents {
 }
 
 function splitInputVCF {
-    OUTPUT_DIR=/out/output-vcf-tmp/
+    OUTPUT_DIR=${HOME}/output-vcf-tmp/
     rm -rf ${OUTPUT_DIR} || true
     mkdir -p ${OUTPUT_DIR}
     splitVCF ${OUTPUT_DIR} ${VCF_INPUT_BASENAME} ${VCF_INPUT}
@@ -53,13 +56,15 @@ function splitVCF {
 
 function execute {
     set -x
+    mkdir -p /out/Summaries || true
+    mkdir -p /out/Recall_Plots || true
+    mkdir -p /out/Evaluation_Archive || true
+
     cd ${RTG_TEMPLATE_PATH}
     tar -zxvf ${RTG_TEMPLATE_ARCHIVE}
     rm ${RTG_TEMPLATE_ARCHIVE}
     export RTG_TEMPLATE_DIR=`find ${RTG_TEMPLATE_PATH}/* -type d`
-    export BASELINE_STANDARD_DIR=/out/output-tmp
-    rm -rf $BASELINE_STANDARD_DIR || true
-    mkdir -p $BASELINE_STANDARD_DIR
+    export BASELINE_STANDARD_DIR=${HOME}/${VCF_INPUT_BASENAME}/
     buildBaselineConfidents $BASELINE_STANDARD_DIR
 
     EVAL_BED_REGION_OPTION=""
@@ -69,15 +74,14 @@ function execute {
 
     splitInputVCF
 
-    RTG_SNPS_OUTPUT_FOLDER=/out/output-snps
+    RTG_SNPS_OUTPUT_FOLDER=${HOME}/${VCF_INPUT_BASENAME}/snps
     rm -rf ${RTG_SNPS_OUTPUT_FOLDER} || true
     rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_SNP_GZ}  \
             -c ${VCF_INPUT_SNPS} -o ${RTG_SNPS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
             --bed-regions=${BED_OBSERVED_REGIONS_INPUT} ${RTG_OPTIONS}
 
     cp ${VCF_INPUT_SNPS}  ${RTG_SNPS_OUTPUT_FOLDER}/
-
-    RTG_INDELS_OUTPUT_FOLDER=/out/output-indels
+    RTG_INDELS_OUTPUT_FOLDER=${HOME}/${VCF_INPUT_BASENAME}/indels
     rm -rf ${RTG_INDELS_OUTPUT_FOLDER} || true
     rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_INDEL_GZ}  \
             -c ${VCF_INPUT_INDELS} -o ${RTG_INDELS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
@@ -86,12 +90,15 @@ function execute {
     cp ${VCF_INPUT_INDELS}  ${RTG_INDELS_OUTPUT_FOLDER}/
 
     MODEL_STAMP="${VCF_INPUT_BASENAME}:${BASELINE_VCF_BASENAME}"
-    #grep ${MODEL_TIME} model-conditions.txt >${RTG_OUTPUT_FOLDER}/model-conditions.txt
-    #grep ${MODEL_TIME} predict-statistics.tsv   >${RTG_OUTPUT_FOLDER}/predict-statistics.tsv
 
     RTG_ROCPLOT_OPTIONS="--scores"
     rtg rocplot ${RTG_SNPS_OUTPUT_FOLDER}/snp_roc.tsv.gz -P --svg ${RTG_SNPS_OUTPUT_FOLDER}/SNP-PrecisionRecall.svg ${RTG_ROCPLOT_OPTIONS} --title="SNPs, model ${MODEL_STAMP}"
-
     rtg rocplot ${RTG_INDELS_OUTPUT_FOLDER}/non_snp_roc.tsv.gz -P --svg ${RTG_INDELS_OUTPUT_FOLDER}/INDEL-PrecisionRecall.svg ${RTG_ROCPLOT_OPTIONS} --title="INDELs, model ${MODEL_STAMP}"
 
+    cp ${RTG_SNPS_OUTPUT_FOLDER}/SNP-PrecisionRecall.svg /out/Recall_Plots/
+    cp ${RTG_INDELS_OUTPUT_FOLDER}/INDEL-PrecisionRecall.svg /out/Recall_Plots/
+    cp ${RTG_SNPS_OUTPUT_FOLDER}/summary.txt /out/Summaries/SNP-summary.txt
+    cp ${RTG_INDELS_OUTPUT_FOLDER}/summary.txt /out/Summaries/INDEL-summary.txt
+    tar -zcvf $VCF_INPUT_BASENAME-eval.tar.gz ${HOME}/${VCF_INPUT_BASENAME}/
+    cp $VCF_INPUT_BASENAME-eval.tar.gz /out/Evaluation_Archive/
 }
