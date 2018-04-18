@@ -2,16 +2,7 @@
 
 . /in/scripts/common.sh
 
-function buildBaselineConfidents {
-    OUTPUT_DIR=$1
-    rm -rf $OUTPUT_DIR || true
-    mkdir -p $OUTPUT_DIR
-
-    splitVCF ${OUTPUT_DIR} ${BASELINE_VCF_BASENAME} ${BASELINE_VCF}
-    export BASELINE_STANDARD_VCF_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}.vcf.gz"
-    export BASELINE_STANDARD_VCF_SNP_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-snps.vcf.gz"
-    export BASELINE_STANDARD_VCF_INDEL_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-indels.vcf.gz"
-
+function indexBaselineRegions {
     if [ ! -z "${BASELINE_REGIONS}" ]; then
         gzip -c -d  ${BASELINE_REGIONS} |awk '{print $1"\t"$2"\t"$3}' >${OUTPUT_DIR}/baseline-confident-regions-chr.bed
         cd ${OUTPUT_DIR}/
@@ -19,6 +10,16 @@ function buildBaselineConfidents {
         tabix -f baseline-confident-regions-chr.bed.gz
         export BASELINE_CONFIDENT_REGIONS_BED_GZ="${OUTPUT_DIR}/baseline-confident-regions-chr.bed.gz"
     fi
+}
+
+function splitBaseline {
+    OUTPUT_DIR=${HOME}/${BASELINE_VCF_BASENAME}/
+    rm -rf $OUTPUT_DIR || true
+    mkdir -p $OUTPUT_DIR
+    splitVCF ${OUTPUT_DIR} ${BASELINE_VCF_BASENAME} ${BASELINE_VCF}
+    export BASELINE_STANDARD_VCF_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}.vcf.gz"
+    export BASELINE_STANDARD_VCF_SNP_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-snps.vcf.gz"
+    export BASELINE_STANDARD_VCF_INDEL_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-indels.vcf.gz"
 }
 
 function splitCalls {
@@ -63,28 +64,36 @@ function execute {
     tar -zxvf ${RTG_TEMPLATE_ARCHIVE}
     rm ${RTG_TEMPLATE_ARCHIVE}
     export RTG_TEMPLATE_DIR=`find ${RTG_TEMPLATE_PATH}/* -type d`
-    export BASELINE_STANDARD_DIR=${HOME}/${BASELINE_VCF_BASENAME}/
-    buildBaselineConfidents $BASELINE_STANDARD_DIR
+
+    splitCalls
+
+    splitBaseline
+
+    indexBaselineRegions
 
     EVAL_BED_REGION_OPTION=""
     if [ -e "${BASELINE_CONFIDENT_REGIONS_BED_GZ}" ]; then
         EVAL_BED_REGION_OPTION="--evaluation-regions=${BASELINE_CONFIDENT_REGIONS_BED_GZ}"
     fi
 
-    splitCalls
+    BED_REGION_OPTION=""
+    if [ -e "${BED_OBSERVED_REGIONS_INPUT}" ]; then
+        BED_REGION_OPTION="--bed-regions=${BED_OBSERVED_REGIONS_INPUT}"
+    fi
+
 
     RTG_SNPS_OUTPUT_FOLDER=${HOME}/${VCF_INPUT_BASENAME}/snps
     rm -rf ${RTG_SNPS_OUTPUT_FOLDER} || true
     rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_SNP_GZ}  \
             -c ${VCF_INPUT_SNPS} -o ${RTG_SNPS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
-            --bed-regions=${BED_OBSERVED_REGIONS_INPUT} ${RTG_OPTIONS}
+            ${BED_REGION_OPTION} ${RTG_OPTIONS}
 
     cp ${VCF_INPUT_SNPS}  ${RTG_SNPS_OUTPUT_FOLDER}/
     RTG_INDELS_OUTPUT_FOLDER=${HOME}/${VCF_INPUT_BASENAME}/indels
     rm -rf ${RTG_INDELS_OUTPUT_FOLDER} || true
     rtg vcfeval --baseline=${BASELINE_STANDARD_VCF_INDEL_GZ}  \
             -c ${VCF_INPUT_INDELS} -o ${RTG_INDELS_OUTPUT_FOLDER} --template=${RTG_TEMPLATE_DIR} ${EVAL_BED_REGION_OPTION} \
-                --bed-regions=${BED_OBSERVED_REGIONS_INPUT} ${RTG_OPTIONS}
+                ${BED_REGION_OPTION}  ${RTG_OPTIONS}
 
     cp ${VCF_INPUT_INDELS}  ${RTG_INDELS_OUTPUT_FOLDER}/
 

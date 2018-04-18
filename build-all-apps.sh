@@ -9,3 +9,4 @@
 ./build-app.sh somaticSbi-to-tensors
 ./build-app.sh prepare-sbi-unlabeled
 ./build-app.sh genotype-pytorch-tensors
+./build-app.sh rtg-eval-vcf

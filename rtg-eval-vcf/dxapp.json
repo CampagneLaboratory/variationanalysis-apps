@@ -9,6 +9,7 @@
       "name": "Predictions",
       "label": "Predictions",
       "class": "array:file",
+      "optional": false,
       "patterns": [
         "*.vcf.gz",
         "*.vcf.gz.tbi"
@@ -19,6 +20,7 @@
       "name": "Regions",
       "label": "Regions",
       "class": "file",
+      "optional": true,
       "patterns": [
         "*.bed.gz"
       ],
@@ -48,7 +50,7 @@
       "name": "Baseline_Regions",
       "label": "The baseline regions, in Bed format",
       "class": "file",
-      "optional": false,
+      "optional": true,
       "patterns": [
         "*.bed.gz"
       ],
@@ -115,6 +117,14 @@
       "*"
     ]
   },
+  "developers": [
+    "org-campagnelab"
+  ],
+  "authorizedUsers": [
+    "org-campagnelab",
+    "user-lmesd",
+    "user-wenming.xiao.dnax"
+  ],
   "regionalOptions": {
     "aws:us-east-1": {
       "systemRequirements": {
