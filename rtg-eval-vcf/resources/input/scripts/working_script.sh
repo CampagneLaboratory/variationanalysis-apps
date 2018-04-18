@@ -107,6 +107,7 @@ function execute {
     cp ${RTG_INDELS_OUTPUT_FOLDER}/INDEL-PrecisionRecall.svg /out/Recall_Plots/
     cp ${RTG_SNPS_OUTPUT_FOLDER}/summary.txt /out/Summaries/SNP-summary.txt
     cp ${RTG_INDELS_OUTPUT_FOLDER}/summary.txt /out/Summaries/INDEL-summary.txt
-    tar -zcvf $VCF_INPUT_BASENAME-eval.tar.gz ${HOME}/${VCF_INPUT_BASENAME}/
+    cd ${HOME}
+    tar -zcvf $VCF_INPUT_BASENAME-eval.tar.gz ${VCF_INPUT_BASENAME}/
     cp $VCF_INPUT_BASENAME-eval.tar.gz /out/Evaluation_Archive/
 }

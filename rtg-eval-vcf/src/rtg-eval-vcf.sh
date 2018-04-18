@@ -18,7 +18,7 @@
 main() {
 
     dx-download-all-inputs --parallel
-        
+    set -x
     CONFIG_FILE="${HOME}/in/scripts/configure.sh"
     mkdir -p ${HOME}/in/scripts/
     mv /input/scripts/* ${HOME}/in/scripts/
