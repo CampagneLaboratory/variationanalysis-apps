@@ -27,11 +27,14 @@ main() {
     echo "export RTG_TEMPLATE_PATH=/in/RTG_Template" >> ${CONFIG_FILE}
     echo "export VCF_INPUT=/in/Predictions/${Predictions_name}" >> ${CONFIG_FILE}
     echo "export VCF_INPUT_BASENAME=${Predictions_prefix}" >> ${CONFIG_FILE}
-    echo "export BED_OBSERVED_REGIONS_INPUT=/in/Regions/${Regions_name}" >> ${CONFIG_FILE}
+    if [ ! -z "${Regions_name}" ]; then
+        echo "export BED_OBSERVED_REGIONS_INPUT=/in/Regions/${Regions_name}" >> ${CONFIG_FILE}
+    fi
     echo "export BASELINE_VCF=/in/Baseline_VCF/${Baseline_VCF_name}" >> ${CONFIG_FILE}
     echo "export BASELINE_VCF_BASENAME=${Baseline_VCF_prefix}" >> ${CONFIG_FILE}
-
-    echo "export BASELINE_REGIONS=/in/Baseline_Regions/${Baseline_Regions_name}" >> ${CONFIG_FILE}
+    if [ ! -z "${Baseline_Regions_name}" ]; then
+        echo "export BASELINE_REGIONS=/in/Baseline_Regions/${Baseline_Regions_name}" >> ${CONFIG_FILE}
+    fi
     echo "export RTG_OPTIONS=\"${RTG_Vcfeval_Options}\"" >> ${CONFIG_FILE}
     
     echo "Content of ${CONFIG_FILE}:"
