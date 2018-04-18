@@ -18,25 +18,24 @@
 main() {
 
     dx-download-all-inputs --parallel
-    #flatten the inputs in a single folder
-    find ${HOME}/in/Predictions/ -type f -execdir mv {} .. \;
-
+        
     CONFIG_FILE="${HOME}/in/scripts/configure.sh"
     mkdir -p ${HOME}/in/scripts/
     mv /input/scripts/* ${HOME}/in/scripts/
 
     echo "export RTG_TEMPLATE_ARCHIVE=${RTG_Template_name}" >> ${CONFIG_FILE}
     echo "export RTG_TEMPLATE_PATH=/in/RTG_Template" >> ${CONFIG_FILE}
-    vcf_file=`filename /in/Predictions/*.vcf.gz`
-    echo "export VCF_INPUT=/in/Predictions/$vcf_file" >> ${CONFIG_FILE}
-    echo "export VCF_INPUT_BASENAME=${Predictions_prefix[0]}" >> ${CONFIG_FILE}
+    echo "export VCF_INPUT=/in/Predictions/${Predictions_name}" >> ${CONFIG_FILE}
+    echo "export VCF_INPUT_BASENAME=${Predictions_prefix}" >> ${CONFIG_FILE}
     echo "export BED_OBSERVED_REGIONS_INPUT=/in/Regions/${Regions_name}" >> ${CONFIG_FILE}
     echo "export BASELINE_VCF=/in/Baseline_VCF/${Baseline_VCF_name}" >> ${CONFIG_FILE}
     echo "export BASELINE_VCF_BASENAME=${Baseline_VCF_prefix}" >> ${CONFIG_FILE}
 
     echo "export BASELINE_REGIONS=/in/Baseline_Regions/${Baseline_Regions_name}" >> ${CONFIG_FILE}
     echo "export RTG_OPTIONS=\"${RTG_Vcfeval_Options}\"" >> ${CONFIG_FILE}
-
+    
+    echo "Content of ${CONFIG_FILE}:"
+    cat ${CONFIG_FILE}
 
     cat >${HOME}/in/run.sh <<EOL
         #!/bin/bash

@@ -8,11 +8,10 @@
     {
       "name": "Predictions",
       "label": "Predictions",
-      "class": "array:file",
+      "class": "file",
       "optional": false,
       "patterns": [
-        "*.vcf.gz",
-        "*.vcf.gz.tbi"
+        "*.vcf.gz"
       ],
       "help": "The genotype calls, in VCF format."
     },
