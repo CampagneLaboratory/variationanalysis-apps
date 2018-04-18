@@ -32,7 +32,7 @@
       "class": "file",
       "optional": false,
       "patterns": [
-        "*.sdf"
+        "*.sdf.tar.gz"
       ],
       "help": "SDF of the reference genome the variants are called against"
     },
