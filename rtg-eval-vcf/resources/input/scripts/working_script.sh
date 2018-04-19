@@ -2,6 +2,8 @@
 
 . /in/scripts/common.sh
 
+
+
 function indexBaselineRegions {
     if [ ! -z "${BASELINE_REGIONS}" ]; then
         gzip -c -d  ${BASELINE_REGIONS} |awk '{print $1"\t"$2"\t"$3}' >${OUTPUT_DIR}/baseline-confident-regions-chr.bed
@@ -17,7 +19,7 @@ function splitBaseline {
     rm -rf $OUTPUT_DIR || true
     mkdir -p $OUTPUT_DIR
     splitVCF ${OUTPUT_DIR} ${BASELINE_VCF_BASENAME} ${BASELINE_VCF}
-    export BASELINE_STANDARD_VCF_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}.vcf.gz"
+    export BASELINE_STANDARD_VCF_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}.vcf"
     export BASELINE_STANDARD_VCF_SNP_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-snps.vcf.gz"
     export BASELINE_STANDARD_VCF_INDEL_GZ="${OUTPUT_DIR}/${BASELINE_VCF_BASENAME}-indels.vcf.gz"
 }
@@ -37,19 +39,16 @@ function splitVCF {
     OUTPUT_DIR=$1
     OUTPUT_BASENAME=$2
     VCF_TO_SPLIT=$3
-
-    gzip -c -d ${VCF_TO_SPLIT} |awk '{if($0 !~ /^#/) print $0; else print $0}' > ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf
+    /in/scripts/filterNONREF.sh $VCF_TO_SPLIT   ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf
     cd ${OUTPUT_DIR}
-    bgzip -f ${OUTPUT_BASENAME}.vcf
-    tabix -f ${OUTPUT_BASENAME}.vcf.gz
 
     # remove non-SNPs:
-    gzip -c -d  ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf.gz |awk '{if($0 !~ /^#/) { if (length($4)==1 && length($5)==1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-snps.vcf
+    cat  ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf |awk '{if($0 !~ /^#/) { if (length($4)==1 && length($5)==1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-snps.vcf
     bgzip -f ${OUTPUT_BASENAME}-snps.vcf
     tabix -f ${OUTPUT_BASENAME}-snps.vcf.gz
 
     # keep only indels:
-    gzip -c -d  ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf.gz |awk '{if($0 !~ /^#/) { if (length($4)!=1 || length($5)!=1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-indels.vcf
+    cat  ${OUTPUT_DIR}/${OUTPUT_BASENAME}.vcf |awk '{if($0 !~ /^#/) { if (length($4)!=1 || length($5)!=1) print $0;}  else {print $0}}' >${OUTPUT_DIR}/${OUTPUT_BASENAME}-indels.vcf
     bgzip -f ${OUTPUT_BASENAME}-indels.vcf
     tabix -f ${OUTPUT_BASENAME}-indels.vcf.gz
 }
