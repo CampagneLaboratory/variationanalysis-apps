@@ -56,10 +56,10 @@ main() {
 
         mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
         
-        if [ ! -e ${HOME}/out/domain.properties ]; then
+        if [ -e ${HOME}/out/domain.properties ]; then
             mv ${HOME}/out/domain.properties  ${HOME}/out/Tensors
         fi
-        if [ ! -e ${HOME}/out/config.properties ]; then
+        if [ -e ${HOME}/out/config.properties ]; then
             mv ${HOME}/out/config.properties  ${HOME}/out/Tensors
         fi
     done
