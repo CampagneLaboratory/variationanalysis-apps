@@ -13,5 +13,5 @@ export MEMORY_FOR_PARALLEL_JOBS_IN_MB=`echo $(( MEMORY_IN_MB / ${CORES}  ))`
 function dieUponError {
  message=$1
  echo "ERROR: ${message}"
- #exit 1
+ exit 1
 }

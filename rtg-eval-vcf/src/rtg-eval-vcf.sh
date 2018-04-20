@@ -35,6 +35,13 @@ main() {
     if [ ! -z "${Baseline_Regions_name}" ]; then
         echo "export BASELINE_REGIONS=/in/Baseline_Regions/${Baseline_Regions_name}" >> ${CONFIG_FILE}
     fi
+
+    if [ ! -z "${Baseline_VCF_Intersection}" ]; then
+        echo "export BASELINE_VCF_INTERSECTION=/in/Baseline_VCF_Intersection/${Baseline_VCF_Intersection_name}" >> ${CONFIG_FILE}
+        echo "export BASELINE_VCF_INTERSECTION_BASENAME=${Baseline_VCF_Intersection_prefix}" >> ${CONFIG_FILE}
+
+    fi
+
     echo "export RTG_OPTIONS=\"${RTG_Vcfeval_Options}\"" >> ${CONFIG_FILE}
     
     echo "Content of ${CONFIG_FILE}:"

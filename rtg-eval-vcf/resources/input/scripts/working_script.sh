@@ -53,6 +53,23 @@ function splitVCF {
     tabix -f ${OUTPUT_BASENAME}-indels.vcf.gz
 }
 
+function mergeBaseline {
+   if [ ! -z "${BASELINE_VCF_INTERSECTION}" ]; then
+        OUTPUT_DIR=${HOME}/${BASELINE_VCF_INTERSECTION_BASENAME}/
+        rm -rf $OUTPUT_DIR || true
+        tabix -f ${BASELINE_VCF}
+        tabix -f ${BASELINE_VCF_INTERSECTION}
+        rtg vcfeval --baseline=${BASELINE_VCF} \
+         -c ${BASELINE_VCF_INTERSECTION} \
+         -o ${OUTPUT_DIR} --template=${RTG_TEMPLATE_DIR}
+        if [ -e "${OUTPUT_DIR}/tp-baseline.vcf.gz" ]; then
+            export BASELINE_VCF=${OUTPUT_DIR}/tp-baseline.vcf.gz
+        else
+            dieUponError "Unable to merge the baseline variants."
+        fi
+   fi
+}
+
 function execute {
     set -x
     mkdir -p /out/Summaries || true
@@ -63,6 +80,8 @@ function execute {
     tar -zxvf ${RTG_TEMPLATE_ARCHIVE}
     rm ${RTG_TEMPLATE_ARCHIVE}
     export RTG_TEMPLATE_DIR=`find ${RTG_TEMPLATE_PATH}/* -type d`
+
+    mergeBaseline
 
     splitCalls
 

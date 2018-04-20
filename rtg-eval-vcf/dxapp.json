@@ -56,6 +56,16 @@
       "help": ""
     },
     {
+      "name": "Baseline_VCF_Intersection",
+      "label": "Variants to intersect with the baseline, in VCF format",
+      "class": "file",
+      "optional": true,
+      "patterns": [
+        "*.vcf.gz"
+      ],
+      "help": "Additional variants to intersect with the baseline variants."
+    },
+    {
       "name": "RTG_Vcfeval_Options",
       "label": "RTG vcfeval options",
       "class": "string",
