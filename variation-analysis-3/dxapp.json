@@ -63,7 +63,7 @@
       "name": "Image_Version",
       "label": "Docker Image Version",
       "class": "string",
-      "default": "1.0.4",
+      "default": "1.0.7",
       "optional": false,
       "help": "The version of variationanalysis-app image to use in the execution."
     }
