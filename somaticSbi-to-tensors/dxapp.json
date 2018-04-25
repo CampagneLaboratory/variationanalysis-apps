@@ -3,7 +3,7 @@
   "title": "Convert Somatic .sbi to Tensors",
   "summary": "SomaticSbiToTensors",
   "dxapi": "1.0.0",
-  "version": "0.0.3",
+  "version": "0.0.3.1",
   "inputSpec": [
     {
       "name": "SomaticSBI",

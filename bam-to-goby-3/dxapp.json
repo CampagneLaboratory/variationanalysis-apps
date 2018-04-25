@@ -3,7 +3,7 @@
   "title": "BAM to Goby Alignment",
   "summary": "Convert an alignment from BAM to Goby format",
   "dxapi": "1.0.0",
-  "version": "0.0.3",
+  "version": "0.0.3.1",
   "inputSpec": [
     {
       "name": "Realigned_Bam",

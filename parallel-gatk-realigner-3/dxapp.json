@@ -3,7 +3,7 @@
   "title": "Realign BAM alignment with HaplotypeCaller",
   "summary": "Run GATK 4 HaplotypeCaller to realign an alignment around indels. Uses the --bamout option of HaplotypeCaller.",
   "dxapi": "1.0.0",
-  "version": "0.0.3",
+  "version": "0.0.3.1",
   "inputSpec": [
     {
       "name": "GATK_distribution",

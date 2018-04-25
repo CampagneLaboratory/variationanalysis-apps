@@ -3,7 +3,7 @@
   "title": "FASTA to Goby Genome",
   "summary": "Build a Goby Indexed Genome from a FASTA reference genome",
   "dxapi": "1.0.0",
-  "version": "1.0.2",
+  "version": "1.0.2.1",
   "inputSpec": [
     {
       "name": "FASTA_Genome",
