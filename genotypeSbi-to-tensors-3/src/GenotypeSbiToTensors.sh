@@ -39,6 +39,11 @@ main() {
     mkdir -p $HOME/out/VEC
     find ${HOME}/in/GenotypeSBI -name \*.sbi\* |xargs -I {} mv {} ${HOME}/in/SBI/
     ls -ltrR  ${HOME}/in
+    #create the list of input SBIs
+    for file in ${HOME}/in/SBI/*.sbi; do
+        SBI_basename=`basename ${HOME}/in/SBI/$file`
+        echo "${HOME}/in/SBI/${SBI_basename}" >>${HOME}/in/SBI/all.list
+    done
 
     for file in ${HOME}/in/SBI/*.sbi; do
         SBI_basename=`basename ${HOME}/in/SBI/$file .sbi`
@@ -46,7 +51,6 @@ main() {
         if [ ! -f ${HOME}/in/SBI/${SBI_basename}.sbip ]; then
           echo "${SBI_basename}.sbip not found!"
         fi
-        echo /home/dnanexus/in/SBI/*.sbi >${HOME}/in/SBI/all.list
         dx-docker run \
             -v ${HOME}/in:${HOME}/in \
             -v ${HOME}/out/:${HOME}/out/ \
