@@ -46,12 +46,12 @@ main() {
         if [ ! -f ${HOME}/in/SBI/${SBI_basename}.sbip ]; then
           echo "${SBI_basename}.sbip not found!"
         fi
-
+        echo /home/dnanexus/in/SBI/*.sbi >${HOME}/in/SBI/all.list
         dx-docker run \
             -v ${HOME}/in:${HOME}/in \
             -v ${HOME}/out/:${HOME}/out/ \
             artifacts/variationanalysis-app:${Image_Version} \
-            bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --sbi-list ${HOME}/in/SBI/*.sbi --indel-sequence-length ${IndelSequenceLength} --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --export-output metaData --extra-genotypes ${ExtraGenotypes} --sample-name \"${SampleName}\"  --sample-type germline"
+            bash -c "source ~/.bashrc; cd $HOME/out/VEC; export-genotype-tensors.sh 2g --sbi-list ${HOME}/in/SBI/all.list --indel-sequence-length ${IndelSequenceLength} --feature-mapper ${FeatureMapper} -i \"/${HOME}/in/SBI/${SBI_basename}.sbi\" -o /${HOME}/out/${SBI_basename} --label-smoothing-epsilon ${LabelSmoothingEpsilon} --ploidy ${Ploidy} --genomic-context-length ${GenomicContextLength} --export-input input --export-output softmaxGenotype --export-output metaData --extra-genotypes ${ExtraGenotypes} --sample-name \"${SampleName}\"  --sample-type germline"
 
         mv ${HOME}/out/${SBI_basename}*.vec*  ${HOME}/out/Tensors
         
