@@ -52,6 +52,22 @@
       "help": "An optional chromosome prefix adjustment. Use -chr to remove chr from the start of reference id in the VCF. Use +chr to add chr at the start of reference id in the VCF. Use when the alignment and VCF disagree on the chromsome prefix."
     },
     {
+      "name": "Sbi_options",
+      "label": "SBI generation options",
+      "class": "string",
+      "optional": true,
+      "default": "-n 0 -t 1",
+      "help": "Options provided to goby when exporting the sbi files. -n controls how many bases need to be different from the reference for the base to be output. -t indicates how many distinct read indices need to be observed at a site for this site to be output."
+    },
+    {
+      "name": "Downsampling_keep_rate",
+      "label": "Downsampling rate",
+      "class": "float",
+      "optional": true,
+      "default": "1.0",
+      "help": "Fraction of input reads to load. A number between 0 and 1, where 1 indicate to keep all reads."
+    },
+    {
       "name": "Image_Version",
       "label": "Docker Image Version",
       "class": "string",

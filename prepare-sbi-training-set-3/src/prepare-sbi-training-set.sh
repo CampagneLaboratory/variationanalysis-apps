@@ -42,6 +42,7 @@ main() {
     echo "export DATASET=${basename}" >> /input/configure.sh
     echo "export GOBY_NUM_SLICES='50'" >> /input/configure.sh
     echo "export DO_CONCAT='true'" >> /input/configure.sh
+    echo "export DSV_OPTIONS='${Sbi_options} --downsampling-rate ${Downsampling_keep_rate}'" >> /input/configure.sh
     echo "export VARMAP_CHR_PREFIX='${Varmap_Prefix_Adjustment}'" >> /input/configure.sh
 
 
