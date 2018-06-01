@@ -3,7 +3,7 @@
   "title": "Prepare SBI training set",
   "summary": "Use parallel genotype calls to generate the SBI training set",
   "dxapi": "1.0.0",
-  "version": "0.0.3.1",
+  "version": "0.0.3.2",
   "inputSpec": [
     {
       "name": "Genome",
@@ -64,7 +64,7 @@
       "label": "Downsampling rate",
       "class": "float",
       "optional": true,
-      "default": "1.0",
+      "default": 1.0,
       "help": "Fraction of input reads to load. A number between 0 and 1, where 1 indicate to keep all reads."
     },
     {
