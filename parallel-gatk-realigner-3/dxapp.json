@@ -122,5 +122,10 @@
         }
       }
     }
+  },
+  "details": {
+    "upstreamAuthor": "Campagne Laboratory",
+    "upstreamUrl": "https://github.com/CampagneLaboratory/variationanalysis",
+    "upstreamLicenses": ["Apache 2.0"] 
   }
 }
