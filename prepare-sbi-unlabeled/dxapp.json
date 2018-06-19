@@ -50,7 +50,7 @@
       "*.sbi",
       "*.sbip"
     ],
-    "help": "Training, validation and test set in .sbi format. Used to train DL callers."
+    "help": "Unlabeled set in .sbi format. Used to train DL callers."
   }],
   "runSpec": {
     "timeoutPolicy": {
@@ -83,5 +83,12 @@
         }
       }
     }
+  },
+  "details": {
+    "upstreamAuthor": "Campagne Laboratory",
+    "upstreamUrl": "https://github.com/CampagneLaboratory/variationanalysis",
+    "upstreamLicenses": ["Apache 2.0"],
+    "whatsNew": "Prepare unlabeled set in .sbi format.",
+    "citations": ["https://doi.org/10.1101/338780"]
   }
 }

@@ -136,5 +136,12 @@
         }
       }
     }
+  },
+  "details": {
+    "upstreamAuthor": "Campagne Laboratory",
+    "upstreamUrl": "https://github.com/CampagneLaboratory/variationanalysis",
+    "upstreamLicenses": ["Apache 2.0"],
+    "whatsNew": "A tool to load the vectorized genotype information files.",
+    "citations": ["https://doi.org/10.1101/338780"]
   }
 }

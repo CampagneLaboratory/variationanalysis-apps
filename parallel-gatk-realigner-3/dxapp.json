@@ -122,5 +122,12 @@
         }
       }
     }
+  },
+  "details": {
+    "upstreamAuthor": "Campagne Laboratory",
+    "upstreamUrl": "https://github.com/CampagneLaboratory/variationanalysis",
+    "upstreamLicenses": ["Apache 2.0"],
+    "whatsNew": "Realign BAM alignment with HaplotypeCaller.",
+    "citations": ["https://doi.org/10.1101/338780"]
   }
 }

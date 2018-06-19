@@ -94,5 +94,12 @@
         }
       }
     }
+  },
+  "details": {
+    "upstreamAuthor": "Campagne Laboratory",
+    "upstreamUrl": "https://github.com/CampagneLaboratory/variationanalysis",
+    "upstreamLicenses": ["Apache 2.0"],
+    "whatsNew": "Convert an alignment from BAM to Goby format.",
+    "citations": ["https://doi.org/10.1101/338780"]
   }
 }
