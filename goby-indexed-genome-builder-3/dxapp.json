@@ -75,9 +75,9 @@
   },
   "details": {
     "upstreamAuthor": "Campagne Laboratory",
-    "upstreamUrl": "https://github.com/CampagneLaboratory/variationanalysis",
+    "upstreamUrl": "http://campagnelab.org/software/goby/",
     "upstreamLicenses": ["Apache 2.0"],
     "whatsNew": "Build a Goby Indexed Genome from a FASTA reference genome.",
-    "citations": ["https://doi.org/10.1101/338780"]
+    "citations": ["https://doi.org/10.1371/journal.pone.0079871"]
   }
 }
