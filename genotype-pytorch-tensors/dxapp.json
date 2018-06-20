@@ -73,7 +73,7 @@
       "class": "string",
       "default": "-n 5 -t 1",
       "optional": false,
-      "help": "Options for SBI generation. -n is the lowest number of variations bases at the site to write the site to the SBI. -t is a lowest number of distinct read indices to write the site."
+      "help": "Options for SBI generation. -n is the lowest number of variations bases at the site to write the site to the SBI. -t is the lowest number of distinct read indices to write the site."
     },
     {
       "name": "Sample_Name",
