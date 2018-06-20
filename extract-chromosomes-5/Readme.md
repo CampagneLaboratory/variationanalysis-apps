@@ -1,7 +1,5 @@
 <!-- dx-header -->
-# Extract chromosome (DNAnexus Platform App)
-
-Extract Chromosomes from BAM alignments.
+# Extract chromosomes (DNAnexus Platform App)
 
 This is the source code for an app that runs on the DNAnexus Platform.
 For more information about how to run or modify it, see
@@ -14,7 +12,7 @@ Extract Chromosomes from BAM alignments
 
 **How does this app work?**
 
-Using the _extract-chromosomes_ script from [variation analysis](https://github.com/CampagneLaboratory/variationanalysis), this app creates a BAM alignment with a subset of the chromosomes available in the input BAM.
+Using the _extract-chromosomes_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app creates a BAM alignment with a subset of the chromosomes available in the input BAM.
 The app run inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**

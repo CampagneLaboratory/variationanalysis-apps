@@ -1,8 +1,6 @@
 <!-- dx-header -->
 # Genotype Tensors (DNAnexus Platform App)
 
-Load the vectorized genotype information files 
-
 This is the source code for an app that runs on the DNAnexus Platform.
 For more information about how to run or modify it, see
 https://wiki.dnanexus.com/.
@@ -10,11 +8,11 @@ https://wiki.dnanexus.com/.
 
 **What does this app do?**
 
-Extract Chromosomes from BAM alignments
+Load the vectorized genotype information from a [Goby](http://campagnelab.org/software/goby/) alignment and write them in the VEC format.
 
 **How does this app work?**
 
-Using the _export-genotype-tensors_ script from [variation analysis](https://github.com/CampagneLaboratory/variationanalysis), this app loads the vectorized genotype information files. Most of the computation is executed in parallel with GNU parallel.
+Using the _export-genotype-tensors_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app loads the vectorized genotype information from a Goby alignment and generates genotype calls in the VEC format. Most of the computation is executed in parallel with GNU parallel.
 The app run inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**
