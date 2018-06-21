@@ -8,7 +8,7 @@ https://wiki.dnanexus.com/.
 
 **What does this app do?**
 
-Realign BAM alignment with HaplotypeCaller
+Realign BAM alignment with HaplotypeCaller.
 
 **How does this app work?**
 
