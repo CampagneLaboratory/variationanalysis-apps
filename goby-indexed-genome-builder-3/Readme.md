@@ -13,11 +13,11 @@ Build a [Goby](http://campagnelab.org/software/goby/) Indexed Genome from a FAST
 **How does this app work?**
 
 Using Goby, this app converts an Indexed Genome from FASTA format to Goby format.
-The app run inside a Docker image for an improved reproducibility of the results.
+The app runs inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**
 
-* A genome in the FASTA format, compressed with gzip.
+* A genome in the FASTA format, compressed with bgzip.
 
 **What does this app output?**
 * Goby indexed genome.

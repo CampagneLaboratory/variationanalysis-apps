@@ -13,7 +13,7 @@ Load the vectorized genotype information from a [Goby](http://campagnelab.org/so
 **How does this app work?**
 
 Using the _export-genotype-tensors_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app loads the vectorized genotype information from a Goby alignment and generates genotype calls in the VEC format. Most of the computation is executed in parallel with GNU parallel.
-The app run inside a Docker image for an improved reproducibility of the results.
+The app runs inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**
 

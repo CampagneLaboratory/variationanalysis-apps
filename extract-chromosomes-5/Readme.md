@@ -13,7 +13,7 @@ Extract Chromosomes from BAM alignments
 **How does this app work?**
 
 Using the _extract-chromosomes_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app creates a BAM alignment with a subset of the chromosomes available in the input BAM.
-The app run inside a Docker image for an improved reproducibility of the results.
+The app runs inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**
 

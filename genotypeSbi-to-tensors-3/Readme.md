@@ -13,7 +13,7 @@ Converts Genotype in the Sequence Base Information format (extension .sbi) to Te
 **How does this app work?**
 
 Using the _export-genotype-tensors_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app converts Genotypes in the .sbi format to tensors in .vec/.vecp format.
-The app run inside a Docker image for an improved reproducibility of the results.
+The app runs inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**
 
