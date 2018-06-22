@@ -31,7 +31,7 @@
       "*.perm",
       "*.stats"
       ],
-      "help": "One or several alignments in the Goby format."
+      "help": "Alignment in the Goby format."
       },
       {
         "name": "Image_Version",

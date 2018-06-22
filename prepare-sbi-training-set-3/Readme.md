@@ -13,12 +13,13 @@ Use parallel genotype calls to generate the Sequence Base Information format (ex
 **How does this app work?**
 
 Using the _generate-genotype-sets-0.02_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), it makes parallel genotype calls to generate Sequence Base Information's sets that can be used to train DL callers.
+The app runs inside a Docker image for an improved reproducibility of the results.
  
 
 **What data are required for this app to run?**
 
-* The genome that the reads were mapped against, indexed with [Goby](http://campagnelab.org/software/goby/).
-* One or several alignments in the Goby format.
+* One or several alignments in the [Goby](http://campagnelab.org/software/goby/) format.
+* The genome that the reads were mapped against, indexed with Goby.
 * True Genotypes in VCF format.
 * (Optional) An optional chromosome prefix adjustment. Use -chr to remove chr from the start of reference id in the VCF. Use +chr to add chr at the start of reference id in the VCF. Use when the alignment and VCF disagree on the chromsome prefix.
 * Options provided to goby when exporting the sbi files. -n controls how many bases need to be different from the reference for the base to be output. -t indicates how many distinct read indices need to be observed at a site for this site to be output.
