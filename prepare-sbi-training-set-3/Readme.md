@@ -8,7 +8,7 @@ https://wiki.dnanexus.com/.
 
 **What does this app do?**
 
-Use parallel genotype calls to generate the Sequence Base Information format (extension .sbi) training set.
+Use parallel genotype calls to generate the training set in Sequence Base Information format (extension .sbi).
 
 **How does this app work?**
 

@@ -9,7 +9,6 @@ https://wiki.dnanexus.com/.
 
 **What does this app do?**
 
- 
 Performs variant comparison at the haplotype level. It determines whether the genotypes asserted in the VCFs under comparison result in the same genomic sequence when applied to the reference genome.  
 
 **How does this app work?**

@@ -8,11 +8,11 @@ https://wiki.dnanexus.com/.
 
 **What does this app do?**
 
-Converts Genotype in the Sequence Base Information format (extension .sbi) to Tensors.
+Convert Genotype in the Sequence Base Information format (extension .sbi) to Tensors.
 
 **How does this app work?**
 
-Using the _export-genotype-tensors_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app converts Genotypes in the .sbi format to tensors in .vec/.vecp format.
+Using the _export-genotype-tensors_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app converts Genotypes in the .sbi format to tensors in .vec/.vecp format.\
 The app runs inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**
@@ -27,4 +27,5 @@ The app runs inside a Docker image for an improved reproducibility of the result
 * The length of the indel sequence. Default is 7.
 
 **What does this app output?**
-* Mapped input/output tensors in .vec/.vecp format. A single domain.descriptor is exported for all .vec files, describing how the feature/output mapping was done.
+* Mapped input/output tensors in .vec/.vecp format. 
+* A single domain.descriptor is exported for all .vec files, describing how the feature/output mapping was done.

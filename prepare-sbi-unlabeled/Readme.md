@@ -6,7 +6,6 @@ For more information about how to run or modify it, see
 https://wiki.dnanexus.com/.
 <!-- /dx-header -->
 
-
 **What does this app do?**
 
 Generate the Sequence Base Information format (extension .sbi) unlabeled set from a [Goby](http://campagnelab.org/software/goby/) alignment.
