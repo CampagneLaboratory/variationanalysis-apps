@@ -19,6 +19,8 @@ The app runs inside a Docker image for an improved reproducibility of the result
 
 * An alignment in BAM format and its index.
 * A genome in the FASTA format. This must be the genome that the alignment was made against.
+* The version of the Docker image to use. Default is set to the version that was tested with the app. 
+  * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
 
 **What does this app output?**
 * An alignment in the Goby format.

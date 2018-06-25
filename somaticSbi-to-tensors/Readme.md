@@ -26,7 +26,9 @@ The app runs inside a Docker image for an improved reproducibility of the result
 * The organism ploidy (2 for humans, more for some plants).
 * Length of genomic context to use around site, in mapped features. Default is 29.
 * Value of epsilon for label smoothing. Zero (default) is no smoothing.
-* 
+* The version of the Docker image to use. Default is set to the version that was tested with the app. 
+  * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
+
 
 **What does this app output?**
  

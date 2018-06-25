@@ -19,8 +19,11 @@ The app runs inside a Docker image for an improved reproducibility of the result
 
 * A coordinate-sorted BAM alignment and its index.
 * A Genome in FASTA format compressed with bgzip.
-* The distribution of the GATK software used to run HaplotypeCaller in a zipped archive. (we request it because we cannot redistribute GATK as per its license.)
+* The distribution of the GATK software used to run HaplotypeCaller in a zipped archive. 
+  * We request it because we cannot redistribute GATK as per its license.
 * (Optional) Extra arguments for GATK 4.
+* The version of the Docker image to use. Default is set to the version that was tested with the app. 
+  * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
 
 **What does this app output?**
 * BAM alignment, realigned with HaplotypeCaller, and its index.

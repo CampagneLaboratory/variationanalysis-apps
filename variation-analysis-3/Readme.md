@@ -24,6 +24,8 @@ The app runs inside a Docker image for an improved reproducibility of the result
 * Model as a .tar.gz archive, containing the files inside the model directory.
 * The name of the model (included in the model archive) to use for genotype calling. Default to "bestscore".
 * Number of slices of the alignment to compute in parallel. Default to 100.
+* The version of the Docker image to use. Default is set to the version that was tested with the app. 
+  * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
 
 
 **What does this app output?**

@@ -25,6 +25,8 @@ The app runs inside a Docker image for an improved reproducibility of the result
 * The value of epsilon for label smoothing. Zero (default) is no smoothing.
 * The number of additional genotypes to consider in addition to ploidy. Default is 2.
 * The length of the indel sequence. Default is 7.
+* The version of the Docker image to use. Default is set to the version that was tested with the app. 
+  * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
 
 **What does this app output?**
 * Mapped input/output tensors in .vec/.vecp format. 

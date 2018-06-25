@@ -26,6 +26,8 @@ The app runs inside a Docker image for an improved reproducibility of the result
 * (Optional) The baseline regions, in Bed format.
 * Additional variants to intersect with the baseline variants, in VCF format.
 * Additional options for RTG vcfeval.      
+* The version of the Docker image to use. Default is set to the version that was tested with the app. 
+  * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
 
 **What does this app output?**
  

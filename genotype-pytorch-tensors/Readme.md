@@ -25,6 +25,8 @@ The app runs inside a Docker image for an improved reproducibility of the result
 * Number of slices of the alignment to compute in parallel. Default is 100.
 * Options for SBI generation. -n is the lowest number of variations bases at the site to write the site to the SBI. -t is the lowest number of distinct read indices to write the site..
 * Name of the sample to store in the .vec properties file.
+* The version of the Docker image to use. Default is set to the version that was tested with the app. 
+  * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
 
 **What does this app output?**
 * The genotype calls, in VCF format. 
