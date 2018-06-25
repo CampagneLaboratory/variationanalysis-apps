@@ -94,7 +94,8 @@
     }
   ],
   "developers": [
-    "org-campagnelab"
+    "org-campagnelab",
+    "user-sosazuwa"
   ],
   "runSpec": {
     "timeoutPolicy": {

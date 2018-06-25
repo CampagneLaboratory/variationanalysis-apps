@@ -80,12 +80,8 @@
     ]
   },
   "developers": [
-    "org-campagnelab"
-  ],
-  "authorizedUsers": [
     "org-campagnelab",
-    "user-lmesd",
-    "user-wenming.xiao.dnax"
+    "user-sosazuwa"
   ],
   "regionalOptions": {
     "aws:us-east-1": {

@@ -112,7 +112,8 @@
     "file": "src/somaticSbi-to-tensors.sh"
   },
   "developers": [
-    "org-campagnelab"
+    "org-campagnelab",
+    "user-sosazuwa"
   ],
   "openSource": true,
   "access": {

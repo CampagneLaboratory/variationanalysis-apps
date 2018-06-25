@@ -108,7 +108,8 @@
     ]
   },
   "developers": [
-    "org-campagnelab"
+    "org-campagnelab",
+    "user-sosazuwa"
   ],
   "regionalOptions": {
     "aws:us-east-1": {
