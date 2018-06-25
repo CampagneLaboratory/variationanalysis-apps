@@ -110,6 +110,7 @@
     "distribution": "Ubuntu",
     "file": "src/GenotypeSbiToTensors.sh"
   },
+  "openSource": true,
   "access": {
     "network": [
       "*"

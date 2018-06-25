@@ -63,6 +63,7 @@
     "distribution": "Ubuntu",
     "file": "src/prepare-sbi-unlabeled.sh"
   },
+  "openSource": true,
   "access": {
     "project": "CONTRIBUTE",
     "network": [

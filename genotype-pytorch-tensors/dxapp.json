@@ -116,6 +116,7 @@
     "distribution": "Ubuntu",
     "file": "src/genotype-tensor.sh"
   },
+  "openSource": true,
   "access": {
     "project": "CONTRIBUTE",
     "network": [

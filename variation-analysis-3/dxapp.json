@@ -92,6 +92,7 @@
     "distribution": "Ubuntu",
     "file": "src/VariationAnalysis.sh"
   },
+  "openSource": true,
   "access": {
     "network": [
       "*"

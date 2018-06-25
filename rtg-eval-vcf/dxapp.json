@@ -120,6 +120,7 @@
     "distribution": "Ubuntu",
     "file": "src/rtg-eval-vcf.sh"
   },
+  "openSource": true,
   "access": {
     "project": "CONTRIBUTE",
     "network": [

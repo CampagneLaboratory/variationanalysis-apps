@@ -101,6 +101,7 @@
     "distribution": "Ubuntu",
     "file": "src/parallel-gatk-realigner.sh"
   },
+  "openSource": true,
   "access": {
     "network": [
       "*"

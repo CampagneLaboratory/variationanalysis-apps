@@ -118,6 +118,7 @@
     "org-campagnelab",
     "user-wenming.xiao.dnax"
   ],
+  "openSource": true,
   "access": {
     "network": [
       "*"
