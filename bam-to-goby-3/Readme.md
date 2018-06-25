@@ -13,7 +13,7 @@ Convert a BAM alignment into an equivalent [Goby](http://campagnelab.org/softwar
 **How does this app work?**
 
 Using the _parallel-bam-to-goby_ script from [Variation Analysis](https://github.com/CampagneLaboratory/variationanalysis), this app converts an alignment from BAM format to Goby format.
-The app runs inside a Docker image for an improve reproducibility of the results.
+The app runs inside a Docker image for an improved reproducibility of the results.
 
 **What data are required for this app to run?**
 

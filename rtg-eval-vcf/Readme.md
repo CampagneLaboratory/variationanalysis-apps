@@ -21,7 +21,7 @@ The app runs inside a Docker image for an improved reproducibility of the result
  
 * The genotype calls, in VCF format.
 * The regions where calls are made, in Bed format.
-* SDF of the reference genome the variants are called against.
+* The RTG template of the reference genome the variants are called against, in SDF format.
 * The baseline variants, in VCF format.
 * (Optional) The baseline regions, in Bed format.
 * Additional variants to intersect with the baseline variants, in VCF format.
