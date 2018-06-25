@@ -96,9 +96,6 @@
   "developers": [
     "org-campagnelab"
   ],
-  "authorizedUsers": [
-    "org-campagnelab"
-  ],
   "runSpec": {
     "timeoutPolicy": {
       "*": {
