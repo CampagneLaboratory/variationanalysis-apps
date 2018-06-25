@@ -3,7 +3,7 @@
   "title": "Prepare SBI training set",
   "summary": "Use parallel genotype calls to generate the SBI training set",
   "dxapi": "1.0.0",
-  "version": "0.0.3.2",
+  "version": "1.0.0",
   "inputSpec": [
     {
       "name": "Genome",
@@ -58,6 +58,14 @@
       "optional": true,
       "default": "-n 0 -t 1",
       "help": "Options provided to goby when exporting the sbi files. -n controls how many bases need to be different from the reference for the base to be output. -t indicates how many distinct read indices need to be observed at a site for this site to be output."
+    },
+    {
+      "name": "Ref_sampling_rate",
+      "label": "Reference Sampling Rate",
+      "class": "float",
+      "optional": false,
+      "default": 0.01,
+      "help": "The Reference Sampling Rate."
     },
     {
       "name": "Downsampling_keep_rate",

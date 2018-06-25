@@ -3,7 +3,7 @@
   "title": "Convert Genotype .sbi to Tensors",
   "summary": "GenotypeSbiToTensors",
   "dxapi": "1.0.0",
-  "version": "0.0.3.3",
+  "version": "1.0.0",
   "inputSpec": [
     {
       "name": "GenotypeSBI",
