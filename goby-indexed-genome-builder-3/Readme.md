@@ -8,7 +8,7 @@ https://wiki.dnanexus.com/.
 
 **What does this app do?**
 
-Build a [Goby](http://campagnelab.org/software/goby/) Indexed Genome from a FASTA reference genome.
+Build a [Goby](http://campagnelab.org/software/goby/) Indexed Genome from a FASTA Reference Genome.
 
 **How does this app work?**
 
@@ -21,5 +21,6 @@ The app runs inside a Docker image for an improved reproducibility of the result
 * The version of the Docker image to use. Default is set to the version that was tested with the app. 
   * **WARNING**:  We discourage to use `latest` as version because runs at different times may give different results if the image changes 
 
+
 **What does this app output?**
-* Goby indexed genome.
+* Goby Indexed Genome.
