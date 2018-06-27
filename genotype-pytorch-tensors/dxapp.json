@@ -3,7 +3,7 @@
   "title": "Genotype Tensors with Pytorch",
   "summary": "A tool to load the vectorized genotype information files ",
   "dxapi": "1.0.0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "inputSpec": [
     {
       "name": "Genome",
@@ -118,7 +118,6 @@
   },
   "openSource": true,
   "access": {
-    "project": "CONTRIBUTE",
     "network": [
       "*"
     ]
